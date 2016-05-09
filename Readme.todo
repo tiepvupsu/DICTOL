@@ -1,0 +1,63 @@
+Author: Tiep Vu:
+
+3/9/2016 6:20:47 PM
+Description:
+Library for dictionary learning methods
+
+========================================================================================
+
+Name conveniences:
+  - col_range: ranges of each column block of a matrix. Example: row_range = [0 3 7 17] means that there are 3 columns blocks. the first ranges from (0+1) to 3, the second ranges from (3+1) to 7, the third ranges from (7+1) to 17
+  - row_range: similar to row_range but applied for rows
+  - d: data dimension
+  - N: number of samples
+  - k: number of atoms in dictionary
+  - L: sparsity level
+
+utils:
+  ✔ display_network: display each columns of a matrix as a patch. required: number of rows is a square number. @done (15-08-26 21:04)
+  ✔ get_block : get a submatrix with block numbers according to row_range and col_range @done (15-08-26 21:01)
+  ✔ get_block_col: get a block of columns of a matrix  @done (15-08-26 21:01)
+  ✔ get_block_row: get a block of rows of a matrix @done (15-08-26 21:01)
+  ✔ getAllFiels_ext: return a list with all files with a specific extension @done (15-08-26 21:04)
+  ✔ getComputerName @done (15-08-26 21:04)
+  ✔ initOpts  @done (16-03-09 18:23)
+  ✔ label_to_range, range_to_label @done (15-08-26 21:08)
+  ✔ myrng: make sure that random function does not return the same output @done (16-03-09 18:23)
+  ✔ norm1 @done (16-03-09 18:23)
+  ✔ normalizeDataLabel @done (16-03-09 18:24)
+  ✔ normc @done (16-03-09 18:24)
+  ✔ normF2 @done (16-03-09 18:24)
+  ✔ pickRandomColumns @done (16-03-09 18:25)
+  ✔ pickRandomSubsetIndex @done (16-03-09 18:25)
+  ✔ pickTrainTest: pick training set and test set from data @done (16-03-09 18:25)
+  ✔ vec @done (16-03-09 18:25)
+  ✔ nuclearnorm @done (16-03-09 18:27)
+  ☐ display_networks_color: (if possible)
+basic_funcs:
+  ✔ myLasso_fista @done (16-03-09 18:35)
+  ✔ myLasso_spams @done (16-03-09 18:43)
+  ✔ myLassoWeighted_fista @done (16-03-09 18:43)
+  ✔ myLassoWeighted_spams @done (16-03-09 18:43)
+  ✔ myOMP @done (16-03-09 18:43)
+  ✔ X = shrinkage_rank( D, lambda) : for rank minimization problem. X = \arg\min_{X} 0.5||X - D||_F^2 + \lambda||X||_* (nuclear norm) @done (15-08-26 21:01)
+  ✔ X = shrinkage(U, lambda) : softthresholding function. X = shrinkage(U, lambda) = \arg\min 0.5||X - U||_F^2 + \lambda ||X||_1 @done (15-08-26 21:01)
+
+SRC:
+ ☐ SRC_pred
+KSVD:
+
+DKSVD:
+
+LCKSVD:
+
+DLSI:
+
+DFDL:
+
+FDDL:
+
+LRSDL: 
+
+DLCOPAR: 
+
