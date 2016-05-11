@@ -1,0 +1,82 @@
+
+KSVDBox Frequently Asked Questions
+----------------------------------
+
+
+Q. Your package does not work! I get an error like this:
+
+??? Attempt to execute SCRIPT ksvdbox\private\sprow as a function:
+C:\............................................\ksvdbox\private\sprow.m
+
+Error in ==> ksvd>optimize_atom at 515
+[gamma_j, data_indices] = sprow(Gamma, j);
+
+A. KSVDBox comes as source code, and requires compilation. Please read the README file
+and follow the directions - it is actually quite easy.
+
+
+
+Q. What dictionary sizes are typical for use with KSVD?
+
+A. The package can easily handle a 100x200 dictionary, and can work with a
+500x1000 dictionary as well if you are willing to wait a bit. Large dictionaries
+may run into memory problems at some point, depending on the number of training
+signals. A 64-bit system will be helpful here.
+
+
+
+Q. I am training a dictionary and it is taking hours! What is wrong?
+
+A. There are two common causes for this. In the following we describe each of the 
+two causes, and provide methods to address them.
+
+(i) One important speed factor in KSVD is the number of non-zeros in the matrix 
+Gamma (the matrix with the sparse representations of the training signals). A larger
+number of non-zeros means more OMP iterations and a slower dictionary update.
+If you are using an error-based threshold (using params.Edata), make sure you set
+it correctly. Too small a value here will force OMP to select an unreasonable number
+of atoms, and slow the process to a crawl. You can track the number of selected
+atoms using the KSVD message system. At the end of each iteration, note the message
+"Iteration X / Y complete, mean atomnum = Z". A reasonable number for Z here is
+around 0-5, and it can go as high as perhaps 15-20 in some cases. A significantly
+higher number means that params.Edata is probably set wrong (see the next question).
+
+(ii) Another cause of slowdown in KSVD may be insufficient training data. During
+the dictionary update, each of the atoms is updated using the examples that use it
+in their representation. However, atoms which are not used by any example must be
+replaced by a completely new atom, a task which is relatively time-consuming. 
+A large number of replaced atoms each iteration will cause the dictionary update to
+slow down significantly, and may also indicate a problem in the training process, as
+atoms are being constantly replaced rather than trained and refined. Most commonly,
+a large number of replaced atoms means that the training set is too small compared
+to the size of the trained dictionary, so many atoms are left unused by the examples.
+Alternatively, the sparse coding threshold (Tdata/Edata) may be such that the sparse
+representations of the examples use very few atoms. To detect this problem, use
+the VERBOSE parameter of KSVD, and set it to 'tr', which will cause KSVD to display
+the number of replaced atoms each iteration. A typical training process should
+involve very few atom replacements, so anything above a handful or so each iteration - 
+especially if this number does not decrease between iterations - might indicate a
+difficulty in the training. To address this, either increase the number of training
+examples, decrease the number of trained atoms, or modify the sparse coding threshold
+to force more atoms to be selected in the sparse representations.
+
+
+
+Q. I want to use K-SVD with an error threshold. How should params.Edata be set?
+
+A. Params.Edata represents the target L2-norm of the residual when coding each
+training signal. Using this threshold is typically done when the training signals
+are noisy. Since the error is measured in L2-norm, the assumption is really that
+the noise is white and Gaussian, with a standard deviation SIGMA for each coefficient.
+Thus, for training signals of length N, we set params.Edata = sqrt(N)*SIGMA*GAIN,
+where sqrt(N)*SIGMA is the expected L2-norm of the noise, and GAIN is a constant 
+which typically takes values within [1.0,1.3].
+
+
+
+Q. Your package does not compile/run/work on my system.
+
+A. Well, unfortunately I only have access to a limited number of system configurations.
+So, if you are experiencing an error on your system, please let me know! These things
+can usually be corrected easily - for everyone's benefit.
+

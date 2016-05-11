@@ -1,0 +1,52 @@
+** This is an example code for the algorithm described in
+
+Zhuolin Jiang, Zhe Lin, Larry S. Davis.
+"Learning A Discriminative Dictionary for Sparse Coding via Label Consistent K-SVD", CVPR 2011.
+
+***************************************
+
+1. To run the example code: 
+(a) add the toolbox paths 'ksvdbox' and 'OMPbox' into the matlab path;
+
+  addpath(genpath('.\OMPbox'));
+  addpath(genpath('.\ksvdbox'));
+
+* Please note that you might need to recompile these two toolboxes once you use Linux or Mac OS.
+You can simply run these two files within matlab:
+./OMPbox/private/make.m
+./ksvdbox/private/make.m
+
+(b) run main.m
+
+The mat file 'featurevector' in the folder 'trainingdata' is one random split of training data and testing data 
+on the Extended YaleB dataset. The recognition results of this example should be:
+
+  Final recognition rate for LC-KSVD1 is : 0.945 
+  Final recognition rate for LC-KSVD2 is : 0.950
+
+
+2. About the selection of parameter "sqrt_alpha" and "sqrt_beta", they are determined according to 
+the classificaiton performance for training data. They can be different for different databases. 
+You can change it if the classification performance is not satisfying. The current setting 
+is good for Extended Yaleb face database. For the caltech101 dataset, "sqrt_alpha" and  "sqrt_beta" is about 0.001.
+
+
+3. About the inputs for dictionary learning prcoess, training features and their labels should be matrice. 
+For example, 
+
+  training_feats: nXN (n: feature dimensions, N: number of training samples);
+  H_train: mxN (m: number of classes, N: number of training samples)
+
+* Note that H_train is a label matrix, each column corresponds to a training feature vector, where the 
+non-zero position of each column indicates the classes of feature vectors.
+
+
+
+If you happen to use this source code, please cite our paper:
+
+Zhuolin Jiang, Zhe Lin, Larry S. Davis. " Learning a Discriminative Dictionary for Sparse Coding via Label Consistent K-SVD". 
+IEEE Conference on Computer Vision and Pattern Recognition, 2011.
+
+
+This source code is successfully tested on Windows7 64 bits and MatlabR2009.  
+For any problems with the code, please contact me: zhuolin@umiacs.umd.edu
