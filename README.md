@@ -319,36 +319,43 @@ All of the following functions are located in subfolder `utils`.
 parameters stored in `opts` 
 
 ## `DLSI_top`
-* function DLSI_top(dataset, N_train, k, lambda, eta)
-* The top function of DLSI 
-* INPUT:
-  + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
-    Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
-  + `N_train`: number of training samples in each class 
-  + `k`: number of bases in EACH dictionary 
-  + `lambda, eta`: regularization parameters.
-* To run an small example, type `DLSI_top` without input in MATLAB command window. 
+  * function DLSI_top(dataset, N_train, k, lambda, eta)
+  * The top function of DLSI 
+  * INPUT:
+    + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
+      Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
+    + `N_train`: number of training samples in each class 
+    + `k`: number of bases in EACH dictionary 
+    + `lambda, eta`: regularization parameters.
+  * To run an small example, type `DLSI_top` without input in MATLAB command window. 
 
 # DLCOPAR
 ## `DLCOPAR`
+* function `[D, X, rt] = DLCOPAR(Y, Y_range, opts)`
+* The main DLCOPAR alg
 
 ## `DLCOPAR_cost`
+* function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
+* Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`
+* f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + 
+    sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 05*eta*sum_{i \neq c}||Di^T*Dc||_F^2
+
 
 ## `DLCOPAR_updateX`
 
 ## `DLCOPAR_updateD` 
 
 ## `DLCOPAR_top`
-* function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
-* The top function of DLCOPAR 
-* INPUT:
-  + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
-    Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
-  + `N_train`: number of training samples in each class 
-  + `k`: number of bases in EACH PARTICULAR dictionary 
-  + `k0`: number of bases in the COMMON dictionary
-  + `lambda, eta`: regularization parameters.
-* To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
+  * function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
+  * The top function of DLCOPAR 
+  * INPUT:
+    + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
+      Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
+    + `N_train`: number of training samples in each class 
+    + `k`: number of bases in EACH PARTICULAR dictionary 
+    + `k0`: number of bases in the COMMON dictionary
+    + `lambda, eta`: regularization parameters.
+  * To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
 
 # LRSDL
 ### `LRSDL_top`

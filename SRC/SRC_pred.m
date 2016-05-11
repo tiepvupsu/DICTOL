@@ -21,7 +21,6 @@ function [pred, X] = SRC_pred(Y, D, D_range, opts)
 % Author: Tiep Vu, thv102@psu.edu, 4/6/2016
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
-%%
 	if nargin == 0
 	    C = 3;    
 	    N = 10;    

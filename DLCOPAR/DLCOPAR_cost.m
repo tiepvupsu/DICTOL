@@ -31,5 +31,5 @@ function cost = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts)
         Dcom_c(:, D_range_ext(c)+1: D_range_ext(c+1)) = [];
         cost2 = cost2 + normF2(Dcom_c'*Dc);
     end 
-    cost = cost + cost1 + eta*cost2;    
+    cost = cost + cost1 + .5*eta*cost2;    
 end 

@@ -16,7 +16,7 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
         opts.lambda   = 0.0001;
         opts.eta      = 0.01;
         opts.gamma    = 0.01;
-        opts.max_iter = 5;
+        opts.max_iter = 50;
         opts.verbal   = true;
         opts          = initOpts(opts);
         
@@ -44,7 +44,6 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
     tic
     while iter < opts.max_iter 
         iter = iter + 1;
-        
         %% ========= update X ==============================
         if opts.verbal
             fprintf('iter = %3d | updating X...', iter);
