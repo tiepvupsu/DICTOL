@@ -41,7 +41,7 @@ _This repository is under construction_
 * `K`: total number of dictionary atoms. 
 * `D_range`: similar to `Y_range` but used for dictionary without the shared dictionary. 
 
-# Support functions
+# Supporting functions
 
 All of the following functions are located in subfolder `utils`.
 
