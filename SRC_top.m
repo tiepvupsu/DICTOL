@@ -1,38 +1,47 @@
 function SRC_top(dataset, N_trn, lambda)
-    %% ================== File info ==========================
-    % Author            : Tiep Vu (http://www.personal.psu.edu/thv102/)
-    % Time created      : Thu Mar 10 10:07:57 2016
-    % Last modified     : 
-    % Description       : SRC 
-    %     INPUT: 
-    %       dataset: name of the dataset stored in 'data', excluding '.mat'
-    %       N_trn: number of training images per class 
-    %       lambda : regularization parameter lambda     
-    %     OUTPUT: 
-    %
-    %% ================== end File info ==========================
+% function SRC_top(dataset, N_trn, lambda)
+% Description       : SRC 
+%     INPUT: 
+%       dataset: name of the dataset stored in 'data', excluding '.mat'
+%       N_trn: number of training images per class 
+%       lambda : regularization parameter lambda     
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------
     addpath('utils');
-    addpath('basic_funcs');
     addpath('SRC');
     addpath('build_spams');
-
     %% ========= Test mode ==============================
-    if nargin == 0
-        dataset = 'myYaleB';
-        N_trn = 15;
+    if nargin == 0 
+        dataset = 'myARgender';
+        N_train = 40;
         lambda = 0.001;
     end 
-
-    [Y_trn, label_trn, Y_tst, label_tst] = picktrntst_wrapper(dataset, N_trn);
-
-    opts.lambda  = lambda ;
-    opts.show    = 1;
-    opts.max_iter= 300;
+    %%
+    t = getTimeStr();
+    [dataset, Y_train, Y_test, label_train, label_test] = train_test_split(...
+        dataset, N_train);
+    %% output file 
+    if ~exist('results', 'dir')
+        mkdir('results');
+    end 
+    if ~exist(fullfile('results', 'SRC'), 'dir')
+        mkdir('results', 'SRC');
+    end 
+    fn = fullfile('results', 'SRC', strcat(dataset, '_N_', num2str(N_train), ...
+        '_l_', num2str(lambda), '_', t, '.mat'));
+    disp(fn);
+    %%
+    opts.lambda   = lambda;
+    opts.verbal   = 0;
+    opts.max_iter = 300;
+    %%
+    train_range = label_to_range(label_train);
+    pred        = SRC_pred(Y_test, Y_train, train_range, opts);
     
-    trn_range = label_to_range(label_trn);
-    pred  = SRC_pred(Y_tst, Y_trn, trn_range, opts);
-    acc = double(sum(pred == label_tst))/numel(pred)
-
-%     filename = fullfile('results','SRC', strcat('Normc_', dataset, '_N_', num2str(N_train), '_lambda_', num2str(lambda), '.mat'))
-%     save(filename, 'acc');
+    acc         = double(sum(pred == label_test))/numel(pred);
+    disp(['acc = ', num2str(acc)]);
+    disp(fn);    
+    save(fn, 'acc');
 end 
