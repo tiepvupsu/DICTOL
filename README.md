@@ -103,6 +103,28 @@ All of the following functions are located in subfolder `utils`.
 * Syntax `res = nuclearnorm(X)`
 * `
 
+#### `erase_diagonal`
+* function A = erase_diagonal(A)
+* Erase diagonal of a matrix A
+* required: `size(A, 1) == size(A, 2)`
+
+#### `double_diagonal`
+* function A = double_diagonal(A)
+* Double diagonal elements of a matrix A 
+* required: `size(A, 1) == size(A, 2)`
+
+#### `erase_diagonal_blocks`
+* function A = erase_diagonal_blocks(A, row_range, col_range)
+* Erase diagonal blocks of a block matrix A whose row range and col range are `row_range` and `col_range`
+* required: `numel(row_range) == numel(col_range)
+
+#### `double_diagonal_blocks` 
+* function A = double_diagonal_blocks(A, row_range, col_range)
+* Double diagonal blocks of a block matrix A whose row range and col range are `row_range` and `col_range`
+* requirements: `numel(row_range0 == numel(col_range))`
+
+
+
 #### `shrinkage`
 * Soft thresholding function.
 * Syntax: ` X = shrinkage(U, lambda)`
@@ -247,18 +269,55 @@ All of the following functions are located in subfolder `utils`.
 ## `DLSI_term`
 * Syntax: cost = DLSI_term(D, D_range)
 * Calculating the structured incoherence term in DLSI [[5]](#fn_dls).
-* $\sum_{c=1}^C \sum_{i \neq c} \|D_i^TD_c\|_F^2$
+* $sum_{c=1}^C sum_{i \neq c} ||D_i^TD_c||_F^2$
 
 ## `DLSI_cost`
-## `DLSI_updateX`
-#### `DLSI_updateD`
-#### `DLSI_pred`
+* function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
+* Calculating cost function of DLSI with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`
+* f(D, X) = 0.5*sum_{c=1}^C 05*||Yc - Dc*Xc||_F^2 + lambda*||X||_1 + 
+          05*eta*sum_{i \neq c} ||Di^T*Dc||_F^2
+
+## `DLSI`
+* function `[D, X, rt] = DLSI(Y, Y_range, opts)`
+* The main DLSI algorithm 
+* INPUT: 
+  - `Y, Y_range`: training samples and their labels 
+  - `opts`: 
+    + `opts.lambda, opts.eta`: `lambda` and `eta` in the cost function 
+    + `opts.max_iter`: maximum iterations. 
+* OUTPUT:
+  - `rt`: total running time of the training process.   
+* `[D, X, rt] = argmin_{D, X}(\sum 0.5*||Y_c - D_c X_c||_F^2) + \lambda*norm1(X) + 0.5*eta * \sum_{i \neq c} ||D_i^T D_c||_F^2`
+* updating `X`:
+  `Xi = arg\min 0.5*||Y_c - D_c X_c||_F^2 + \lambda ||X_c||`
+* updating `D`:
+  `Di = \arg\min ||Y_c - D_c X_c||_F^2 + \eta ||D_{\c}^T D_c||_F^2`
+
+## `DLSI_updateD`
+* function D = DLSI_updateD(Y, X, D, A, lambda, opts)
+* Solving problem: 
+    `D = \arg\min_D ||Y - D*X||_F^2 + \lambda *||A*D||F^2`, 
+    subject to: ||d_i||_2^2 \leq 1
+* ADMM approach
+* rewrite: `[D, Z] = arg\min ||Y - D*X||_F^2 + \lambda ||A*Z||_F^2`, 
+     subject to `D = Z; ||d_i||_2^2 \leq 1`
+ aproach 1: ADMM.
+ 1. `D = \arg\min||Y - D*X|| + \rho/2 ||D - Z + U||_F^2`, 
+     s.t. |`|d_i||_2^2 \leq 1`
+ 2. `Z = \arg\min \lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
+ 3. `U = U + D - Z`
+ 
+* solve 1: `D = \arg\min ||Y - D*X||_F^2 + \rho/2 ||D - W||_F^2`
+                       with `W = Z - U`;
+            `= \arg\min -2trace((YX' - \rho/2*W)*D') + trace((X*X' + \rho/2 * eye())*D'D)`
+* solve 2: derivetaive: `0 = 2A'AZ + \rho (Z - V) with V = D + U` 
+ `Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}`
+
+## `DLSI_pred`
 
 # DFDL
 
 # DLCOPAR
-
-# LDL
 
 # LRSDL
 ### `LRSDL_top`

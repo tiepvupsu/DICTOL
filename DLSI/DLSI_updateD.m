@@ -1,24 +1,25 @@
 function D = DLSI_updateD(Y, X, D, A, lambda, opts)
-    %problem: D = \arg\min_D \|Y - D*X\|_F^2 + \lambda *\|A*D\|F^2, 
-    % subject to: \|d_i\|_2^2 \leq 1
-    % ========= aproach: ADMM ==============================    
-    % rewrite: [D, Z] = arg\min \|Y - D*X\|_F^2 + \lambda \|A*Z\|_F^2, 
-    %     subject to D = Z; \|d_i\|_2^2 \leq 1
-    % aproach 1: ADMM.
-    % 1. D = \arg\min\|Y - D*X\| + \rho/2 \|D - Z + U\|_F^2, 
-    %     s.t. \|d_i\|_2^2 \leq 1
-    % 2. Z = \arg\min \lambda*\|A*Z\| + \rho/2\|D - Z + U\|_F^2
-    % 3. U = U + D - Z
-    % solve 1: D = \arg\min \|Y - D*X\|_F^2 + \rho/2 \|D - W\|_F^2 
-    %                       with W = Z - U;
-    %            = \arg\min -2trace((YX' - \rho/2*W)*D') + 
-    %               trace((X*X' + \rho/2 * eye())*D'D)
-    % solve 2: derivetaive: 0 = 2A'AZ + \rho (Z - V) with V = D + U 
-    % Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}
-    % U = U + D - Z 
-%%
-
-
+%problem: D = \arg\min_D \|Y - D*X\|_F^2 + \lambda *\|A*D\|F^2, 
+% subject to: \|d_i\|_2^2 \leq 1
+% ========= aproach: ADMM ==============================    
+% rewrite: [D, Z] = arg\min \|Y - D*X\|_F^2 + \lambda \|A*Z\|_F^2, 
+%     subject to D = Z; \|d_i\|_2^2 \leq 1
+% aproach 1: ADMM.
+% 1. D = \arg\min\|Y - D*X\| + \rho/2 \|D - Z + U\|_F^2, 
+%     s.t. \|d_i\|_2^2 \leq 1
+% 2. Z = \arg\min \lambda*\|A*Z\| + \rho/2\|D - Z + U\|_F^2
+% 3. U = U + D - Z
+% solve 1: D = \arg\min \|Y - D*X\|_F^2 + \rho/2 \|D - W\|_F^2 
+%                       with W = Z - U;
+%            = \arg\min -2trace((YX' - \rho/2*W)*D') + 
+%               trace((X*X' + \rho/2 * eye())*D'D)
+% solve 2: derivetaive: 0 = 2A'AZ + \rho (Z - V) with V = D + U 
+% Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}
+% U = U + D - Z 
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------
     if nargin == 0
         d = 30; 
         N = 10;

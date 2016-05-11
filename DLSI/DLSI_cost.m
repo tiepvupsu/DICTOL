@@ -1,4 +1,13 @@
 function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
+% function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
+% Calculating cost function of DLSI with parameters lambda and eta are stored in 
+% `opts.lambda` and `opts.rho`
+% f(D, X) = 0.5*sum_{c=1}^C 05*||Yc - Dc*Xc||_F^2 + lambda*||X||_1 + 
+%           05*eta*sum_{i \neq c} ||Di^T*Dc||_F^2
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------
     C = numel(Y_range) - 1;
     cost = 0;
     for i = 1: C 
@@ -8,9 +17,6 @@ function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)
         Di = D(:, D_range_i);        
         Yi = get_block_col(Y, i, Y_range);
         cost = cost + 0.5*normF2(Yi - Di*X{i}) + norm1(X{i});
-
-        D_com_range_i = setdiff(1:D_range(end), D_range_i);
-        D_com_i = D(:, D_com_range_i);
-        cost = cost + 0.5*opts.eta*normF2(D_com_i'*Di);
     end 
+    cost = cost + .5*opts.eta*DLSI_term(D, D_range);
 end 
