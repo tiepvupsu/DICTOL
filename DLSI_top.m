@@ -17,7 +17,7 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     if ~exist('results', 'dir')
         mkdir('results');
     end 
-    if ~exist('results\DLSI', 'dir')
+    if ~exist(fullfile('results', 'DLSI'), 'dir')
         mkdir('results', 'DLSI');
     end 
     fn = fullfile('results', 'DLSI', strcat(dataset, '_N_', num2str(N_train), ...
