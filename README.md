@@ -248,12 +248,12 @@ All of the following functions are located in subfolder `utils`.
 ## `FDDL_fidelity`
 * Syntax: cost = FDDL_fidelity(Y, Y_range, D, D_range, X)
 * Calculating the fidelity term in FDDL[[4]](#fn_fdd):
-* $\sum_{c=1}^C \Big(\|Y_c - D_cX^c_c\|_F^2 + \sum_{i \neq c} \|D_c X^c_i\|_F^2\Big)$
+* $sum_{c=1}^C \Big(||Y_c - D_cX^c_c||_F^2 + sum_{i \neq c} ||D_c X^c_i||_F^2\Big)$
 
 ## `FDDL_discriminative`
 * Syntax: cost = FDDL_discriminative(X, Y_range)
 * calculating the discriminative term in FDDL[[4]](#fn_fdd):
-* $\|X\|_F^2 + \sum_{c=1}^C (\|Xc - Mc\|_F^2 - \|Mc - M\|_F^2) $
+* $||X||_F^2 + sum_{c=1}^C (||Xc - Mc||_F^2 - ||Mc - M||_F^2) $
 
 ## `FDDL_cost`
 * `FDDL_cost(Y, Y_range, D, D_range, X, lambda1, lambda2)`
@@ -287,31 +287,31 @@ All of the following functions are located in subfolder `utils`.
     + `opts.max_iter`: maximum iterations. 
 * OUTPUT:
   - `rt`: total running time of the training process.   
-* `[D, X, rt] = argmin_{D, X}(\sum 0.5*||Y_c - D_c X_c||_F^2) + \lambda*norm1(X) + 0.5*eta * \sum_{i \neq c} ||D_i^T D_c||_F^2`
+* `[D, X, rt] = argmin_{D, X}(sum 0.5*||Y_c - D_c X_c||_F^2) + lambda*norm1(X) + 0.5*eta * sum_{i \neq c} ||D_i^T D_c||_F^2`
 * updating `X`:
-  `Xi = arg\min 0.5*||Y_c - D_c X_c||_F^2 + \lambda ||X_c||`
+  `Xi = arg\min 0.5*||Y_c - D_c X_c||_F^2 + lambda ||X_c||`
 * updating `D`:
-  `Di = \arg\min ||Y_c - D_c X_c||_F^2 + \eta ||D_{\c}^T D_c||_F^2`
+  `Di = argmin ||Y_c - D_c X_c||_F^2 + \eta ||D_{\c}^T D_c||_F^2`
 
 ## `DLSI_updateD`
 * function D = DLSI_updateD(Y, X, D, A, lambda, opts)
 * Solving problem: 
-    `D = \arg\min_D -2trace(ED') + trace(FD'*D) + \lambda *\|A*D\|F^2,`
+    `D = argmin_D -2trace(ED') + trace(FD'*D) + lambda *||A*D||F^2,`
     subject to: ||d_i||_2^2 \leq 1
 * ADMM approach
-* rewrite: `[D, Z] = arg\min -2trace(ED') + trace(FD'*D) + \lambda ||A*Z||_F^2`, 
+* rewrite: `[D, Z] = arg\min -2trace(ED') + trace(FD'*D) + lambda ||A*Z||_F^2`, 
      subject to `D = Z; ||d_i||_2^2 \leq 1`
  aproach 1: ADMM.
-  + `D = \arg\min -2trace(ED') + trace(FD'*D) + \rho/2 ||D - Z + U||_F^2`, 
+  + `D = argmin -2trace(ED') + trace(FD'*D) + \rho/2 ||D - Z + U||_F^2`, 
      s.t. |`|d_i||_2^2 \leq 1`
-    + `Z = \arg\min \lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
+    + `Z = argmin lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
   + `U = U + D - Z`
  
-* solve D: `D = \arg\min-2trace(ED') + trace(FD'*D) + \rho/2 ||D - W||_F^2`
+* solve D: `D = argmin-2trace(ED') + trace(FD'*D) + \rho/2 ||D - W||_F^2`
                        with `W = Z - U`;
-  `D = \arg\min -2trace((E - \rho/2*W)*D') + trace((F + \rho/2 * eye())*D'D)`
+  `D = argmin -2trace((E - \rho/2*W)*D') + trace((F + \rho/2 * eye())*D'D)`
 * solve Z: derivetaive: `0 = 2A'AZ + \rho (Z - V) with V = D + U` 
- `Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}`
+ `Z = B*\rho V with B = (2lambdaA'*A + \rho I)^{-1}`
 
 ## `DLSI_pred`
 * function pred = DLSI_pred(Y, D, opts)

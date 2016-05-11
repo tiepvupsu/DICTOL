@@ -1,22 +1,22 @@
 function D = DLSI_updateD(D, E, F, A, lambda, opts)
 % function D = DLSI_updateD(Y, X, D, A, lambda, opts)
-% problem: D = \arg\min_D -2trace(ED') + trace(FD'*D) + \lambda *\|A*D\|F^2, 
-% subject to: \|d_i\|_2^2 \leq 1
+% problem: D = argmin_D -2trace(ED') + trace(FD'*D) + lambda *||A*D||F^2, 
+% subject to: ||d_i||_2^2 <= 1
 % where F is a positive semidefinite matrix
 % ========= aproach: ADMM ==============================    
-% rewrite: [D, Z] = arg\min -2trace(ED') + trace(FD'*D) + \lambda \|A*Z\|_F^2, 
-%     subject to D = Z; \|d_i\|_2^2 \leq 1
+% rewrite: [D, Z] = arg\min -2trace(ED') + trace(FD'*D) + lambda ||A*Z||_F^2, 
+%     subject to D = Z; ||d_i||_2^2 <= 1
 % aproach 1: ADMM.
-% 1. D = -2trace(ED') + trace(FD'*D) + \rho/2 \|D - Z + U\|_F^2, 
-%     s.t. \|d_i\|_2^2 \leq 1
-% 2. Z = \arg\min \lambda*\|A*Z\| + \rho/2\|D - Z + U\|_F^2
+% 1. D = -2trace(ED') + trace(FD'*D) + rho/2 ||D - Z + U||_F^2, 
+%     s.t. ||d_i||_2^2 <= 1
+% 2. Z = argmin lambda*||A*Z|| + rho/2||D - Z + U||_F^2
 % 3. U = U + D - Z
-% solve 1: D = \arg\min -2trace(ED') + trace(FD'*D) + \rho/2 \|D - W\|_F^2 
+% solve 1: D = argmin -2trace(ED') + trace(FD'*D) + rho/2 ||D - W||_F^2 
 %                       with W = Z - U;
-%            = \arg\min -2trace((E - \rho/2*W)*D') + 
-%               trace((F + \rho/2 * eye())*D'D)
-% solve 2: derivetaive: 0 = 2A'AZ + \rho (Z - V) with V = D + U 
-% Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}
+%            = argmin -2trace((E - rho/2*W)*D') + 
+%               trace((F + rho/2 * eye())*D'D)
+% solve 2: derivetaive: 0 = 2A'AZ + rho (Z - V) with V = D + U 
+% `Z = B*rhoV` with `B = (2*lambda*A'*A + rho I)^{-1}`
 % U = U + D - Z 
 % -----------------------------------------------
 % Author: Tiep Vu, thv102@psu.edu, 5/11/2016
