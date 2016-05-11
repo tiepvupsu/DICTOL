@@ -16,11 +16,11 @@ _This repository is under construction_
 
 * [__DLCOPAR__](#dlcopar) [[7]](#fn_cor) 
 
-* [__LDL__](#LDL): Latent dictionary learning [[8]](#fn_ldl).
+
 
 * [__LRSDL__](#LRSDL): Low-rank Shared dictionary Learning [[9]](#fn_lrs). 
 
-* [__FuzzyDL__](#FuzzyDL):
+
 
 # Notation
 * `Y`: signals.
