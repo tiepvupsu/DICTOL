@@ -15,8 +15,6 @@ function [X, iter] = lasso_fista(Y, D, Xinit, lambda, opts)
 % Author: Tiep Vu, thv102@psu.edu, 4/6/2016
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
-%
-    tic 
     if nargin == 0 % test mode 
         addpath(fullfile('..', 'utils'));
         addpath(fullfile('..', 'build_spams'));
@@ -62,7 +60,6 @@ function [X, iter] = lasso_fista(Y, D, Xinit, lambda, opts)
     %%
     L = max(eig(DtD));
     [X, iter] = fista(@grad, Xinit, L, lambda, opts);
-    toc  
     %% For test only 
     if nargin == 0
         fprintf('A toy example:\n')

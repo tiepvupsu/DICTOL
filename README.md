@@ -302,10 +302,10 @@ All of the following functions are located in subfolder `utils`.
 * rewrite: `[D, Z] = arg\min ||Y - D*X||_F^2 + \lambda ||A*Z||_F^2`, 
      subject to `D = Z; ||d_i||_2^2 \leq 1`
  aproach 1: ADMM.
- + `D = \arg\min||Y - D*X|| + \rho/2 ||D - Z + U||_F^2`, 
+  + `D = \arg\min||Y - D*X|| + \rho/2 ||D - Z + U||_F^2`, 
      s.t. |`|d_i||_2^2 \leq 1`
- + `Z = \arg\min \lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
- + `U = U + D - Z`
+    + `Z = \arg\min \lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
+  + `U = U + D - Z`
  
 * solve D: `D = \arg\min ||Y - D*X||_F^2 + \rho/2 ||D - W||_F^2`
                        with `W = Z - U`;
@@ -314,6 +314,9 @@ All of the following functions are located in subfolder `utils`.
  `Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}`
 
 ## `DLSI_pred`
+* function pred = DLSI_pred(Y, D, opts)
+* predict the label of new input `Y` given the trained dictionary `D` and 
+parameters stored in `opts` 
 
 # DFDL
 
