@@ -13,10 +13,9 @@ function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)
     for i = 1: C 
         cost =  opts.lambda*norm1(X{i});
         D_range_i = get_range(D_range, i);        
-
         Di = D(:, D_range_i);        
         Yi = get_block_col(Y, i, Y_range);
-        cost = cost + 0.5*normF2(Yi - Di*X{i}) + norm1(X{i});
+        cost = cost + 0.5*normF2(Yi - Di*X{i});
     end 
     cost = cost + .5*opts.eta*DLSI_term(D, D_range);
 end 

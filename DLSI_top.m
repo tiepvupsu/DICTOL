@@ -14,6 +14,12 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     t = getTimeStr();
     [dataset, Y_train, Y_test, label_train, label_test] = train_test_split(...
         dataset, N_train);
+    if ~exist('results', 'dir')
+        mkdir('results');
+    end 
+    if ~exist('results\DLSI', 'dir')
+        mkdir('results', 'DLSI');
+    end 
     fn = fullfile('results', 'DLSI', strcat(dataset, '_N_', num2str(N_train), ...
         '_k_', num2str(k), '_l_', num2str(lambda), '_e_', num2str(eta), '_', ...
         t, '.mat'));
@@ -34,7 +40,7 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     %% ========= test ==============================
     pred           = DLSI_pred(Y_test, D, opts);
     acc            = double(sum(pred == label_test))/numel(label_test);
-    disp(acc)
+    disp(['acc = ', num2str(acc)]);
     disp(fn);    
     if strcmp(dataset, 'mySynthetic')
         save(fn, 'D', 'X', 'k', 'acc', 'rt');

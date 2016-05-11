@@ -32,13 +32,13 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
     end 
     lambda = opts.lambda;
     eta = opts.eta;    
-    %% ========= init ==============================    
+    %% ========= init ==============================
+    optsinit = opts;
+    optsinit.show = 0;
     if opts.verbal
         fprintf('Cost = %5f\n', DLSI_cost(Y, Y_range, D, D_range, X, opts));
         fprintf('Initializing...\n');
     end 
-    optsinit = opts;
-    optsinit.verbal = 0;
     optsinit.max_iter = 50;
     for i = 1: C        
         if opts.verbal
@@ -74,7 +74,7 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         end 
         if opts.verbal
             costX = DLSI_cost(Y, Y_range, D, D_range, X, opts);
-            fprintf('iter = %3d | costX = %5f\n', iter, costX);
+            fprintf('iter = %3d |mk costX = %5f\n', iter, costX);
         end 
         %% ========= update D ==============================
         for i = 1: C 

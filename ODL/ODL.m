@@ -54,7 +54,9 @@ function [D, X] = ODL(Y, k, lambda, opts, method)
 	%% ========= initial D ==============================
 	D = PickDfromY(Y, [0, size(Y,2)], k);
     X = zeros(size(D,2), size(Y,2));
-    fprintf('cost: %f', ODL_cost(Y, D, X, lambda));
+    if opts.verbal 
+        fprintf('cost: %f', ODL_cost(Y, D, X, lambda));
+    end 
 	optsX.max_iter = 200;
 	optsX.tol      = 1e-8;
 	optsD.max_iter = 200;
@@ -63,19 +65,19 @@ function [D, X] = ODL(Y, k, lambda, opts, method)
 	while iter < opts.max_iter
 		iter = iter + 1;
 		%% ========= sparse coding step ==============================
-		if method == 'fista'
+		if strcmp(method, 'fista')
        		X = lasso_fista(Y, D, X, lambda, optsX);
        	else 
        		X = lasso_spams(Y, D, lambda);
        	end
-       	if opts.show_cost 
+       	if opts.verbal 
 			costX = ODL_cost(Y, D, X, lambda);
 			fprintf('iter: %3d, costX = %5f\n', iter, costX)
 		end 
 		%% ========= dictionary update step ==============================
 		F = X*X'; E = Y*X';
 		D = ODL_updateD(D, E, F, optsD);
-		if opts.show_cost 
+		if opts.verbal 
 			costD = ODL_cost(Y, D, X, lambda);
 			fprintf('iter: %3d, costD = %5f\n', iter, costD)
 		end 
