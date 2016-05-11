@@ -1,4 +1,4 @@
-function D = DLSI_updateD(D, E, F, A, lambda, opts)
+function D = DLSI_updateD2(D, E, F, A, lambda, opts)
 % function D = DLSI_updateD(Y, X, D, A, lambda, opts)
 %problem: D = \arg\min_D -2trace(ED') + trace(FD'*D) + \lambda *\|A*D\|F^2, 
 % subject to: \|d_i\|_2^2 \leq 1
@@ -79,7 +79,7 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
         end
         if opts.verbal
             cost = calcost(D);
-            fprintf('iter = %3d | costD = %5.4f | normF2(D - Z) = %5.4f | rho(Z_new - Z_old) = %5.4f\n', iter, cost, e1, e2);
+            fprintf('iter = %3d | costD = %5.4f | normF2(D - Z) = %5.4f | rho(Z_new - Z_old) = %5.4ff\n', iter, cost, e1, e2);
         end 
         %% ========= update U ==============================
         U = U + D - Z_new;

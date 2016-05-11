@@ -1,4 +1,4 @@
-function Xij = get_block(X, i, j, row_range, col_range)
+function Mij = get_block(M, i, j, row_range, col_range)
 	%% ================== File info ==========================
 	% Author		: Tiep Vu (http://www.personal.psu.edu/thv102/)
 	% Time created	: 1/27/2016 2:46:04 AM

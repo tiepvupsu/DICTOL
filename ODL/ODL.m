@@ -23,33 +23,17 @@ function [D, X] = ODL(Y, k, lambda, opts, method)
         N      = 100; % number of samples 
         k      = 50; % dictionary size 
         lambda = 0.1;
-        Y      = normc(rand(d, N));
-        D      = normc(rand(d, k));
-        Xinit  = zeros(size(D,2), size(Y, 2));
+        Y      = normc(rand(d, N));        
         %
 		opts.max_iter      = 500;
 		opts.show_progress = 0;
 		opts.check_grad    = false;  
 		opts.tol           = 1e-8;  
-		opts.show_cost     = true;
-		method = 'fista';
-		% method = 'spams';
+		opts.verbal     = true;
+		
 	end 
 	%%
-	if (~isfield(opts,'max_iter'))
-		opts.max_iter = 30;	
-    end
-    
-    if (~isfield(opts,'show_cost'))
-		opts.max_iter = false;	
-    end
-    
-	if nargin < 5
-		method = 'fista';
-	end 
-	if nargin < 4 
-		opts.max_iter = 50;
-	end 
+	opts = initOpts(opts);
 	%%
 	%% ========= initial D ==============================
 	D = PickDfromY(Y, [0, size(Y,2)], k);
@@ -65,11 +49,7 @@ function [D, X] = ODL(Y, k, lambda, opts, method)
 	while iter < opts.max_iter
 		iter = iter + 1;
 		%% ========= sparse coding step ==============================
-		if strcmp(method, 'fista')
-       		X = lasso_fista(Y, D, X, lambda, optsX);
-       	else 
-       		X = lasso_spams(Y, D, lambda);
-       	end
+		X = lasso_fista(Y, D, X, lambda, optsX);
        	if opts.verbal 
 			costX = ODL_cost(Y, D, X, lambda);
 			fprintf('iter: %3d, costX = %5f\n', iter, costX)

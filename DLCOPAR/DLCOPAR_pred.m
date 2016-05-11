@@ -1,41 +1,21 @@
-function pred = DLCOPAR_classify(Y, D, opts);
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
-    %% ================== block: test mode ==========================
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    if nargin == 0
-        d = 100;
-        C = 10;
-        N = 10;
-        k = 10;
-        k0 = 20;
-        Y = normc(rand(d, C*N));
-        D = normc(rand(d, C*k + k0));
-        opts.D_range_ext = [k*(0:C) C*k+k0];
-        if rand(1) < 0.5
-            opts.classify_mode = 'LC';
-        else 
-            opts.classify_mode = 'GC';
-        end 
-        opts.gamma = 0.01;
-    end         
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
-    %% ------------------end of block: test mode ----------------------------
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
+function pred = DLCOPAR_pred(Y, D, D_range_ext, opts)
+
+    C = numel(D_range_ext) - 2;
+    %%
     if isfield(opts, 'classify_mode') == 0
         fprintf('You need to specify classification mode in opts.classify_mode: GC/LC\n');
     elseif strcmp(opts.classify_mode, 'GC')
-        pred = GC(Y, D, opts);
+        pred = GC(Y, D, D_range_ext, opts);
     elseif strcmp(opts.classify_mode, 'LC')
-        pred = LC(Y, D, opts);
+        pred = LC(Y, D, D_range_ext, opts);
     else 
         fprintf('classify_mode is either GC or LC');
     end             
 end 
 
-function pred = GC(Y, D, opts)
+function pred = GC(Y, D, D_range_ext, opts)
 %     fprintf('GC mode\n');
-    C = numel(opts.D_range_ext) - 2;
-    D_range_ext = opts.D_range_ext;
+    C = numel(D_range_ext) - 2;    
     pars.show = false;
     pars.max_iter = 100;
     if isfield(opts, 'gamma') == 0
@@ -60,10 +40,9 @@ function pred = GC(Y, D, opts)
 end 
 
 
-function pred = LC(Y, D, opts)
+function pred = LC(Y, D, D_range_ext, opts)
 %     fprintf('LC mode\n');
-    C = numel(opts.D_range_ext) - 2;
-    D_range_ext = opts.D_range_ext;
+    C = numel(D_range_ext) - 2;    
     pars.show = false;
     pars.max_iter = 100;
     if isfield(opts, 'gamma') == 0

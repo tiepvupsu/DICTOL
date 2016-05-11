@@ -10,15 +10,31 @@ function opts = initOpts(opts)
     %
     %% ================== end File info ==========================
     %% show, max_iter, checkgrad
-    if ~isfield(opts, 'show_progress')
-        opts.show_progress = 0;
+    if ~isfield(opts, 'verbal')
+        opts.verbal = 0;
     end 
     %%
-    if ~isfield(opts, 'checkgrad')
-        opts.checkgrad = 0;
+    if ~isfield(opts, 'check_grad')
+        opts.check_grad = 0;
     end 
     %%
     if ~isfield(opts, 'max_iter')
         opts.max_iter = 100;
+    end 
+    %%
+    if ~isfield(opts, 'showD')
+        opts.showD = false;
+    end 
+    %%
+    if ~isfield(opts, 'showX')
+        opts.showX = false;
+    end 
+    %%
+    if ~isfield(opts, 'show_cost')
+        opts.show_cost = 0;
+    end 
+    %%
+    if ~isfield(opts, 'tol')
+        opts.tol = 1e-8;
     end 
 end

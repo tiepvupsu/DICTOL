@@ -1,8 +1,12 @@
- function cost = DLCOPAR_cost(Y, Y_range, D, X, opts)
-    D_range = opts.D_range;
-    C = numel(Y_range) - 1;
-    D_range_ext = opts.D_range_ext;
-    eta = opts.eta;
+function cost = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts)
+% function cost = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts)
+% Calculating cost of DLCOPAR 
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------    
+    C = numel(Y_range) - 1;    
+    eta    = opts.eta;
     lambda = opts.lambda;
     cost = lambda*norm1(X);
     cost1 = normF2(Y - D*X);
@@ -27,5 +31,5 @@
         Dcom_c(:, D_range_ext(c)+1: D_range_ext(c+1)) = [];
         cost2 = cost2 + normF2(Dcom_c'*Dc);
     end 
-    cost = cost + cost1 + eta*cost2;
+    cost = cost + cost1 + eta*cost2;    
 end 

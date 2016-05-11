@@ -36,9 +36,9 @@ _This repository is under construction_
      - There are two classes, samples from class 1 range from 1 to 10, from class 2 range from 11 to 25. 
      - In general, samples from class `c` range from `Y_range(c) + 1` to `Y_range(c+1)`
      - We can observe that number of classes `C = numel(Y_range) - 1`.
-* `k_c`: number of atoms in class-specific dictionary `c`. Typically, all `n_c` are the same and equal to `k`.
-* `k_0`: number of atoms in the shared-dictionary 
-* `K`: total number of dictionary atoms. 
+* `k_c`: number of bases in class-specific dictionary `c`. Typically, all `n_c` are the same and equal to `k`.
+* `k_0`: number of bases in the shared-dictionary 
+* `K`: total number of dictionary bases. 
 * `D_range`: similar to `Y_range` but used for dictionary without the shared dictionary. 
 
 # Supporting functions
@@ -211,7 +211,7 @@ All of the following functions are located in subfolder `utils`.
 * Syntax: `[D, X] = ODL(Y, k, lambda, opts, sc_method)`
   - INPUT: 
     + `Y`: collection of samples.
-    + `k`: number of atoms in the desired dictionary.
+    + `k`: number of bases in the desired dictionary.
     + `lambda`: norm 1 regularization parameter.
     + `opts`: option.
     + `sc_method`: sparse coding method used in the sparse coefficient update. Possible values:
@@ -296,20 +296,20 @@ All of the following functions are located in subfolder `utils`.
 ## `DLSI_updateD`
 * function D = DLSI_updateD(Y, X, D, A, lambda, opts)
 * Solving problem: 
-    `D = \arg\min_D ||Y - D*X||_F^2 + \lambda *||A*D||F^2`, 
+    `D = \arg\min_D -2trace(ED') + trace(FD'*D) + \lambda *\|A*D\|F^2,`
     subject to: ||d_i||_2^2 \leq 1
 * ADMM approach
-* rewrite: `[D, Z] = arg\min ||Y - D*X||_F^2 + \lambda ||A*Z||_F^2`, 
+* rewrite: `[D, Z] = arg\min -2trace(ED') + trace(FD'*D) + \lambda ||A*Z||_F^2`, 
      subject to `D = Z; ||d_i||_2^2 \leq 1`
  aproach 1: ADMM.
-  + `D = \arg\min||Y - D*X|| + \rho/2 ||D - Z + U||_F^2`, 
+  + `D = \arg\min -2trace(ED') + trace(FD'*D) + \rho/2 ||D - Z + U||_F^2`, 
      s.t. |`|d_i||_2^2 \leq 1`
     + `Z = \arg\min \lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
   + `U = U + D - Z`
  
-* solve D: `D = \arg\min ||Y - D*X||_F^2 + \rho/2 ||D - W||_F^2`
+* solve D: `D = \arg\min-2trace(ED') + trace(FD'*D) + \rho/2 ||D - W||_F^2`
                        with `W = Z - U`;
-            `= \arg\min -2trace((YX' - \rho/2*W)*D') + trace((X*X' + \rho/2 * eye())*D'D)`
+  `D = \arg\min -2trace((E - \rho/2*W)*D') + trace((F + \rho/2 * eye())*D'D)`
 * solve Z: derivetaive: `0 = 2A'AZ + \rho (Z - V) with V = D + U` 
  `Z = B*\rho V with B = (2\lambdaA'*A + \rho I)^{-1}`
 
@@ -318,9 +318,37 @@ All of the following functions are located in subfolder `utils`.
 * predict the label of new input `Y` given the trained dictionary `D` and 
 parameters stored in `opts` 
 
-# DFDL
+## `DLSI_top`
+* function DLSI_top(dataset, N_train, k, lambda, eta)
+* The top function of DLSI 
+* INPUT:
+  + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
+    Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
+  + `N_train`: number of training samples in each class 
+  + `k`: number of bases in EACH dictionary 
+  + `lambda, eta`: regularization parameters.
+* To run an small example, type `DLSI_top` without input in MATLAB command window. 
 
 # DLCOPAR
+## `DLCOPAR`
+
+## `DLCOPAR_cost`
+
+## `DLCOPAR_updateX`
+
+## `DLCOPAR_updateD` 
+
+## `DLCOPAR_top`
+* function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
+* The top function of DLCOPAR 
+* INPUT:
+  + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
+    Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
+  + `N_train`: number of training samples in each class 
+  + `k`: number of bases in EACH PARTICULAR dictionary 
+  + `k0`: number of bases in the COMMON dictionary
+  + `lambda, eta`: regularization parameters.
+* To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
 
 # LRSDL
 ### `LRSDL_top`

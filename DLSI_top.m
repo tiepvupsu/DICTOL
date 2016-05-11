@@ -1,4 +1,17 @@
 function DLSI_top(dataset, N_train, k, lambda, eta)
+% * function DLSI_top(dataset, N_train, k, lambda, eta)
+% * The top function of DLSI 
+% * INPUT:
+%   + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
+%     Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
+%   + `N_train`: number of training samples in each class 
+%   + `k`: number of atoms in EACH dictionary 
+%   + `lambda, eta`: regularization parameters.
+% * To run an small example, type `DLSI_top` without input in MATLAB command window. 
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------
     addpath(genpath('utils'));  
     addpath(genpath('DLSI'));      
     addpath('ODL')

@@ -18,11 +18,28 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
 % Author: Tiep Vu, thv102@psu.edu, 4/14/2016
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
+    if nargin == 0 % test mode
+        clc
+        addpath(fullfile('..', 'utils'));
+        d = 30;
+        C = 3;
+        N = 10;
+        k = 5;
+        Y = normc(rand(d, N*C));
+        Y_range = N*(0:C);
+        D_range = k*(0:C);
+        
+        opts.D_range = D_range;
+        opts.k = 5;
+        opts.lambda = 0.001;
+        opts.eta = 0.1;
+        opts.verbal = true;
+        opts = initOpts(opts);        
+    end 
+    %%
     D_range = opts.D_range;
     C = numel(D_range) - 1;
     D = zeros(size(Y,1), D_range(end));
-    % X = zeros(size(D,2), size(Y,2))
-
     %% ========= X should be stored in cell ==============================
     clear X;
     for i = 1: C 
@@ -36,13 +53,17 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
     if opts.verbal
         fprintf('Cost = %5f\n', DLSI_cost(Y, Y_range, D, D_range, X, opts));
         fprintf('Initializing...\n');
+        fprintf('class:\n');
     end 
     optsinit = opts;
     optsinit.verbal = 0;
     optsinit.max_iter = 50;
     for i = 1: C        
         if opts.verbal
-            fprintf('Class: %2d. ', i);
+            fprintf('%3d  ', i);
+            if mod(i, 10) == 0
+                fprintf('\n');
+            end 
         end 
         Yi = get_block_col(Y,i,Y_range);        
         [Di, X{i}] = ODL(Yi, D_range(i+1) - D_range(i), lambda, optsinit, ...
@@ -56,9 +77,12 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
     end 
     %%
     iter = 0;
+    optsX = opts;
     optsX.max_iter = 300;
-    optsX.show = false;
-    optsD.show = false;
+    optsX.verbal = false;
+    
+    optsD = opts;
+    optsD.verbal = false;
     optsD.max_iter = 200;
     %%
     costD = 0;
@@ -82,14 +106,18 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
             D_comi(D_range(i)+1: D_range(i+1)) = [];
             Di = D(:, D_range(i)+1: D_range(i+1));
             Yi = get_block_col(Y, i, Y_range);
-            Di = DLSI_updateD(Yi, X{i}, Di, D_comi', eta, optsD);
+%             Di = DLSI_updateD(Yi, X{i}, Di, D_comi', eta, optsD);
+            E = Yi*X{i}';
+            F = X{i}*X{i}';
+            A = D_comi';
+            Di = DLSI_updateD2(Di, E, F, A, eta, optsD);
             D(:, D_range(i)+1: D_range(i+1)) = Di;
         end 
         %%
         t0 = toc;
         if opts.verbal 
             costD = DLSI_cost(Y, Y_range, D, D_range, X, opts);
-            fprintf('iter = %3d | costD = %5f', iter, costD);
+            fprintf('             costD = %5f', costD);
             t = t0*(opts.max_iter - iter)/iter;
             time_estimate(t);
         end 
@@ -98,4 +126,8 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         end 
     end 
     rt = toc;
+    if nargin == 0
+        D = [];
+        X = [];
+    end 
 end 
