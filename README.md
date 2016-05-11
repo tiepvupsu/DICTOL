@@ -337,8 +337,8 @@ parameters stored in `opts`
 ## `DLCOPAR_cost`
 * function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
 * Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`
-* f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + 
-    sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 05*eta*sum_{i \neq c}||Di^T*Dc||_F^2
+* `f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + 
+    sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 05*eta*sum_{i \neq c}||Di^T*Dc||_F^2`
 
 
 ## `DLCOPAR_updateX`
