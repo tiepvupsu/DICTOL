@@ -336,14 +336,23 @@ parameters stored in `opts`
 
 ## `DLCOPAR_cost`
 * function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
-* Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`
-* `f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + 
-    sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 05*eta*sum_{i \neq c}||Di^T*Dc||_F^2`
-
+* Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`.
+* `f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 0.5*eta*sum_{i \neq c}||Di^T*Dc||_F^2`
 
 ## `DLCOPAR_updateX`
+* function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
+* updating X in DLCOPAR. 
 
 ## `DLCOPAR_updateD` 
+* function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) 
+* update D in DLCOPAR, including both PARTICULAR dictionaries and the COMMON dictionary.
+* The algorithm used here is the efficient algorithm presented in LRSDL paper 
+
+## `DLCOPAR_pred`
+* function pred = DLCOPAR_pred(Y, D, D_range_ext, opts)
+* predict label of the input Y
+* INPUT:
+   + `opts.classify_mode` = either 'GC' (global coding) or 'LC' (local coding)
 
 ## `DLCOPAR_top`
   * function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
@@ -356,6 +365,8 @@ parameters stored in `opts`
     + `k0`: number of bases in the COMMON dictionary
     + `lambda, eta`: regularization parameters.
   * To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
+
+
 
 # LRSDL
 ### `LRSDL_top`

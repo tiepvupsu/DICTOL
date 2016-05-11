@@ -1,5 +1,12 @@
 function pred = DLCOPAR_pred(Y, D, D_range_ext, opts)
-
+% function pred = DLCOPAR_pred(Y, D, D_range_ext, opts)
+% predict label of the input Y
+% INPUT:
+%   opts.classify_mode = either 'GC' or 'LC'
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------
     C = numel(D_range_ext) - 2;
     %%
     if isfield(opts, 'classify_mode') == 0

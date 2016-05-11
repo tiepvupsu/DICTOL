@@ -28,7 +28,7 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     end 
     %%
     t = getTimeStr();
-    [dataset, Y_train, Y_test, label_train, label_test] = 
+    [dataset, Y_train, Y_test, label_train, label_test] = ...
         train_test_split(dataset, N_train);
     if ~exist('results', 'dir')
         mkdir('results');

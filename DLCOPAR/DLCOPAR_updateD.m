@@ -1,4 +1,12 @@
 function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) % and DCp1 
+% function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) 
+% update D in DLCOPAR, including both PARTICULAR dictionaries and the 
+% COMMON dictionary.
+% The algorithm used here is the efficient algorithm presented in LRSDL paper 
+% -----------------------------------------------
+% Author: Tiep Vu, thv102@psu.edu, 5/11/2016
+%         (http://www.personal.psu.edu/thv102/)
+% -----------------------------------------------
     if nargin == 0 
         clc;
         addpath(fullfile('..', 'utils'));
