@@ -1,6 +1,6 @@
 function D = DLSI_updateD(D, E, F, A, lambda, opts)
 % function D = DLSI_updateD(Y, X, D, A, lambda, opts)
-%problem: D = \arg\min_D -2trace(ED') + trace(FD'*D) + \lambda *\|A*D\|F^2, 
+% problem: D = \arg\min_D -2trace(ED') + trace(FD'*D) + \lambda *\|A*D\|F^2, 
 % subject to: \|d_i\|_2^2 \leq 1
 % where F is a positive semidefinite matrix
 % ========= aproach: ADMM ==============================    
@@ -22,6 +22,7 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
 % Author: Tiep Vu, thv102@psu.edu, 5/11/2016
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
+
     if nargin == 0
         clc;
         d = 30; 
