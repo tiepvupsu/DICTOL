@@ -127,7 +127,7 @@ All of the following functions are located in subfolder `utils`.
     + `grad`: a _function_ calculating gradient of `f(X)` given `X`.
     + `Xinit`: initial guess.
     + `L`: the Lipschitz constant of the gradient of `f(X)`.
-    + `lambda`: a regularization parameter, can be either positive a scalar or a weighted matrix.
+    + `lambda`: a regularization parameter, can be either a positive scalar or a weighted matrix.
     + `opts`: a _structure_ variable describing the algorithm.
       * `opts.max_iter`: maximum iterations of the algorithm. Default `300`.
       * `opts.tol`: a tolerance, the algorithm will stop if difference between two successive `X` is smaller than this value. Default `1e-8`.
