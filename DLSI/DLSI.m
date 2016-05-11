@@ -1,46 +1,25 @@
-function [D, X] = DLSI(Y, Y_range, opts)
-% [D, X] = argmin_{D, X}(\sum 0.5*\|Y_i - D_i X_i\|_F^2) + \lambda*norm1(X) + 
-%                   0.5*eta * \sum_{i \neq j} \|Di^T*Dj\|_F^2 
-% Xi = arg\min 0.5*||Y_i - D_i X_i\|_F^2 + \lambda \|X_i\|
-% Di = \arg\min \|Y_i - D_i X_i\|_F^2 + \eta \|D_{\i}^T D_i\|_F^2 
-% 
-% Ref: 
-% Ramirez, Ignacio, Pablo Sprechmann, and Guillermo Sapiro. 
-% "Classification and clustering via dictionary learning with structured 
-% incoherence and shared features." _Computer Vision and Pattern Recognition 
-% (CVPR), 2010 IEEE Conference on. IEEE_, 2010. 
-%  (http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5539964&tag=1)
+function [D, X, rt] = DLSI(Y, Y_range, opts)
+% * function `[D, X, rt] = DLSI(Y, Y_range, opts)`
+% * The main DLSI algorithm 
+% * INPUT: 
+%   - `Y, Y_range`: training samples and their labels 
+%   - `opts`: 
+%     + `opts.lambda, opts.eta`: `lambda` and `eta` in the cost function 
+%     + `opts.max_iter`: maximum iterations. 
+% * OUTPUT:
+%   - `rt`: total running time of the training process.   
+% * `[D, X, rt] = argmin_{D, X}(\sum 0.5*\|Y_c - D_c X_c\|_F^2) + 
+%           \lambda*norm1(X) + 0.5*eta * \sum_{i \neq c} \|D_i^T D_c\|_F^2`
+% * updating `X`:
+%   `Xi = arg\min 0.5*||Y_c - D_c X_c\|_F^2 + \lambda \|X_c\|`
+% * updating `D`:
+%   `Di = \arg\min \|Y_c - D_c X_c\|_F^2 + \eta \|D_{\c}^T D_c\|_F^2`
 % -----------------------------------------------
-% Author: Tiep Vu, thv102@psu.edu, 4/7/2016
+% Author: Tiep Vu, thv102@psu.edu, 4/14/2016
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
-    if nargin == 0
-%         profile off;
-%         profile on;
-        addpath(fullfile('..','utils'));
-        addpath(fullfile('..','ODL'));
-        
-        C = 100;    N = 7;    d = 3000;        
-        C = 3;    N = 30;    d = 78;
-        k = 7;
-        opts.k0 = 10;
-        opts.lambda = 0.01;
-        opts.eta = 0.1;
-        pars.max_iter = 3;
-        pars.show = false;
-        Y = normc(rand(d, C*N));
-        train_label = [];
-        for c = 1: C
-            train_label = [train_label c*ones(1, N)];
-        end         
-        Y_range = label_to_range(train_label);
-        opts.D_range = k* (0:C);
-        opts.show = true;
-        opts.max_iter = 10;
-    end 
-    %%
     D_range = opts.D_range;
-    C = numel(D_range) - 1
+    C = numel(D_range) - 1;
     D = zeros(size(Y,1), D_range(end));
     % X = zeros(size(D,2), size(Y,2))
 
@@ -52,26 +31,29 @@ function [D, X] = DLSI(Y, Y_range, opts)
         X{i} = zeros(rows, cols);
     end 
     lambda = opts.lambda;
-    eta = opts.eta;
-    %%
+    eta = opts.eta;    
     %% ========= init ==============================
     optsinit = opts;
     optsinit.show = 0;
-    fprintf('Cost = %5f\n', DLSI_cost(Y, Y_range, D, D_range, X, opts));
-    fprintf('Initializing...');
-    opts.max_iter = 50;
-    for i = 1: C 
-        if opts.show 
-            fprintf('.');
-        end
-        fprintf('Class: %3d  ', i);
-        Yi = get_block_col(Y,i,Y_range);
-        [Di, X{i}] = ODL(Yi, D_range(i+1) - D_range(i), lambda, optsinit);
+    if opts.verbal
+        fprintf('Cost = %5f\n', DLSI_cost(Y, Y_range, D, D_range, X, opts));
+        fprintf('Initializing...\n');
+    end 
+    optsinit.max_iter = 50;
+    for i = 1: C        
+        if opts.verbal
+            fprintf('Class: %2d. ', i);
+        end 
+        Yi = get_block_col(Y,i,Y_range);        
+        [Di, X{i}] = ODL(Yi, D_range(i+1) - D_range(i), lambda, optsinit, ...
+            'fista');
         D(:, D_range(i) + 1: D_range(i+1)) = Di;
     end 
     % if opts.show 
-    fprintf('\n');
-    fprintf('Cost = %5f\n', DLSI_cost(Y, Y_range, D, D_range, X, opts));
+    if opts.verbal
+        fprintf('\n');
+        fprintf('Cost = %5f\n', DLSI_cost(Y, Y_range, D, D_range, X, opts));
+    end 
     %%
     iter = 0;
     optsX.max_iter = 300;
@@ -79,6 +61,9 @@ function [D, X] = DLSI(Y, Y_range, opts)
     optsD.show = false;
     optsD.max_iter = 200;
     %%
+    costD = 0;
+    costX = 0;
+    tic;
     while iter < opts.max_iter
         iter = iter + 1;
         %% ========= update X ==============================
@@ -87,9 +72,9 @@ function [D, X] = DLSI(Y, Y_range, opts)
             Di = get_block_col(D, i, D_range);
             X{i} = lasso_fista(Yi, Di, X{i}, lambda, optsX);
         end 
-        if opts.show 
-            fprintf('iter = %3d || costX = %5f\n', iter, DLSI_cost(Y, ...
-                Y_range, D, D_range, X, opts));
+        if opts.verbal
+            costX = DLSI_cost(Y, Y_range, D, D_range, X, opts);
+            fprintf('iter = %3d | costX = %5f\n', iter, costX);
         end 
         %% ========= update D ==============================
         for i = 1: C 
@@ -100,14 +85,17 @@ function [D, X] = DLSI(Y, Y_range, opts)
             Di = DLSI_updateD(Yi, X{i}, Di, D_comi', eta, optsD);
             D(:, D_range(i)+1: D_range(i+1)) = Di;
         end 
-        if opts.show 
-            fprintf('iter = %3d || costD = %5f\n', iter, DLSI_cost(Y, ...
-                Y_range, D, D_range, X, opts));
+        %%
+        t0 = toc;
+        if opts.verbal 
+            costD = DLSI_cost(Y, Y_range, D, D_range, X, opts);
+            fprintf('iter = %3d | costD = %5f', iter, costD);
+            t = t0*(opts.max_iter - iter)/iter;
+            time_estimate(t);
+        end 
+        if t0 > 20*3600 % > 20h 
+            break;
         end 
     end 
-    %%
-    if opts.show
-        pause
-    end 
-
+    rt = toc;
 end 

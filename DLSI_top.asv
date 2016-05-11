@@ -1,6 +1,7 @@
 function DLSI_top(dataset, N_train, k, lambda, eta)
-    addpath(genpath('utils'));  
-    addpath(genpath('DLSI'));      
+    addpath(genpath('utils'));  % add K-SVD box
+    addpath(genpath('DLSI'));  % add K-SVD box
+    addpath('dict_learn');
     addpath('ODL')
     %% test mode 
     if nargin == 0 
@@ -34,8 +35,8 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     %% ========= test ==============================
     pred           = DLSI_pred(Y_test, D, opts);
     acc            = double(sum(pred == label_test))/numel(label_test);
-    disp(acc)
-    disp(fn);    
+    disp(acc);
+    disp(fn);
     if strcmp(dataset, 'mySynthetic')
         save(fn, 'D', 'X', 'k', 'acc', 'rt');
     else 

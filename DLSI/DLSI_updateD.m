@@ -1,4 +1,5 @@
 function D = DLSI_updateD(Y, X, D, A, lambda, opts)
+% function D = DLSI_updateD(Y, X, D, A, lambda, opts)
 %problem: D = \arg\min_D \|Y - D*X\|_F^2 + \lambda *\|A*D\|F^2, 
 % subject to: \|d_i\|_2^2 \leq 1
 % ========= aproach: ADMM ==============================    
