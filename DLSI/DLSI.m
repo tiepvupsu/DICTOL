@@ -110,7 +110,7 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
             E = Yi*X{i}';
             F = X{i}*X{i}';
             A = D_comi';
-            Di = DLSI_updateD2(Di, E, F, A, eta, optsD);
+            Di = DLSI_updateD(Di, E, F, A, eta, optsD);
             D(:, D_range(i)+1: D_range(i+1)) = Di;
         end 
         %%

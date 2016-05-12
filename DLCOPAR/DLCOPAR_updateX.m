@@ -36,7 +36,7 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
     for c = 1: C
         Xc = get_block_col(X, c, Y_range);
         X(:, Y_range(c)+1: Y_range(c+1)) = DLCOPAR_updateXc(DtD, DtY, Y_range, Xc, c, L, optsX);
-        if opt.verbal
+        if opts.verbal
             fprintf('class = %3d || cost: %5f\n', c, DLCOPAR_cost(Y, Y_range, D, X, opts));
         end
     end
