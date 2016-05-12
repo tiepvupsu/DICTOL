@@ -1,6 +1,6 @@
 function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
-% * function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
-% * The top function of DLCOPAR 
+% * function `DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)`
+% * The top function of DLCOPAR
 % * INPUT:
 %   + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
 %     Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
@@ -8,7 +8,8 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
 %   + `k`: number of bases in EACH PARTICULAR dictionary 
 %   + `k0`: number of bases in the COMMON dictionary
 %   + `lambda, eta`: regularization parameters.
-% * To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
+% * To run an small example, type `DLCOPAR_top` without input in 
+%     MATLAB command window.
 % -----------------------------------------------
 % Author: Tiep Vu, thv102@psu.edu, 5/11/2016
 %         (http://www.personal.psu.edu/thv102/)
@@ -24,7 +25,7 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
         k = 15;
         k0 = 5;
         lambda = 0.001;
-        eta = 0.1;
+        eta = 0.01;
     end 
     %%
     t = getTimeStr();

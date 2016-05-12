@@ -5,5 +5,5 @@ function [D, it] = FDDL_updateD_fast(Y, Y_range, D, D_range, X, opts)
 
     opts.max_iter = 300;
     opts.tol = 1e-8;
-    [D, it, ~] = ODL_updateD(D, E, F, opts);   
+    [D, ~] = ODL_updateD(D, E, F, opts);   
 end

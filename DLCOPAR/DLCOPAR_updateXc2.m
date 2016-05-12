@@ -1,4 +1,4 @@
-function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts) 
+function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts) 
 % function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts) 
 % * Update Xc in DLCOPAR (page 189-190 DLCOPAR)
 % see DLCOPAR paper: 
@@ -23,10 +23,11 @@ function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts)
         Y_range = N*(0:C);
         Yc      = get_block_col(Y, c, Y_range);
         Xc      = zeros(size(D,2), size(Yc,2));
-        L       = 2*max(eig(DtD))+10;
-
         opts.D_range     = k* (0:C);
         opts.D_range_ext = [opts.D_range opts.D_range(end)+k0];
+        DCp1 = get_block_col(D, C+1, opts.D_range_ext);
+        DCp1tDCp1 = DCp1'*DCp1;
+        L       = max(eig(DtD)) + max(eig(DCp1tDCp1));
         opts.k0          = k0;
         opts.lambda      = 0.01;
         opts.eta         = 0.1;
@@ -39,7 +40,7 @@ function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts)
     D_range_ext = opts.D_range_ext;  
     lambda      = opts.lambda/2;
     %%
-    function cost = calc_f(Xc)
+    function cost = calc_f(Xc) % used in test mode only (nargin == 0)
         cost  = normF2(Yc - D*Xc);
         Xcc   = get_block_row(Xc, c, D_range_ext);
         XCp1c = get_block_row(Xc, C+1, D_range_ext);
@@ -62,7 +63,7 @@ function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts)
     end 
     %%
     DctDc              = get_block(DtD, c, c, D_range_ext, D_range_ext);
-    DCp1tDCp1          = get_block(DtD, C+1, C+1, D_range_ext, D_range_ext);
+    % DCp1tDCp1          = get_block(DtD, C+1, C+1, D_range_ext, D_range_ext);
     DCp1tDc            = get_block(DtD, C+1, c, D_range_ext, D_range_ext);
     DctDCp1            = DCp1tDc';
     range_c            = D_range_ext(c)+1: D_range_ext(c+1);
@@ -85,13 +86,11 @@ function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts)
         check_grad(@calc_f, @grad, rand(size(Xc)));
     end 
     %% ========= Main FISTA ==============================
-    L2 = max(eig(DtD)) + max(eig(DctDc')) + max(eig(DCp1tDCp1'));
+    L2 = L + max(eig(DCp1tDCp1')) + 2;
 
     opts.tol = 1e-8;
     opts.max_iter = 300;
-    Xc1 = fista(@grad, Xc, L, lambda, opts, @calc_F);
-    pause
-    Xc2 = fista(@grad, Xc, L2, lambda, opts, @calc_F);
+    Xc = fista(@grad, Xc, L2, lambda, opts, @calc_F);
     %%
     if nargin == 0 
         Xc = [];

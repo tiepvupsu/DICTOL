@@ -41,8 +41,10 @@ function [D, X] = ODL(Y, k, lambda, opts, method)
     if opts.verbal 
         fprintf('cost: %f', ODL_cost(Y, D, X, lambda));
     end 
+    optsX = opts;
 	optsX.max_iter = 200;
 	optsX.tol      = 1e-8;
+    optsD = opts;
 	optsD.max_iter = 200;
 	optsD.tol      = 1e-8;
 	iter = 0;

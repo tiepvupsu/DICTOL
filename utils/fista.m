@@ -1,4 +1,5 @@
 function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)   
+% function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)   
 % * A Fast Iterative Shrinkage-Thresholding Algorithm for 
 % Linear Inverse Problems.
 % * Solve the problem: `X = arg min_X F(X) = f(X) + lambda||X||_1` where:
@@ -23,30 +24,11 @@ function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)
 %           Default `false`. 
 %     + `calc_F`: optional, a _function_ calculating value of `F` at `X` 
 %       via `feval(calc_F, X)`. 
-% ---------------------------
-% Author: Tiep Vu, 4/6/2016 
-% ---------------------------
-%% 
-    if ~exist('opts', 'var')
-        opts.max_iter = 300;
-        opts.tol = 1e-8;
-        opts.show_progress = false;
-    else
-        if ~isfield(opts, 'tol')
-            opts.tol = 1e-8;
-        end 
-        if ~isfield(opts, 'max_iter');
-            opts.max_iter = 300;
-        end 
-        if ~isfield(opts, 'show_progress');
-            opts.show_progress = false;
-        end           
-    end    
-    
-    if opts.show_progress        
-        fprintf('(max_iter = %d): 0.\n', opts.max_iter);
-    end     
-    %%
+% -------------------------------------
+% Author: Tiep Vu, thv102, 4/6/2016
+% (http://www.personal.psu.edu/thv102/)
+% -------------------------------------
+    opts = initOpts(opts);
     Linv = 1/L;    
     lambdaLiv = lambda*Linv;
     x_old = Xinit;
@@ -70,7 +52,7 @@ function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)
         t_old = t_new;
         y_old = y_new;
         %% show progress
-        if opts.show_progress
+        if opts.verbal
             if nargin ~= 0
                 cost_new = feval(calc_F, x_new);
                 if cost_new <= cost_old 
@@ -80,6 +62,7 @@ function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)
                 end
                 fprintf('iter = %3d, cost = %f, cost decreases? %s\n', ...
                     iter, cost_new, stt);
+                cost_old = cost_new;
             else 
                 if mod(iter, 5) == 0
                     fprintf('.');

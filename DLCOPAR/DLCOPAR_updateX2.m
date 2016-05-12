@@ -8,11 +8,11 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
     if nargin == 0
         addpath(fullfile('..', 'utils'));
         fprintf('Test most\n');
-        d = 3000;
+        d = 30;
         N = 30;
         k = 20;
         k0 = 50;
-        C = 100 ;
+        C = 30 ;
         opts.k0 = k0;
         opts.lambda = 0.01;
         opts.eta = 0.1;
@@ -22,23 +22,28 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
         Y_range = N*(0:C);
         opts.D_range = k* (0:C);
         opts.D_range_ext = [opts.D_range opts.D_range(end)+k0];
-        opts.verbal = false;
+        opts.verbal = true;
         opts.max_iter = 30;
+        opts.check_grad = 0;
     end 
+%     opts = initOpts(opts);
     %%
     C = numel(Y_range) - 1;
     DtD = D'*D;
     DtY = D'*Y;
-    L = 2*max(eig(DtD)) + 10;    
+    DCp1 = get_block_col(D, C+1, opts.D_range_ext);
+    DCp1tDCp1 = DCp1'*DCp1;
+    L = max(eig(DtD)) + max(eig(DCp1tDCp1));
     optsX = opts;
+    optsX.verbal = false;
     optsX.max_iter = 100;
     %%
     for c = 1: C
         Xc = get_block_col(X, c, Y_range);
         X(:, Y_range(c)+1: Y_range(c+1)) = ...
-            DLCOPAR_updateXc(DtD, DtY, Y_range, Xc, c, L, optsX);
+            DLCOPAR_updateXc2(DtD, DCp1tDCp1, DtY, Y_range, Xc, c, L, optsX);
         if opts.verbal
-            costXc = DLCOPAR_cost(Y, Y_range, D, X, opts);
+            costXc = DLCOPAR_cost(Y, Y_range, D, opts.D_range_ext, X, optsX);
             fprintf('class = %3d | costXc: %5f\n', c, costXc);
         end
     end

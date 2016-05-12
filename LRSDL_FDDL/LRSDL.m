@@ -46,9 +46,10 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
     optsX = opts;
     optsX.max_iter = 300;
     optsX.show_progress = 0;
-
+    
+    optsD = opts;
     optsD.max_iter = 200;
-    optsD.show_cost = false;
+    optsD.verbal = false;
 
     tol_XX0 = 1e-5;
     %% Start main loop    
@@ -97,7 +98,8 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
             if opts.verbal
                 fprintf('updating D0...');
             end 
-            D0 = LRSDL_updateD0(Y, D, D0, Y_range, D_range, opts, X, X0, optsD);
+%             D0 = LRSDL_updateD0(Y, D, D0, Y_range, D_range, opts, X, X0, optsD);
+            D0 = LRSDL_updateD0(Y, Y_range, D, D_range, D0, X, X0, optsD);
             if opts.verbal
                 if opts.show_cost 
                     cost_new = LRSDL_cost(Y, Y_range, D, D0, D_range, X, X0, opts);

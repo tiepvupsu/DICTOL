@@ -5,6 +5,7 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
     if nargin == 0
+        clc;
         addpath(fullfile('..', 'utils'));
         addpath(fullfile('..', 'ODL'));
         addpath(fullfile('..', 'DLSI'));
@@ -24,6 +25,7 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
         Y_range = N*(0:C);        
     end
     %%
+    opts = initOpts(opts);
     C = numel(Y_range) - 1;
     D_range = opts.k*(0:C);
     % --------------- append D0 -------------------------
@@ -48,7 +50,7 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
         if opts.verbal
             fprintf('iter = %3d | updating X...', iter);
         end 
-        X = DLCOPAR_updateX(Y, Y_range, D, X, optsX);
+        X = DLCOPAR_updateX2(Y, Y_range, D, X, optsX);
         t = toc;     
         if t > 20*3600
             break;
