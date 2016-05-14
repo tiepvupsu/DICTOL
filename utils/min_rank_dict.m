@@ -11,7 +11,7 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 % 	lambdaD: regularization term 
 % OUTPUT: 
 % 	D: 
-% ------------------------
+% -------------- Detail ADMM procedure ---------
 % Choose a rho.
 % Algorithm summary
 % ADMM: D,J = argmin_DJ -2trace(ED') + trace(FD'D) + lambdaD||J||_*
@@ -23,7 +23,6 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 % (2): J^{k+1} = argminJ lambdaD||J||_* + rho/2||J - D^{k+1} + U^k||
 % 	Solution: shrinkage_rank(D^{k+1} - U^k, lambdaD/rho)
 % (3): Update U: U^{k+1} = U^k + J^{k+1} - D^{k+1}
-
 % Stoping cretia:
 % ||r^k||_F^2 <= tol, ||s^k||_F^2 <= tol 
 % r^k = J^k - D^k 

@@ -21,9 +21,9 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 40;
-        k = 15;
-        k0 = 5;
+        N_train = 50;
+        k = 25;
+        k0 = 10;
         lambda = 0.001;
         eta = 0.01;
     end 
@@ -56,7 +56,7 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     [D, X, rt] = DLCOPAR(Y_train, train_range, opts);
     %% ========= test ==============================
     acc = [];
-    for vgamma = [0.0001, 0.001, 0.005, 0.01, 0.1]
+    for vgamma = [0.0001, 0.001, 0.005, 0.01]
         opts.gamma = vgamma;
         fprintf('gamma %5f\n', vgamma);
         opts.classify_mode = 'LC';

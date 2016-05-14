@@ -18,7 +18,7 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 40;
+        N_train = 50;
         k = 25;
         lambda = 0.001;
         eta = 0.1;
@@ -51,6 +51,7 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     %% ========= Train ==============================
     [D, X, rt]         = DLSI(Y_train, train_range, opts);
     %% ========= test ==============================
+    opts.verbal    = false;
     pred           = DLSI_pred(Y_test, D, opts);
     acc            = double(sum(pred == label_test))/numel(label_test);
     disp(['acc = ', num2str(acc)]);

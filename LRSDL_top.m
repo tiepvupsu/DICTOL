@@ -7,12 +7,12 @@ function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 40;
+        N_train = 50;
         k = 25;
         k0 = 10;
         lambda1 = 0.001;
-        lambda2 = 0.01;
-        lambda3 = 0.01;
+        lambda2 = 0.05;
+        lambda3 = 0.08;
     end 
     
     t = getTimeStr();
@@ -145,7 +145,6 @@ function acc = LRSDL_pred_2(Y, D, D0, CoefM, m0, opts, label_test)
     
     N = size(Y,2);
     acc = [];
-
     % --------------- Sparse coding -------------------------
     for lambda1 = [0.0001, 0.001]
 %         disp(lambda1);

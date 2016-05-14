@@ -1,4 +1,4 @@
-function SRC_top(dataset, N_trn, lambda)
+function SRC_top(dataset, N_train, lambda)
 % function SRC_top(dataset, N_trn, lambda)
 % Description       : SRC 
 %     INPUT: 
@@ -15,7 +15,7 @@ function SRC_top(dataset, N_trn, lambda)
     %% ========= Test mode ==============================
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 40;
+        N_train = 50;
         lambda = 0.001;
     end 
     %%
