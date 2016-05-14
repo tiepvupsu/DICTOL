@@ -98,7 +98,8 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         end 
         if opts.verbal
             costX = DLSI_cost(Y, Y_range, D, D_range, X, opts);
-            fprintf('iter = %3d | costX = %5f\n', iter, costX);
+            fprintf('iter = %3d/%d | costX = %5f\n', iter, ...
+                opts.max_iter, costX);
         end 
         %% ========= update D ==============================
         for i = 1: C 
@@ -117,7 +118,7 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         t0 = toc;
         if opts.verbal 
             costD = DLSI_cost(Y, Y_range, D, D_range, X, opts);
-            fprintf('             costD = %5f', costD);
+            fprintf('                 costD = %5f', costD);
             t = t0*(opts.max_iter - iter)/iter;
             time_estimate(t);
         end 

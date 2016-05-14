@@ -20,8 +20,8 @@ function D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 50;
-        k = 25;
+        N_train = 40;
+        k = 20;
         lambda1 = 0.001;
         lambda2 = 0.01;
         alpha = 0.01;
@@ -64,7 +64,7 @@ function D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
 
         pred = D2L2R2_pred(Y_test, D, D_range, CoefM, opts);
         acc = [acc double(sum(pred == label_test))/numel(label_test)];
-        fprintf('acc = %5f\n', acc(end));
+        fprintf('gamma = %.4f, acc = %5f\n', vgamma, acc(end));
     end 
     save(fn, 'acc', 'rt');
 end 

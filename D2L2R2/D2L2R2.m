@@ -1,7 +1,6 @@
 function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
 % function [D, D0, X, X0, CoefM, coefM0, opts] = D2L2R2(Y, train_label, opts)
-% Main D2L2R2 algorithm
-    
+% Main D2L2R2 algorithm    
     if nargin == 0 
         addpath('../utils')
         addpath('../sparse_coding');
@@ -47,18 +46,15 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
     optsD.max_iter = 200;
     optsD.show_cost = false;
     optsD.verbal = false;
-
-    tol_XX0 = 1e-5;
     %% Start main loop    
     iter = 0;
-    maxiter = opts.max_iter;
     cost_old = D2L2R2_cost(Y, Y_range, D, D_range, X, opts);
     fprintf('Initial cost: %4.4f\n', cost_old);
     tic;
     while iter < opts.max_iter
         % tic
         iter = iter + 1;        
-        %% ========= Update X, X0 ==============================        
+        %% ========= Update X ==============================        
         X = FDDL_updateX(Y, Y_range, D, D_range, X, optsX);
         t = toc;
         if t > 20*3600
@@ -66,8 +62,8 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
         end 
         if opts.verbal        
             costX = D2L2R2_cost(Y, Y_range, D, D_range, X, opts); 
-            fprintf('iter %3d | costX = %5.5f\n', ...
-                iter, costX);
+            fprintf('iter %3d/%d | costX = %5.5f\n', ...
+                iter, opts.max_iter, costX);
         end 
         %% ========= Update D ==============================               
         D = D2L2R2_updateD(Y, Y_range, D, D_range, X, optsD);
@@ -77,7 +73,7 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
         if opts.verbal
             costD = D2L2R2_cost(Y, Y_range, D, D_range, X, opts);         
             %% Estimated remaining time 
-            fprintf('iter %3d | costD = %5.5f  ', iter, costD);
+            fprintf('               costD = %5.5f', costD);
             t = t*(opts.max_iter - iter)/iter;
             time_estimate(t);
         end 

@@ -38,12 +38,13 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
     if opts.verbal
         fprintf('Initializing....');
     end 
-    [D, D0, X, X0] = LRSDL_init(Y, Y_range, D_range, optsinit );  
+    [D, D0, X, X0] = LRSDL_init(Y, Y_range, D_range, optsinit);  
     if opts.verbal
         fprintf('done\n');    
     end 
     %% Options for subproblems
     optsX = opts;
+    optsX.verbal = 0;
     optsX.max_iter = 300;
     optsX.show_progress = 0;
     

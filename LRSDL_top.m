@@ -8,11 +8,11 @@ function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
     if nargin == 0 
         dataset = 'myARgender';
         N_train = 50;
-        k = 25;
-        k0 = 10;
+        k       = 25;
+        k0      = 10;
         lambda1 = 0.001;
         lambda2 = 0.05;
-        lambda3 = 0.08;
+        lambda3 = 0.05;
     end 
     
     t = getTimeStr();
@@ -35,7 +35,6 @@ function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
     opts             = initOpts(opts);
     opts.verbal      = true;
     opts.tol         = 1e-8;
-%     disp(opts);
     %% Train 
     [D, D0, X, X0, CoefM, coefM0, opts, rt] = ...
                     LRSDL(Y_train, label_train, opts);
@@ -94,12 +93,7 @@ function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
             fprintf('gamma = %.4f, acc = %.4f\n', vgamma, acc1);
             acc = [acc acc1];
         end 
-        if strcmp(dataset, 'mySynthetic')
-            disp('mySynthetic');
-            save(fn,'acc', 'D', 'D0', 'opts', 'rt');
-        else 
-            save(fn, 'acc', 'rt');
-        end
+        save(fn, 'acc', 'rt');
     end
     
 end 
