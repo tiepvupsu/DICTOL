@@ -1,4 +1,4 @@
-function FDDL_top(dataset, N_train, k, lambda1, lambda2)
+function best_acc = FDDL_top(dataset, N_train, k, lambda1, lambda2)
 % function FDDL_top(dataset, N_train, k, lambda1, lambda2)
     %% Dependencies
     addpath('utils');
@@ -65,5 +65,6 @@ function FDDL_top(dataset, N_train, k, lambda1, lambda2)
         acc = [acc acc1];
     end 
     save(fn, 'acc', 'rt');
+    best_acc = max(acc);
 end 
  

@@ -1,4 +1,4 @@
-function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
+function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
 % * function `DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)`
 % * The top function of DLCOPAR
 % * INPUT:
@@ -22,8 +22,8 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     if nargin == 0 
         dataset = 'myARgender';
         N_train = 50;
-        k = 25;
-        k0 = 10;
+        k = 20;
+        k0 = 5;
         lambda = 0.001;
         eta = 0.01;
     end 
@@ -76,4 +76,5 @@ function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     end
     disp(fn);
     save(fn, 'acc', 'rt'); 
+    best_acc = max(acc);
 end 

@@ -1,6 +1,7 @@
-function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
+function best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
 % function LRSDL_FDDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
-    %% Dependencies
+    
+%% Dependencies
     addpath('utils');
     addpath('LRSDL_FDDL');
     addpath('ODL');
@@ -8,16 +9,16 @@ function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
     if nargin == 0 
         dataset = 'myARgender';
         N_train = 50;
-        k       = 25;
-        k0      = 10;
-        lambda1 = 0.001;
-        lambda2 = 0.05;
+        k       = 20;
+        k0      = 5;
+        lambda1 = 0.005;
+        lambda2 = 0.01;
         lambda3 = 0.05;
     end 
-    
+    %%
     t = getTimeStr();
-    [dataset, Y_train, Y_test, label_train, label_test] = train_test_split(...
-        dataset, N_train);
+    [dataset, Y_train, Y_test, label_train, label_test] = ...
+        train_test_split(dataset, N_train);
     %% Parameter preparation
     fprintf('starting... %s\n', dataset)    ;
     C = max(label_train);
@@ -95,6 +96,7 @@ function LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
         end 
         save(fn, 'acc', 'rt');
     end
+    best_acc = max(acc);
     
 end 
  
@@ -147,8 +149,7 @@ function acc = LRSDL_pred_2(Y, D, D0, CoefM, m0, opts, label_test)
         Yhat = Y - D0*X0;
         E1 = zeros(nClasses, N);
         E2 = E1;
-        for c = 1: nClasses
-            % c
+        for c = 1: nClasses            
             Dc = get_block_col(D, c, D_range);
             Xc = get_block_row(X, c, D_range);
             Mc = repmat(CoefM(:, c), 1, N );
@@ -157,7 +158,6 @@ function acc = LRSDL_pred_2(Y, D, D0, CoefM, m0, opts, label_test)
             E1(c,:) = sum(R1.^2);
             E2(c,:) = sum(R2.^2);
         end
-%         for w = 0: 0.01: 1
         for w = [0.33, 0.66]
             E = w*E1 + (1-w)*E2;
             [~, pred] = min(E);
@@ -176,9 +176,8 @@ function acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
     D_range = k*(0:nClasses);    
     N = size(Y,2);
     % --------------- Sparse coding -------------------------
-        acc = [];
+    acc = [];
     for lambda1 = [0.0001, 0.001]
-%         disp(lambda1);
         [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, 0.01);
         X1 = [X; X0];
         % --------------- classification -------------------------
@@ -186,10 +185,8 @@ function acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
         % for w = 0:0.01:1
         % --------------- classification -------------------------
         E1 = zeros(nClasses, N);
-        E2 = E1;
-
+        E2 = zeros(nClasses, N);
         for c = 1: nClasses
-            % c
             Dc = get_block_col(D, c, D_range);
             Xc = get_block_row(X, c, D_range);
             Mc = repmat(CoefMM0(:, c), 1, N );
@@ -198,7 +195,6 @@ function acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
             E1(c,:) = sum(R1.^2);
             E2(c,:) = sum(R2.^2);
         end
-%         for w = 0: 0.01: 1
         for w = [0.33, 0.66]
             E = w*E1 + (1-w)*E2;
             [~, pred] = min(E);
@@ -206,7 +202,7 @@ function acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
             acc = [acc aaaa];
             fprintf('w: %f, lambda1 = %.4f,  acc: %f\n', w, lambda1, aaaa);
         end 
-    end
+    end    
 end 
 
 

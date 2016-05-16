@@ -1,11 +1,11 @@
-function LCKSVD_top(dataset, N_train, k, sparsitythres, valpha, vbeta)
+function best_acc = LCKSVD_top(dataset, N_train, k, ...
+        sparsitythres, valpha, vbeta)
     % Syntax: LCKSVD_top(dataset, N_train, k, sparsitythres, valpha, vbeta)
     addpath(genpath('utils'));  % add K-SVD box
     addpath(genpath('LCKSVD'));  % add K-SVD box
     addpath('build_spams');
-    addpath('build');
     addpath('utils');
-
+    best_acc = zeros(1, 2);
     if nargin == 0 
         dataset = 'myARgender';
         N_train = 50;
@@ -65,8 +65,8 @@ function LCKSVD_top(dataset, N_train, k, sparsitythres, valpha, vbeta)
         save(fn, 'D1', 'k', 'acc', 'rt');
     else 
         save(fn, 'acc', 'rt');
-    end 
-
+   end 
+    best_acc(1) = acc;
 
     %% ========= LCKSVD2 ==============================  
     % run LC k-svd training (reconstruction err + class penalty + classifier err)
@@ -94,4 +94,5 @@ function LCKSVD_top(dataset, N_train, k, sparsitythres, valpha, vbeta)
     else 
         save(fn, 'acc', 'rt');
     end 
+    best_acc(2) = acc;
 end 

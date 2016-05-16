@@ -1,4 +1,4 @@
-function SRC_top(dataset, N_train, lambda)
+function best_acc = SRC_top(dataset, N_train, lambda)
 % function SRC_top(dataset, N_trn, lambda)
 % Description       : SRC 
 %     INPUT: 
@@ -44,4 +44,5 @@ function SRC_top(dataset, N_train, lambda)
     disp(['acc = ', num2str(acc)]);
     disp(fn);    
     save(fn, 'acc');
+    best_acc = acc;
 end 

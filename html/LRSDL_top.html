@@ -1,0 +1,600 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>LRSDL_top</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-05-15"><meta name="DC.source" content="LRSDL_top.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Dependencies</a></li><li><a href="#4">test mode</a></li><li><a href="#6">Parameter preparation</a></li><li><a href="#7">Train</a></li><li><a href="#8">output filename</a></li><li><a href="#13">========= Main FISTA ==============================</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
+</pre><pre class="codeinput"><span class="comment">% function LRSDL_FDDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)</span>
+</pre><h2>Dependencies<a name="3"></a></h2><pre class="codeinput">    addpath(<span class="string">'utils'</span>);
+    addpath(<span class="string">'LRSDL_FDDL'</span>);
+    addpath(<span class="string">'ODL'</span>);
+</pre><h2>test mode<a name="4"></a></h2><pre class="codeinput">    <span class="keyword">if</span> nargin == 0
+        dataset = <span class="string">'myARgender'</span>;
+        N_train = 50;
+        k       = 20;
+        k0      = 5;
+        lambda1 = 0.0005;
+        lambda2 = 0.01;
+        lambda3 = 0.05;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput">    t = getTimeStr();
+    [dataset, Y_train, Y_test, label_train, label_test] = <span class="keyword">...</span>
+        train_test_split(dataset, N_train);
+</pre><pre class="codeoutput">Time now: 05/15/2016 - 21:03:59
+Picking Train and Test set ...DONE
+</pre><h2>Parameter preparation<a name="6"></a></h2><pre class="codeinput">    fprintf(<span class="string">'starting... %s\n'</span>, dataset)    ;
+    C = max(label_train);
+    opts.N           = N_train;
+    opts.k           = k;
+    opts.k0          = k0;
+    opts.show_cost   = 0;
+    opts.lambda1     = lambda1;
+    opts.lambda2     = lambda2;
+    opts.lambda3     = lambda3;
+    opts.D_range     = k*(0:C);
+    opts.D_range_ext = [opts.D_range k*C+k0];
+    opts.initmode    = <span class="string">'normal'</span>;
+    opts.max_iter    = 100;
+    opts             = initOpts(opts);
+    opts.verbal      = true;
+    opts.tol         = 1e-8;
+</pre><pre class="codeoutput">starting... myARgender
+</pre><h2>Train<a name="7"></a></h2><pre class="codeinput">    [D, D0, X, X0, CoefM, coefM0, opts, rt] = <span class="keyword">...</span>
+                    LRSDL(Y_train, label_train, opts);
+    fprintf(<span class="string">'rt = %5.1f\n'</span>, rt);
+</pre><pre class="codeoutput">Initializing....
+done
+Initial cost: 96.3535
+iter   1/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m40s
+iter   2/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m35s
+iter   3/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m40s
+iter   4/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m40s
+iter   5/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m39s
+iter   6/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m38s
+iter   7/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m36s
+iter   8/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m35s
+iter   9/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m33s
+iter  10/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m32s
+iter  11/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m31s
+iter  12/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m30s
+iter  13/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m29s
+iter  14/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m28s
+iter  15/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m28s
+iter  16/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m27s
+iter  17/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m26s
+iter  18/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m26s
+iter  19/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m25s
+iter  20/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m25s
+iter  21/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m24s
+iter  22/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m24s
+iter  23/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m24s
+iter  24/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m23s
+iter  25/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m23s
+iter  26/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m22s
+iter  27/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m22s
+iter  28/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m21s
+iter  29/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m21s
+iter  30/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m20s
+iter  31/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m20s
+iter  32/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m19s
+iter  33/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m19s
+iter  34/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m18s
+iter  35/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m18s
+iter  36/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m18s
+iter  37/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m17s
+iter  38/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m17s
+iter  39/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m16s
+iter  40/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m16s
+iter  41/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m16s
+iter  42/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m15s
+iter  43/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m15s
+iter  44/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m15s
+iter  45/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m14s
+iter  46/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m14s
+iter  47/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m14s
+iter  48/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m13s
+iter  49/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m13s
+iter  50/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m13s
+iter  51/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m12s
+iter  52/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m12s
+iter  53/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m12s
+iter  54/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m11s
+iter  55/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m11s
+iter  56/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m11s
+iter  57/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m10s
+iter  58/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m10s
+iter  59/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m10s
+iter  60/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m10s
+iter  61/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 9s
+iter  62/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 9s
+iter  63/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 9s
+iter  64/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 9s
+iter  65/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 8s
+iter  66/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 8s
+iter  67/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 8s
+iter  68/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 7s
+iter  69/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 7s
+iter  70/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 7s
+iter  71/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 7s
+iter  72/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 6s
+iter  73/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 6s
+iter  74/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 6s
+iter  75/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 6s
+iter  76/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 5s
+iter  77/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 5s
+iter  78/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 5s
+iter  79/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 5s
+iter  80/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 4s
+iter  81/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 4s
+iter  82/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 4s
+iter  83/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 4s
+iter  84/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 4s
+iter  85/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 3s
+iter  86/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 3s
+iter  87/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 3s
+iter  88/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 3s
+iter  89/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 2s
+iter  90/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 2s
+iter  91/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 2s
+iter  92/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 2s
+iter  93/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 2s
+iter  94/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 1s
+iter  95/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 1s
+iter  96/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 1s
+iter  97/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 1s
+iter  98/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 0s
+iter  99/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 0s
+iter 100/100 |updating X, X0...updating D...updating D0...k =  40, k0 =   5| time left:  0h 0m 0s
+rt =  21.1
+</pre><h2>output filename<a name="8"></a></h2><pre class="codeinput">    <span class="keyword">if</span> ~exist(<span class="string">'results'</span>, <span class="string">'dir'</span>)
+        mkdir(<span class="string">'results'</span>);
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> k0 &gt; 0
+        <span class="keyword">if</span> ~exist(fullfile(<span class="string">'results'</span>, <span class="string">'LRSDL'</span>), <span class="string">'dir'</span>)
+            mkdir(<span class="string">'results'</span>, <span class="string">'LRSDL'</span>);
+        <span class="keyword">end</span>
+        fn = fullfile(<span class="string">'results'</span>, <span class="string">'LRSDL'</span>, strcat(dataset, <span class="keyword">...</span>
+            <span class="string">'_N_'</span>, num2str(N_train), <span class="string">'_k_'</span>, num2str(k), <span class="keyword">...</span>
+            <span class="string">'_k0_'</span>,num2str(k0),<span class="string">'_l1_'</span>, num2str(lambda1), <span class="keyword">...</span>
+            <span class="string">'_l2_'</span>, num2str(lambda2), <span class="string">'_l3_'</span>, num2str(lambda3), <span class="keyword">...</span>
+            <span class="string">'_'</span>, t, <span class="string">'.mat'</span>));
+    <span class="keyword">else</span>
+        <span class="keyword">if</span> ~exist(fullfile(<span class="string">'results'</span>, <span class="string">'FDDL'</span>), <span class="string">'dir'</span>)
+            mkdir(<span class="string">'results'</span>, <span class="string">'FDDL'</span>);
+        <span class="keyword">end</span>
+        fn = fullfile(<span class="string">'results'</span>, <span class="string">'FDDL'</span>, strcat(dataset, <span class="keyword">...</span>
+            <span class="string">'_N_'</span>, num2str(N_train), <span class="string">'_k_'</span>, num2str(k),<span class="string">'_l1_'</span>, <span class="keyword">...</span>
+            num2str(lambda1), <span class="string">'_l2_'</span>, num2str(lambda2),<span class="string">'_'</span>, t, <span class="string">'.mat'</span>));
+    <span class="keyword">end</span>
+    disp(fn);
+</pre><pre class="codeoutput">results\LRSDL\myARgender_N_50_k_20_k0_5_l1_0.0005_l2_0.01_l3_0.05_0515_210359.mat
+</pre><pre class="codeinput">    X1 = [X; X0];
+    Y_range = label_to_range(label_train);
+    C = max(label_train);
+    CoefMM0 = zeros(size(X1,1), C);
+    <span class="keyword">for</span> c = 1: C
+        X1c = get_block_col(X1, c, Y_range);
+        CoefMM0(:,c) = mean(X1c,2);
+    <span class="keyword">end</span>
+    opts.verbal = 0;
+    <span class="keyword">if</span> numel(D0) ~= 0
+        fprintf(<span class="string">'GC1:\n'</span>);
+        acc = LRSDL_pred_2(Y_test, D, D0, CoefM, coefM0, opts, label_test);
+        fprintf(<span class="string">'GC2:\n'</span>);
+        acc2 = LRSDL_pred_3(Y_test, D, D0, CoefMM0, coefM0, opts, label_test);
+        fprintf(<span class="string">'LC:\n'</span>);
+        acc3 = LRSDL_pred(Y_test, D, D0, CoefMM0, opts, label_test);
+        acc = [acc acc2 acc3];
+        fprintf(<span class="string">'maximum acc: %4f\n'</span>, max(acc));
+	    save(fn, <span class="string">'acc'</span>, <span class="string">'rt'</span>);
+    <span class="keyword">else</span>
+        opts.weight = 0.1;
+        acc = [];
+        <span class="keyword">for</span> vgamma = [0.0001, 0.001, 0.01, 0.1]
+            opts.gamma = vgamma;
+            pred = FDDL_pred(Y_test, D, CoefM, opts);
+            acc1 = double(numel(find(pred == label_test)))/<span class="keyword">...</span>
+                numel(label_test);
+<span class="comment">%             disp(acc1);</span>
+            fprintf(<span class="string">'gamma = %.4f, acc = %.4f\n'</span>, vgamma, acc1);
+            acc = [acc acc1];
+        <span class="keyword">end</span>
+        save(fn, <span class="string">'acc'</span>, <span class="string">'rt'</span>);
+    <span class="keyword">end</span>
+    best_acc = max(acc);
+</pre><pre class="codeoutput">GC1:
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, lambda2)
+</pre><pre class="codeinput">    N = size(Y,2);
+    k = size(D,2);
+    k0 = size(D0,2);
+    X1init = zeros(k + k0, N);
+    D1 = [D D0];
+    M0 = repmat(m0, 1, N);
+    D1tD1 = D1'*D1;
+    D1tY = D1'*Y;
+    <span class="keyword">function</span> cost = calc_F(X1)
+        X = X1(1: k, :);
+        X0 = X1(k+1:end,:);
+        cost =  0.5*normF2(Y - D*X - D0*X0) + <span class="keyword">...</span>
+                0.5*lambda2*normF2(X0 - M0) + <span class="keyword">...</span>
+                lambda1*norm1(X1);
+    <span class="keyword">end</span>
+
+    <span class="keyword">function</span> g = grad(X1)
+        X = X1(1: k, :);
+        X0 = X1(k+1:end,:);
+        g = (D1tD1*X1 - D1tY + lambda2* [zeros(k, N); X0 - M0]);
+    <span class="keyword">end</span>
+</pre><h2>========= Main FISTA ==============================<a name="13"></a></h2><pre class="codeinput">    L = max(eig(D1tD1)) + 2;
+    opts.tol = 1e-8;
+    opts.max_iter = 300;
+    [X1, ~] = fista(@grad, X1init, L, lambda1, opts, @calc_F);
+    X = X1(1: k, :);
+    X0 = X1(k+1:end,:);
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><pre class="codeoutput">w: 0.330000, lambda1 = 0.0001,  acc: 0.894286
+w: 0.660000, lambda1 = 0.0001,  acc: 0.892857
+w: 0.330000, lambda1 = 0.0010,  acc: 0.902857
+w: 0.660000, lambda1 = 0.0010,  acc: 0.898571
+GC2:
+</pre><pre class="codeinput"><span class="keyword">function</span> acc = LRSDL_pred_2(Y, D, D0, CoefM, m0, opts, label_test)
+    nClasses = size(CoefM, 2);
+    k = opts.k;
+    k0 = opts.k0;
+    D_range = k*(0:nClasses);
+
+    N = size(Y,2);
+    acc = [];
+    <span class="comment">% --------------- Sparse coding -------------------------</span>
+    <span class="keyword">for</span> lambda1 = [0.0001, 0.001]
+<span class="comment">%         disp(lambda1);</span>
+        [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, 0.01);
+        <span class="comment">% --------------- classification -------------------------</span>
+        Yhat = Y - D0*X0;
+        E1 = zeros(nClasses, N);
+        E2 = E1;
+        <span class="keyword">for</span> c = 1: nClasses
+            Dc = get_block_col(D, c, D_range);
+            Xc = get_block_row(X, c, D_range);
+            Mc = repmat(CoefM(:, c), 1, N );
+            R1 = Yhat - Dc*Xc;
+            R2 = X - Mc;
+            E1(c,:) = sum(R1.^2);
+            E2(c,:) = sum(R2.^2);
+        <span class="keyword">end</span>
+        <span class="keyword">for</span> w = [0.33, 0.66]
+            E = w*E1 + (1-w)*E2;
+            [~, pred] = min(E);
+            aaaa = double(sum(pred == label_test))/N;
+            acc = [acc aaaa];
+            fprintf(<span class="string">'w: %f, lambda1 = %.4f,  acc: %f\n'</span>, w, lambda1, aaaa);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
+    nClasses = size(CoefMM0, 2);
+    k = opts.k;
+    k0 = opts.k0;
+    D_range = k*(0:nClasses);
+    N = size(Y,2);
+    <span class="comment">% --------------- Sparse coding -------------------------</span>
+    acc = [];
+    <span class="keyword">for</span> lambda1 = [0.0001, 0.001]
+        [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, 0.01);
+        X1 = [X; X0];
+        <span class="comment">% --------------- classification -------------------------</span>
+        Yhat = Y - D0*X0;
+        <span class="comment">% for w = 0:0.01:1</span>
+        <span class="comment">% --------------- classification -------------------------</span>
+        E1 = zeros(nClasses, N);
+        E2 = zeros(nClasses, N);
+        <span class="keyword">for</span> c = 1: nClasses
+            Dc = get_block_col(D, c, D_range);
+            Xc = get_block_row(X, c, D_range);
+            Mc = repmat(CoefMM0(:, c), 1, N );
+            R1 = Yhat - Dc*Xc;
+            R2 = X1 - Mc;
+            E1(c,:) = sum(R1.^2);
+            E2(c,:) = sum(R2.^2);
+        <span class="keyword">end</span>
+        <span class="keyword">for</span> w = [0.33, 0.66]
+            E = w*E1 + (1-w)*E2;
+            [~, pred] = min(E);
+            aaaa = double(sum(pred == label_test))/N;
+            acc = [acc aaaa];
+            fprintf(<span class="string">'w: %f, lambda1 = %.4f,  acc: %f\n'</span>, w, lambda1, aaaa);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">w: 0.330000, lambda1 = 0.0001,  acc: 0.892857
+w: 0.660000, lambda1 = 0.0001,  acc: 0.892857
+w: 0.330000, lambda1 = 0.0010,  acc: 0.902857
+w: 0.660000, lambda1 = 0.0010,  acc: 0.898571
+LC:
+lambda = 0.0010, acc: 0.918571
+lambda = 0.0050, acc: 0.924286
+lambda = 0.0100, acc: 0.921429
+maximum acc: 0.924286
+
+ans =
+
+    0.9243
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
+% function LRSDL_FDDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3)
+    
+%% Dependencies
+    addpath('utils');
+    addpath('LRSDL_FDDL');
+    addpath('ODL');
+    %% test mode 
+    if nargin == 0 
+        dataset = 'myARgender';
+        N_train = 50;
+        k       = 20;
+        k0      = 5;
+        lambda1 = 0.0005;
+        lambda2 = 0.01;
+        lambda3 = 0.05;
+    end 
+    %%
+    t = getTimeStr();
+    [dataset, Y_train, Y_test, label_train, label_test] = ...
+        train_test_split(dataset, N_train);
+    %% Parameter preparation
+    fprintf('starting... %s\n', dataset)    ;
+    C = max(label_train);
+    opts.N           = N_train;
+    opts.k           = k;
+    opts.k0          = k0;
+    opts.show_cost   = 0;
+    opts.lambda1     = lambda1;
+    opts.lambda2     = lambda2;
+    opts.lambda3     = lambda3;
+    opts.D_range     = k*(0:C);
+    opts.D_range_ext = [opts.D_range k*C+k0];
+    opts.initmode    = 'normal';   
+    opts.max_iter    = 100;
+    opts             = initOpts(opts);
+    opts.verbal      = true;
+    opts.tol         = 1e-8;
+    %% Train 
+    [D, D0, X, X0, CoefM, coefM0, opts, rt] = ...
+                    LRSDL(Y_train, label_train, opts);
+    fprintf('rt = %5.1f\n', rt);
+    %% output filename 
+    if ~exist('results', 'dir')
+        mkdir('results');
+    end 
+    if k0 > 0
+        if ~exist(fullfile('results', 'LRSDL'), 'dir')
+            mkdir('results', 'LRSDL');
+        end 
+        fn = fullfile('results', 'LRSDL', strcat(dataset, ...
+            '_N_', num2str(N_train), '_k_', num2str(k), ...
+            '_k0_',num2str(k0),'_l1_', num2str(lambda1), ...
+            '_l2_', num2str(lambda2), '_l3_', num2str(lambda3), ...
+            '_', t, '.mat'));
+    else 
+        if ~exist(fullfile('results', 'FDDL'), 'dir')
+            mkdir('results', 'FDDL');
+        end 
+        fn = fullfile('results', 'FDDL', strcat(dataset, ...
+            '_N_', num2str(N_train), '_k_', num2str(k),'_l1_', ...
+            num2str(lambda1), '_l2_', num2str(lambda2),'_', t, '.mat'));
+    end
+    disp(fn);
+    %%
+    X1 = [X; X0];
+    Y_range = label_to_range(label_train);
+    C = max(label_train);
+    CoefMM0 = zeros(size(X1,1), C);
+    for c = 1: C 
+        X1c = get_block_col(X1, c, Y_range);
+        CoefMM0(:,c) = mean(X1c,2);
+    end    
+    opts.verbal = 0;
+    if numel(D0) ~= 0
+        fprintf('GC1:\n');
+        acc = LRSDL_pred_2(Y_test, D, D0, CoefM, coefM0, opts, label_test);
+        fprintf('GC2:\n');
+        acc2 = LRSDL_pred_3(Y_test, D, D0, CoefMM0, coefM0, opts, label_test);
+        fprintf('LC:\n');
+        acc3 = LRSDL_pred(Y_test, D, D0, CoefMM0, opts, label_test);
+        acc = [acc acc2 acc3];
+        fprintf('maximum acc: %4f\n', max(acc));
+	    save(fn, 'acc', 'rt');
+    else             
+        opts.weight = 0.1;
+        acc = [];
+        for vgamma = [0.0001, 0.001, 0.01, 0.1]
+            opts.gamma = vgamma;
+            pred = FDDL_pred(Y_test, D, CoefM, opts);
+            acc1 = double(numel(find(pred == label_test)))/...
+                numel(label_test);
+%             disp(acc1);
+            fprintf('gamma = %.4f, acc = %.4f\n', vgamma, acc1);
+            acc = [acc acc1];
+        end 
+        save(fn, 'acc', 'rt');
+    end
+    best_acc = max(acc);
+    
+end 
+ 
+%%
+function [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, lambda2)
+    N = size(Y,2);
+    k = size(D,2);
+    k0 = size(D0,2);
+    X1init = zeros(k + k0, N);
+    D1 = [D D0];
+    M0 = repmat(m0, 1, N);
+    D1tD1 = D1'*D1;
+    D1tY = D1'*Y;
+    function cost = calc_F(X1)
+        X = X1(1: k, :);
+        X0 = X1(k+1:end,:);
+        cost =  0.5*normF2(Y - D*X - D0*X0) + ...
+                0.5*lambda2*normF2(X0 - M0) + ...
+                lambda1*norm1(X1);
+    end 
+
+    function g = grad(X1)
+        X = X1(1: k, :);
+        X0 = X1(k+1:end,:);
+        g = (D1tD1*X1 - D1tY + lambda2* [zeros(k, N); X0 - M0]);
+    end     
+    %% ========= Main FISTA ==============================
+    L = max(eig(D1tD1)) + 2;
+    opts.tol = 1e-8;
+    opts.max_iter = 300;
+    [X1, ~] = fista(@grad, X1init, L, lambda1, opts, @calc_F);  
+    X = X1(1: k, :);
+    X0 = X1(k+1:end,:);
+end 
+
+%%
+function acc = LRSDL_pred_2(Y, D, D0, CoefM, m0, opts, label_test)
+    nClasses = size(CoefM, 2);
+    k = opts.k;
+    k0 = opts.k0;
+    D_range = k*(0:nClasses);
+    
+    N = size(Y,2);
+    acc = [];
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Sparse coding REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+    for lambda1 = [0.0001, 0.001]
+%         disp(lambda1);
+        [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, 0.01);
+        % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- classification REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+        Yhat = Y - D0*X0;
+        E1 = zeros(nClasses, N);
+        E2 = E1;
+        for c = 1: nClasses            
+            Dc = get_block_col(D, c, D_range);
+            Xc = get_block_row(X, c, D_range);
+            Mc = repmat(CoefM(:, c), 1, N );
+            R1 = Yhat - Dc*Xc;
+            R2 = X - Mc;
+            E1(c,:) = sum(R1.^2);
+            E2(c,:) = sum(R2.^2);
+        end
+        for w = [0.33, 0.66]
+            E = w*E1 + (1-w)*E2;
+            [~, pred] = min(E);
+            aaaa = double(sum(pred == label_test))/N;
+            acc = [acc aaaa];
+            fprintf('w: %f, lambda1 = %.4f,  acc: %f\n', w, lambda1, aaaa);
+        end 
+    end 
+end 
+
+%%
+function acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
+    nClasses = size(CoefMM0, 2);
+    k = opts.k;
+    k0 = opts.k0;
+    D_range = k*(0:nClasses);    
+    N = size(Y,2);
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Sparse coding REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+    acc = [];
+    for lambda1 = [0.0001, 0.001]
+        [X, X0] = SC_SDDL_Nov20_classify(Y, D, D0, m0, lambda1, 0.01);
+        X1 = [X; X0];
+        % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- classification REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+        Yhat = Y - D0*X0;
+        % for w = 0:0.01:1
+        % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- classification REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+        E1 = zeros(nClasses, N);
+        E2 = zeros(nClasses, N);
+        for c = 1: nClasses
+            Dc = get_block_col(D, c, D_range);
+            Xc = get_block_row(X, c, D_range);
+            Mc = repmat(CoefMM0(:, c), 1, N );
+            R1 = Yhat - Dc*Xc;
+            R2 = X1 - Mc;
+            E1(c,:) = sum(R1.^2);
+            E2(c,:) = sum(R2.^2);
+        end
+        for w = [0.33, 0.66]
+            E = w*E1 + (1-w)*E2;
+            [~, pred] = min(E);
+            aaaa = double(sum(pred == label_test))/N;
+            acc = [acc aaaa];
+            fprintf('w: %f, lambda1 = %.4f,  acc: %f\n', w, lambda1, aaaa);
+        end 
+    end    
+end 
+
+
+
+
+##### SOURCE END #####
+--></body></html>

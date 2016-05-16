@@ -1,4 +1,4 @@
-function D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
+function best_acc = D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
 % function D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
 % * The top function of D2L2R2 
 % * INPUT:
@@ -67,4 +67,5 @@ function D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
         fprintf('gamma = %.4f, acc = %5f\n', vgamma, acc(end));
     end 
     save(fn, 'acc', 'rt');
+    best_acc = max(acc);
 end 

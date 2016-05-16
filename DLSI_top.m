@@ -1,4 +1,4 @@
-function DLSI_top(dataset, N_train, k, lambda, eta)
+function best_acc = DLSI_top(dataset, N_train, k, lambda, eta)
 % * function DLSI_top(dataset, N_train, k, lambda, eta)
 % * The top function of DLSI 
 % * INPUT:
@@ -61,5 +61,6 @@ function DLSI_top(dataset, N_train, k, lambda, eta)
     else 
         save(fn, 'acc', 'rt');
     end 
+    best_acc = acc;
 end 
 
