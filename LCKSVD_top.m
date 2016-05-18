@@ -60,15 +60,17 @@ function best_acc = LCKSVD_top(dataset, N_train, k, ...
     [prediction1,acc] = classification(D1, W1, Y_test, H_test, sparsitythres);
     fprintf('\nFinal recognition rate for LC-KSVD1 is : %.03f ', acc);
 
+    if ~exist('results', 'dir')
+        mkdir('results');
+    end 
+    if ~exist(fullfile('results', 'LCKSVD'), 'dir')
+            mkdir('results', 'LCKSVD');
+        end 
     fn = fullfile('results', 'LCKSVD', strcat(dataset, '_N_', ...
         num2str(N_train), '_k_', num2str(k), '_a_', num2str(valpha), '_b_', ...
         num2str(vbeta), '_', getTimeStr(), '_1.mat'));
     disp(fn);
-   if strcmp(dataset, 'mySynthetic')
-        save(fn, 'D1', 'k', 'acc', 'rt');
-    else 
-        save(fn, 'acc', 'rt');
-   end 
+    save(fn, 'acc', 'rt');
     best_acc(1) = acc;
 
     %% ========= LCKSVD2 ==============================  
