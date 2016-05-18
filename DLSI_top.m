@@ -60,11 +60,7 @@ function best_acc = DLSI_top(dataset, N_train, k, lambda, eta)
     acc            = double(sum(pred == label_test))/numel(label_test);
     disp(['acc = ', num2str(acc)]);
     disp(fn);    
-    if strcmp(dataset, 'mySynthetic')
-        save(fn, 'D', 'X', 'k', 'acc', 'rt');
-    else 
-        save(fn, 'acc', 'rt');
-    end 
+    save(fn, 'acc', 'rt');
     best_acc = acc;
 end 
 

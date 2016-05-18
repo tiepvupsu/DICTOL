@@ -1,6 +1,6 @@
 function [dataset, Y_train, Y_test, label_train, label_test] = train_test_split(...
     dataset, N_train)
-
+myrng();
 fprintf('Picking Train and Test set ...');
 switch dataset
         case 'myARgender'

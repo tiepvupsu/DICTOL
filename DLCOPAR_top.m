@@ -72,11 +72,7 @@ function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
         pred = DLCOPAR_pred(Y_test, D, D_range_ext, opts);
         acc = [acc double(sum(pred == label_test))/numel(label_test)];
         fprintf('GC mode, acc = %5f\n', acc(end));
-        if strcmp(dataset, 'mySynthetic')
-            save(fn, 'D', 'X',  'opts', 'acc', 'rt');
-        else 
-            save(fn, 'acc', 'rt');
-        end
+        save(fn, 'acc', 'rt');
     end
     disp(fn);
     save(fn, 'acc', 'rt'); 

@@ -31,7 +31,6 @@ function best_acc = SRC_top(dataset, N_train, lambda)
     end 
     fn = fullfile('results', 'SRC', strcat(dataset, '_N_', num2str(N_train), ...
         '_l_', num2str(lambda), '_', t, '.mat'));
-    disp(fn);
     %%
     opts.lambda   = lambda;
     opts.verbal   = 0;

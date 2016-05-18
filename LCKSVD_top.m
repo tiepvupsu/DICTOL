@@ -58,7 +58,7 @@ function best_acc = LCKSVD_top(dataset, N_train, k, ...
     fprintf('done!');
     %% classification process
     [prediction1,acc] = classification(D1, W1, Y_test, H_test, sparsitythres);
-    fprintf('\nFinal recognition rate for LC-KSVD1 is : %.03f ', acc);
+    fprintf('\nFinal recognition rate for LC-KSVD1 is : %.03f \n', acc);
 
     if ~exist('results', 'dir')
         mkdir('results');
@@ -81,12 +81,6 @@ function best_acc = LCKSVD_top(dataset, N_train, k, ...
     rt = toc;
 %     save('.\trainingdata\dictionarydata2.mat','D2','X2','W2','T2');
     fprintf('done!');
-    if strcmp(dataset, 'mySynthetic')
-        figure(2);
-
-        display_network(D2);
-        drawnow();
-    end 
 
 
     [prediction2,acc] = classification(D2, W2, Y_test, H_test, sparsitythres);
@@ -94,10 +88,6 @@ function best_acc = LCKSVD_top(dataset, N_train, k, ...
     fn = fullfile('results', 'LCKSVD', strcat(dataset, '_N_', ...
         num2str(N_train), '_k_', num2str(k), '_a_', num2str(valpha), ...
         '_b_', num2str(vbeta), '_', getTimeStr(), '_2.mat'));
-    if strcmp(dataset, 'mySynthetic')
-        save(fn, 'D2', 'k', 'acc', 'rt')
-    else 
-        save(fn, 'acc', 'rt');
-    end 
+    save(fn, 'acc', 'rt');
     best_acc(2) = acc;
 end 
