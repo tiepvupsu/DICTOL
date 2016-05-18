@@ -13,9 +13,9 @@ function best_acc = SRC_top(dataset, N_train, lambda)
     addpath('SRC');
     addpath('build_spams');
     %% ========= Test mode ==============================
-    if nargin == 0 
-        dataset = 'myARgender';
-        N_train = 50;
+    if nargin == 0         
+        dataset = 'myYaleB';
+        N_train = 10;        
         lambda = 0.001;
     end 
     %%

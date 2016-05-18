@@ -21,8 +21,12 @@ function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 50;
+        N_train = 350;
         k = 20;
+        k0 = 5;
+        dataset = 'myYaleB';
+        N_train = 10;
+        k = 8;
         k0 = 5;
         lambda = 0.001;
         eta = 0.01;

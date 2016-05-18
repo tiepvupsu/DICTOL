@@ -8,12 +8,16 @@ function best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 50;
-        k       = 20;
-        k0      = 5;
-        lambda1 = 0.005;
+        N_train = 350;
+        k       = 24;
+        k0      = 2;
+        dataset = 'myYaleB';
+        N_train = 10;
+        k = 8;
+        k0 = 5;
+        lambda1 = 0.001;
         lambda2 = 0.01;
-        lambda3 = 0.05;
+        lambda3 = 0.02;
     end 
     %%
     t = getTimeStr();
@@ -158,7 +162,7 @@ function acc = LRSDL_pred_2(Y, D, D0, CoefM, m0, opts, label_test)
             E1(c,:) = sum(R1.^2);
             E2(c,:) = sum(R2.^2);
         end
-        for w = [0.33, 0.66]
+        for w = [.25, .5, .75]
             E = w*E1 + (1-w)*E2;
             [~, pred] = min(E);
             aaaa = double(sum(pred == label_test))/N;
@@ -195,7 +199,7 @@ function acc = LRSDL_pred_3(Y, D, D0, CoefMM0, m0, opts, label_test)
             E1(c,:) = sum(R1.^2);
             E2(c,:) = sum(R2.^2);
         end
-        for w = [0.33, 0.66]
+        for w = [.25, .5, .75]
             E = w*E1 + (1-w)*E2;
             [~, pred] = min(E);
             aaaa = double(sum(pred == label_test))/N;

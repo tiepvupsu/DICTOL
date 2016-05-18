@@ -8,9 +8,12 @@ function best_acc = LCKSVD_top(dataset, N_train, k, ...
     best_acc = zeros(1, 2);
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 50;
+        N_train = 350;
         k = 25;
-        sparsitythres = 20;
+        dataset = 'myYaleB';
+        N_train = 10;
+        k = 8;        
+        sparsitythres = 10;
         valpha = 0.01;
         vbeta = 0.01;
     end 

@@ -18,10 +18,10 @@ function best_acc = D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
     addpath('LRSDL_FDDL');
     addpath('D2L2R2');
     %% test mode 
-    if nargin == 0 
-        dataset = 'myARgender';
-        N_train = 40;
-        k = 20;
+    if nargin == 0         
+        dataset = 'myYaleB';
+        N_train = 10;
+        k = 8;        
         lambda1 = 0.001;
         lambda2 = 0.01;
         alpha = 0.01;

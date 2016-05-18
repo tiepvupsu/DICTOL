@@ -7,8 +7,12 @@ function best_acc = FDDL_top(dataset, N_train, k, lambda1, lambda2)
     %% test mode 
     if nargin == 0 
         dataset = 'myARgender';
-        N_train = 50;
+        N_train = 350;
         k = 25;
+        dataset = 'myYaleB';
+        N_train = 10;
+        k = 8;
+        k0 = 5;
         lambda1 = 0.001;
         lambda2 = 0.05;
     end 

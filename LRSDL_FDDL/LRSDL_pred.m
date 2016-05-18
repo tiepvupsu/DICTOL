@@ -3,7 +3,7 @@ function acc = LRSDL_pred(Y, D, D0, CoefMM0, opts, label_test)
     N = size(Y,2);    
     acc = [];
     optsX.max_iter = 500;
-    for lambda = [0.001, 0.005, 0.01] 
+    for lambda = [0.001, 0.005, 0.01, 0.05] 
         E = zeros(nClasses, size(Y,2));
         %% ========= LC ==============================
         for c = 1: nClasses
