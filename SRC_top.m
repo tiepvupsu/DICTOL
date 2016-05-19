@@ -31,17 +31,10 @@ function best_acc = SRC_top(dataset, N_train, lambda)
     end 
     fn = fullfile('results', 'SRC', strcat(dataset, '_N_', num2str(N_train), ...
         '_l_', num2str(lambda), '_', t, '.mat'));
-    %%
-    opts.lambda   = lambda;
-    opts.verbal   = 0;
-    opts.max_iter = 300;
-    %%
-    train_range = label_to_range(label_train);
-    pred        = SRC_pred(Y_test, Y_train, train_range, opts);
-    
-    acc         = double(sum(pred == label_test))/numel(pred);
-    disp(['acc = ', num2str(acc)]);
-    disp(fn);    
+    %% main 
+    range_train = label_to_range(label_train);
+    range_test = label_to_range(label_test);
+    acc = SRC_wrapper(Y_train, range_train, Y_test, range_test, lambda);   
     save(fn, 'acc');
     best_acc = acc;
 end 

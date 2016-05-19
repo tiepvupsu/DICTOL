@@ -24,13 +24,16 @@ function best_acc = D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
         k = 8;        
         lambda1 = 0.001;
         lambda2 = 0.01;
-        alpha = 0.01;
-        % eta = 0.1;
+        alpha = 0.01;        
     end 
     %% Data preparation
     t = getTimeStr();
     [dataset, Y_train, Y_test, label_train, label_test] = train_test_split(...
         dataset, N_train);
+    %% main 
+    [acc, rt] = D2L2R2_wrapper(Y_train, label_train, Y_test, label_test,...
+                        k, lambda1, lambda2, alpha)
+    %% save results 
     if ~exist('results', 'dir')
         mkdir('results');
     end 
@@ -40,32 +43,8 @@ function best_acc = D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
     fn = fullfile('results', 'D2L2R2', strcat(dataset, '_N_', ...
         num2str(N_train), '_k_', num2str(k), '_l1_', num2str(lambda1),...
         '_l2_', num2str(lambda2), '_a_', num2str(alpha), '_', t, '.mat'));
-    disp(fn);
-    %% parameter preparation 
-    C             = max(label_train);    
-    opts.k        = k;
-    opts.lambda1  = lambda1;
-    opts.lambda2  = lambda2;
-    opts.alpha    = alpha;
-    opts.max_iter = 100;        
-    opts.show     = false;
-    opts.showD    = false;
-    opts.verbal   = true;
-    opts          = initOpts(opts);
-    %% ========= Train ==============================
-    [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y_train, label_train, opts);
-    %% ========= test ==============================
-    acc = [];
-    opts.verbal = false;
-    opts.max_iter = 300;
-    for vgamma = [0.001, 0.005, 0.01, 0.1]
-        opts.gamma = vgamma;
-        opts.weight = 0.5;
-
-        pred = D2L2R2_pred(Y_test, D, D_range, CoefM, opts);
-        acc = [acc double(sum(pred == label_test))/numel(label_test)];
-        fprintf('gamma = %.4f, acc = %5f\n', vgamma, acc(end));
-    end 
+    disp(fn);   
+    
     save(fn, 'acc', 'rt');
     best_acc = max(acc);
 end 

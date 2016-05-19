@@ -1,4 +1,4 @@
-function acc = LRSDL_pred(Y, D, D0, CoefMM0, opts, label_test)
+function acc = LRSDL_pred_LC(Y, D, D0, CoefMM0, opts, label_test)
     nClasses = size(CoefMM0, 2);
     N = size(Y,2);    
     acc = [];

@@ -17,13 +17,9 @@ function best_acc = DLSI_top(dataset, N_train, k, lambda, eta)
     addpath('ODL')
     %% test mode 
     if nargin == 0 
-        dataset = 'myARgender';
-        N_train = 350;
-        k = 25;
         dataset = 'myYaleB';
-        N_train = 10;
-        k = 8;
-        k0 = 5;
+        N_train = 3;
+        k = 2;
         lambda = 0.001;
         eta = 0.01;
     end 
@@ -41,24 +37,9 @@ function best_acc = DLSI_top(dataset, N_train, k, lambda, eta)
         '_k_', num2str(k), '_l_', num2str(lambda), '_e_', num2str(eta), '_', ...
         t, '.mat'));
     disp(fn);
-    
-    C              = max(label_train);
-    D_range        = k*(0:C);
-    opts.lambda    = lambda;
-    opts.eta       = eta;
-    opts.D_range   = D_range;
-    opts.show_cost = 0;
-    train_range    = label_to_range(label_train);
-    opts.show      = 0;
-    opts.verbal    = true;
-    opts.max_iter  = 100;        
-    %% ========= Train ==============================
-    [D, X, rt]         = DLSI(Y_train, train_range, opts);
-    %% ========= test ==============================
-    opts.verbal    = false;
-    pred           = DLSI_pred(Y_test, D, opts);
-    acc            = double(sum(pred == label_test))/numel(label_test);
-    disp(['acc = ', num2str(acc)]);
+    [acc, rt] = DLSI_wrapper(Y_train, label_train, Y_test , label_test, ...
+                            k, lambda, eta);
+    disp(acc);
     disp(fn);    
     save(fn, 'acc', 'rt');
     best_acc = acc;

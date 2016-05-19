@@ -20,10 +20,6 @@ function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     addpath('ODL')
     %% test mode 
     if nargin == 0 
-        dataset = 'myARgender';
-        N_train = 350;
-        k = 20;
-        k0 = 5;
         dataset = 'myYaleB';
         N_train = 10;
         k = 8;
@@ -31,10 +27,15 @@ function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
         lambda = 0.001;
         eta = 0.01;
     end 
-    %%
+    %% get data 
     t = getTimeStr();
     [dataset, Y_train, Y_test, label_train, label_test] = ...
         train_test_split(dataset, N_train);
+    %% main 
+    [acc, rt] = DLCOPAR_wrapper(Y_train, label_train, Y_test , label_test, ...
+                            k, k0, lambda, eta);
+    disp(rt);
+    %% output filename 
     if ~exist('results', 'dir')
         mkdir('results');
     end 
@@ -44,36 +45,6 @@ function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     fn = fullfile('results', 'DLCOPAR', strcat(dataset, '_N_', ...
         num2str(N_train), '_k_', num2str(k), '_k0_', num2str(k0), ...
         '_l_', num2str(lambda), '_e_', num2str(eta), '_', t, '.mat'));
-    %% options for DLCOPAR
-    opts.k = k;
-    opts.k0 = k0;
-    C                = max(label_test);
-    D_range_ext = [k*(0:C), k*C + k0];
-    opts.lambda      = lambda;
-    opts.eta         = eta;    
-    train_range      = label_to_range(label_train);
-    opts.show        = false;
-    opts.max_iter    = 100;        
-    opts.verbal      = true;
-    opts = initOpts(opts);
-    %% ========= Train ==============================
-    [D, X, rt] = DLCOPAR(Y_train, train_range, opts);
-    %% ========= test ==============================
-    acc = [];
-    for vgamma = [0.0001, 0.001, 0.005, 0.01]
-        opts.gamma = vgamma;
-        fprintf('gamma %5f\n', vgamma);
-        opts.classify_mode = 'LC';
-        pred = DLCOPAR_pred(Y_test, D, D_range_ext, opts);
-        acc = [acc double(sum(pred == label_test))/numel(label_test)];
-        fprintf('LC mode, acc = %5f\n', acc(end));
-
-        opts.classify_mode = 'GC';
-        pred = DLCOPAR_pred(Y_test, D, D_range_ext, opts);
-        acc = [acc double(sum(pred == label_test))/numel(label_test)];
-        fprintf('GC mode, acc = %5f\n', acc(end));
-        save(fn, 'acc', 'rt');
-    end
     disp(fn);
     save(fn, 'acc', 'rt'); 
     best_acc = max(acc);
