@@ -35,3 +35,6 @@ c4 = c^2*k*n*(d + q*c*k) + C^3*d*k^2
 c5 = C*(k*d*n*(C^2 + 1) + k^2*(C*n + q*d))
 % efficient 
 c6 = C^2*k*(n*d + k*C*n + d*k)
+
+A = C^2*k*n*(d + q*C*k) + C^3*d*k^2
+B = C^2*k*d*(k+n) + q*C^2*k*n*(c*k + 1)
