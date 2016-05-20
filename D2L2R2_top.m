@@ -32,7 +32,7 @@ function best_acc = D2L2R2_top(dataset, N_train, k, lambda1, lambda2, alpha)
         dataset, N_train);
     %% main 
     [acc, rt] = D2L2R2_wrapper(Y_train, label_train, Y_test, label_test,...
-                        k, lambda1, lambda2, alpha)
+                        k, lambda1, lambda2, alpha);
     %% save results 
     if ~exist('results', 'dir')
         mkdir('results');

@@ -98,7 +98,7 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         end 
         if opts.verbal
             costX = DLSI_cost(Y, Y_range, D, D_range, X, opts);
-            fprintf('iter = %3d/%d | costX = %5f\n', iter, ...
+            fprintf('iter = %3d/%3d | costX = %5f\n', iter, ...
                 opts.max_iter, costX);
         end 
         %% ========= update D ==============================

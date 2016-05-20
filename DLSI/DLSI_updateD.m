@@ -56,9 +56,12 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
     Z_old = D;
     U = zeros(size(D));
     k2 = size(A,2);
-    I_k2 = eye(k2);
+    % I_k2 = eye(k2);
     I_k = eye(size(D,2));
-    B = inv(2*lambda*A'*A + rho*I_k2);
+    % B = inv(2*lambda*A'*A + rho*I_k2);
+    X = 2*lambda/rho*A';
+    Y = A;
+    B1 = X*inv(eye(size(Y, 1)) + Y*X);
     tol = 1e-5;
     optsD.max_iter = 100;
     optsD.tol = 1e-8;
@@ -71,7 +74,9 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
         D = ODL_updateD(D, E2, F2, optsD);
         %% ========= update Z ==============================
         V = D + U;
-        Z_new = B*V;
+        % Z_new = rho*B*V;
+        Z_new = rho*(V - B1*(Y*V));
+        % norm(Z_new - Z_new2)
 
         e1 = normF2(D - Z_new);
         e2 = rho*normF2(Z_new - Z_old);

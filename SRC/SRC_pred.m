@@ -37,6 +37,8 @@ function [pred, X] = SRC_pred(Y, D, D_range, opts)
         opts.lambda = 0.01;
 	end 
 	%%
+    Y = normc(Y);
+    D = normc(D);
 	%% ========= Main code ==============================
 	opts = initOpts(opts);
 	%%
