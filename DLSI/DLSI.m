@@ -104,7 +104,7 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         %% ========= update D ==============================
         for i = 1: C 
             D_comi = D;
-            D_comi(D_range(i)+1: D_range(i+1)) = [];
+            D_comi(:, D_range(i)+1: D_range(i+1)) = [];
             Di = D(:, D_range(i)+1: D_range(i+1));
             Yi = get_block_col(Y, i, Y_range);
 %             Di = DLSI_updateD(Yi, X{i}, Di, D_comi', eta, optsD);
