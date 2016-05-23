@@ -7,12 +7,12 @@ function [acc, rt] = DLCOPAR_wrapper(Y_train, label_train, Y_test , label_test, 
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
     if nargin == 0 % test mode
-        dataset = 'myYaleB';
+        dataset = 'ARgender';
         N_train = 10;        
         [~, Y_train, Y_test, label_train, label_test] = ...
             train_test_split(dataset, N_train);        
         k = 8;
-        k0 = 5;
+        k0 = 0;
         lambda = 0.001;
         eta = 0.01;        
     end 

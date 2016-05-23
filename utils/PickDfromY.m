@@ -1,4 +1,7 @@
 function D = PickDfromY(Y, Y_range, k)
+	if nargin == 2 
+		Y_range = [0, size(Y, 2)];
+	end 
 	C = numel(Y_range) - 1;
 	D = [];
 	for i = 1: C

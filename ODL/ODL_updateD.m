@@ -18,6 +18,7 @@ function [D, iter] = ODL_updateD(D, E, F, opts)
 % Author: Tiep Vu, thv102@psu.edu, 04/07/2016
 %         (http://www.personal.psu.edu/thv102/)
 % -----------------------------------------------
+    opts = initOpts(opts);
 	Dold = D;
 	iter = 0;
 	sizeD = numel(D);

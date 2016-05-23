@@ -42,9 +42,18 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 		X = rand(k, N);
 		E = Y*X';
 		F = X*X';
-		lambdaD = 0.01;
+		lambdaD = 0.0;
 		opts.verbal = true;
 		opts.max_iter = 100;
+    end 
+    %%
+
+    if lambdaD == 0
+    	D = ODL_updateD(Dinit, E, F, opts);
+        if nargin == 0
+            D = [];
+        end 
+    	return;        
     end 
     %%
     function cost = calc_cost(D)

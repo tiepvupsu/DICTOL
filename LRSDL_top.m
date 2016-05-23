@@ -15,6 +15,9 @@ function best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3
         lambda2 = 0.01;
         lambda3 = 0.02;
     end 
+    if ~exist('lambda3', 'var')
+        lambda3 = 0;
+    end 
     %%
     t = getTimeStr();
     [dataset, Y_train, Y_test, label_train, label_test] = ...
