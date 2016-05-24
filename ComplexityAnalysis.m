@@ -15,10 +15,8 @@ c4 = c^2*k*n*(d + q*c*k) + C^3*d*k^2
 % 
 % d = 3000;
 % n = 5;
-% 
 % A = rand(d, d);
 % B = rand(d, d);
-% 
 % tic; 
 % for i = 1: n
 %     A*B; 
@@ -38,3 +36,7 @@ c6 = C^2*k*(n*d + k*C*n + d*k)
 
 A = C^2*k*n*(d + q*C*k) + C^3*d*k^2
 B = C^2*k*d*(k+n) + q*C^2*k*n*(c*k + 1)
+
+A = C^2*k*(d*n + C*k*n + q*d)
+B = q*C^3 *k^2*n
+B/A

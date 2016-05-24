@@ -14,7 +14,7 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         fprintf('Test most\n');
         C = 3;    N = 10;    d = 30;
         k = 10;
-        k0 = 3;    
+        k0 = 0;    
         c = 2;
         Y       = normc(rand(d, C*N));
         D       = normc(rand(d, C*k + k0));
@@ -27,8 +27,13 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         opts.D_range_ext = [opts.D_range opts.D_range(end)+k0];
         DCp1 = get_block_col(D, C+1, opts.D_range_ext);
         DCp1tDCp1 = DCp1'*DCp1;
-        L       = max(eig(DtD)) + max(eig(DCp1tDCp1));
         opts.k0          = k0;
+        if opts.k0 > 0
+            L       = max(eig(DtD)) + max(eig(DCp1tDCp1));
+        else 
+            L = max(eig(DtD));
+        end
+        
         opts.lambda      = 0.01;
         opts.eta         = 0.1;
         opts.max_iter    = 300;
@@ -77,8 +82,12 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         g0 = DtD*Xc;
         Xcc              = get_block_row(Xc, c, D_range_ext);
         XCp1c            = get_block_row(Xc, C+1, D_range_ext);
-        Xc(range_c,:)    = DctDc*Xcc + DctDCp1*XCp1c;        
-        Xc(range_Cp1, :) = DCp1tDCp1*XCp1c + DCp1tDc*Xcc;
+        if opts.k0 > 0
+            Xc(range_c,:)    = DctDc*Xcc + DctDCp1*XCp1c;        
+            Xc(range_Cp1, :) = DCp1tDCp1*XCp1c + DCp1tDc*Xcc;
+        else
+            Xc(range_c,:) = DctDc*Xcc;
+        end
         g = g0 + Xc - DtYc2;
     end
     %% check grad 
@@ -86,7 +95,11 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         check_grad(@calc_f, @grad, rand(size(Xc)));
     end 
     %% ========= Main FISTA ==============================
-    L2 = L + max(eig(DCp1tDCp1')) + 2;
+    if opts.k0 > 0
+        L2 = L + max(eig(DCp1tDCp1')) + 2;
+    else 
+        L2 = L + 2;
+    end 
 
     opts.tol = 1e-8;
     opts.max_iter = 300;

@@ -20,10 +20,10 @@ function best_acc = DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
     addpath('ODL')
     %% test mode 
     if nargin == 0 
-        dataset = 'myYaleB';
+        dataset = 'myARgender';
         N_train = 10;
         k = 8;
-        k0 = 5;
+        k0 = 0;
         lambda = 0.001;
         eta = 0.01;
     end 

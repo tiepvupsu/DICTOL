@@ -25,10 +25,10 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
 
     if nargin == 0
         clc;
-        d = 30; 
-        N = 10;
-        k = 10;
-        k2 = 20;
+        d = 300; 
+        N = 7;
+        k = 7;
+        k2 = 7;
         Y = normc(rand(d, N));
         D = normc(rand(d, k));
         X = 0.01 * rand(k, N);
@@ -37,9 +37,9 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
         A = normc(rand(k2, d));     
         lambda = 0.01;        
         
-        opts.show = true;
-        opts.max_iter = 100;   
-        opts.verbal = true;
+        opts.show = 0;
+        opts.max_iter = 300;   
+        opts.verbal = 0;
     end 
     if nargin == 6
         opts.lambda = lambda;
@@ -61,21 +61,29 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
     % B = inv(2*lambda*A'*A + rho*I_k2);
     X = 2*lambda/rho*A';
     Y = A;
+    tic
     B1 = X*inv(eye(size(Y, 1)) + Y*X);
+    t1 = toc ;
+    t2 = 0;
     tol = 1e-5;
     optsD.max_iter = 100;
     optsD.tol = 1e-8;
+    
     while iter < opts.max_iter 
         iter = iter + 1;
         %% ========= update D ==============================
+        tic 
         W = Z_old - U;
         E2 = E + rho/2 * W;
         F2 = F + rho/2*I_k; 
         D = ODL_updateD(D, E2, F2, optsD);
+        t2 = t2 + toc;
         %% ========= update Z ==============================
+        tic;
         V = D + U;
         % Z_new = rho*B*V;
         Z_new = rho*(V - B1*(Y*V));
+        t1 = t1 + toc;
         % norm(Z_new - Z_new2)
 
         e1 = normF2(D - Z_new);
@@ -91,6 +99,8 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
         U = U + D - Z_new;
         Z_old = Z_new;
     end 
+    disp(t1)
+    disp(t2)
     if nargin == 0
         D = [];
     end 

@@ -55,13 +55,14 @@ function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)
         if opts.verbal
             if nargin ~= 0
                 cost_new = feval(calc_F, x_new);
-                if cost_new <= cost_old 
-                    stt = 'YES.';
-                else 
-                    stt = 'NO, check your code.';
-                end
-                fprintf('iter = %3d, cost = %f, cost decreases? %s\n', ...
-                    iter, cost_new, stt);
+%                 if cost_new <= cost_old 
+%                     stt = 'YES.';
+%                 else 
+%                     stt = 'NO, check your code.';
+%                 end
+%                 fprintf('iter = %3d, cost = %f, cost decreases? %s\n', ...
+%                     iter, cost_new, stt);
+                fprintf('iter = %3d, cost = %f\n', iter, cost_new);
                 cost_old = cost_new;
             else 
                 if mod(iter, 5) == 0

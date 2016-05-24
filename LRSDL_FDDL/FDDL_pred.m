@@ -1,7 +1,7 @@
-function pred = FDDL_pred(Y, D, CoefM, opts)
+function pred = FDDL_pred(Y, D, CoefM, opts) % GC
     vgamma = opts.gamma;
     opts.max_iter = 100;
-    [X, cost] = lasso_fista(Y, D, zeros(size(D,2), size(Y,2)), vgamma, opts);
+    [X, ~] = lasso_fista(Y, D, zeros(size(D,2), size(Y,2)), vgamma, opts);
     C = size(CoefM,2);
     % w = 0.5;
     E = zeros(C, size(Y,2));

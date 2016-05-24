@@ -11,7 +11,7 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
         d = 30;
         N = 30;
         k = 20;
-        k0 = 50;
+        k0 = 0;
         C = 30 ;
         opts.k0 = k0;
         opts.lambda = 0.01;
@@ -33,7 +33,11 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
     DtY = D'*Y;
     DCp1 = get_block_col(D, C+1, opts.D_range_ext);
     DCp1tDCp1 = DCp1'*DCp1;
-    L = max(eig(DtD)) + max(eig(DCp1tDCp1));
+    if opts.k0 > 0
+        L = max(eig(DtD)) + max(eig(DCp1tDCp1));
+    else 
+        L = max(eig(DtD));
+    end 
     optsX = opts;
     optsX.verbal = false;
     optsX.max_iter = 100;

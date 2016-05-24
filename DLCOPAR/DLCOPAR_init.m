@@ -26,7 +26,10 @@ function [D, X] = DLCOPAR_init(Y, Y_range, opts)
         D(:, D_range(c)+1: D_range(c+1)) = Dc;
         X(D_range(c)+1: D_range(c+1), Y_range(c)+1: Y_range(c+1)) = Xcc;
     end 
-    [DCp1, XCp1]                  = ODL(Y, opts.k0, opts.lambda, opts);
-    D(:, D_range_ext(C+1)+1: end) = DCp1;
-    X(D_range_ext(C+1)+1:end, :)  = XCp1;
+    if opts.k0 > 0
+        [DCp1, XCp1]                  = ODL(Y, opts.k0, opts.lambda, opts);
+        D(:, D_range_ext(C+1)+1: end) = DCp1;
+        X(D_range_ext(C+1)+1:end, :)  = XCp1;
+    end 
+        
 end 

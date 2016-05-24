@@ -34,20 +34,20 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 	if nargin == 0 
         clc;
         addpath(fullfile('..', 'ODL'));
-		d = 10;
-		k = 30;
+		d = 504;
+		k = 10;
 		Dinit = normc(rand(d, k));
-		N = 35;
+		N = 380;
 		Y = normc(rand(d, N));
 		X = rand(k, N);
 		E = Y*X';
 		F = X*X';
-		lambdaD = 0.0;
-		opts.verbal = true;
-		opts.max_iter = 100;
+		lambdaD = 0.001;
+		opts.verbal = 0;
+		opts.max_iter = 1000;
     end 
     %%
-
+   
     if lambdaD == 0
     	D = ODL_updateD(Dinit, E, F, opts);
         if nargin == 0
@@ -72,17 +72,25 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 	optsD = opts;
 	optsD.max_iter = 50;
     opts.tol = 1e-5;
+    t1 = 0;
+    t2 = 0;
 	while k < opts.max_iter
 		k = k + 1;		
 		%% ========= update D ==============================
 		% D = argmin_D -2trace(ED') + trace(FD'D) + rho/2 ||J - D + U||_F^2 
 		% s.t. ||d_i||_2^2 <= 1
+%         tic;
 		E1 = E + rho/2*(J_old + U_old);
 		F1 = F + rho/2*I;
 		D_new = ODL_updateD(D_old, E1, F1, optsD);
+%         t1 = t1 + toc;
+%         t1 = t1 + t;
 		%% ========= update J ==============================
 		% J^{k+1} = argminJ lambdaD||J||_* + rho/2||J - D + U||
+%         tic;
 		J_new = real(shrinkage_rank(D_new - U_old, lambdaD/rho));
+%         t2 = t2 + toc;
+%         t2 = t2 + t;
 		%% ========= update U ==============================
 		U_new = U_old + J_new - D_new;        
 		%% ========= check stop ==============================
@@ -109,6 +117,8 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 	end 
 	%% ========= return ==============================
 	D = D_new;
+% % %     disp(t1); 
+%     disp(t2); 
 	if nargin == 0
         D = [];
     end

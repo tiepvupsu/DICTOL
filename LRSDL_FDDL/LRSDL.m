@@ -105,14 +105,14 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
                 if opts.show_cost 
                     cost_new = LRSDL_cost(Y, Y_range, D, D0, D_range, X, X0, opts);
 %                     t = toc;
-                    fprintf('k = %3d, k0 = %3d | cost_new = %5.4f', ...
+                    fprintf('K = %3d, k0 = %3d | cost_new = %5.4f', ...
                         size(D,2), size(D0,2), cost_new);
                     if abs(cost_new - cost_old) < 1e-6
                         break;
                     end
                 else 
 %                     t = toc;
-                    fprintf('k = %3d, k0 = %3d', size(D,2), size(D0,2));
+                    fprintf('K = %3d, k0 = %3d', size(D,2), size(D0,2));
                 end
             end
         end     

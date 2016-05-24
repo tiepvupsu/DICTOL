@@ -14,7 +14,11 @@ function Y = shrinkage_rank(D, lambda)
 	% Author: Tiep Vu, thv102@psu.edu, 4/14/2016
 	%         (http://www.personal.psu.edu/thv102/)
 	% -----------------------------------------------
-	[U, S, V] = svd(D, 'econ');
+    if size(D, 1) > size(D, 2)
+        [U, S, V] = svd(D, 'econ');
+    else 
+        [V, S, U] = svd(D', 'econ');
+    end
 	s = diag(S);
 	s1 = max(0, s - lambda);
 	S1 = diag(s1);

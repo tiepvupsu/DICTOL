@@ -43,6 +43,7 @@ function [acc, rt] = LRSDL_wrapper(Y_train, label_train, Y_test , label_test, ..
         CoefMM0(:,c) = mean(X1c,2);
     end    
     opts.verbal = 0;
+    acc = [];
     if numel(D0) ~= 0
         fprintf('GC:\n');
         acc1 = LRSDL_pred_GC(Y_test, D, D0, CoefM, coefM0, opts, label_test);
@@ -51,13 +52,23 @@ function [acc, rt] = LRSDL_wrapper(Y_train, label_train, Y_test , label_test, ..
         acc = [acc1 acc2];
         fprintf('maximum acc: %4f\n', max(acc));
     else             
-        opts.weight = 0.1;
+        fprintf('GC:\n');
+        opts.weight = 0.5;
         for vgamma = [0.0001, 0.001, 0.01, 0.1]
             opts.gamma = vgamma;
             pred = FDDL_pred(Y_test, D, CoefM, opts);
-            acc = double(numel(find(pred == label_test)))/...
-                numel(label_test);
-            fprintf('gamma = %.4f, acc = %.4f\n', vgamma, acc);
+            acc = [acc calc_acc(pred, label_test)];
+            fprintf('gamma = %.4f, acc = %.4f\n', vgamma, acc(end));
+        end 
+        %% LC 
+        fprintf('LC:\n');
+        gamma2 = 0.01;
+        opts.gamma2 = gamma2;
+        for gamma1 = [0.0001, 0.001, 0.01, 0.1]
+            opts.gamma1 = gamma1;
+            pred = FDDL_pred_LC(Y_test, D, CoefM, opts);
+            acc = [acc calc_acc(pred, label_test)];
+            fprintf('gamma = %.4f, acc = %.4f\n', gamma1, acc(end));
         end 
     end
 end 
