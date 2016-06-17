@@ -80,14 +80,14 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
             X0(unusedid0, :) = [];           
         end 
         %% ========= reduce class-specific dictionaries (if needed)=======
-        g = sum(abs(X), 2);
-        unusedid = find(g < tol_XX0);
-        if numel(unusedid) > 0            
-            D(:, unusedid) = [];
-            X(unusedid, :) = [];
-            opts.D_range = range_reduce(opts.D_range, unusedid);   
-            D_range = opts.D_range;
-        end 
+        % g = sum(abs(X), 2);
+        % unusedid = find(g < tol_XX0);
+        % if numel(unusedid) > 0            
+        %     D(:, unusedid) = [];
+        %     X(unusedid, :) = [];
+        %     opts.D_range = range_reduce(opts.D_range, unusedid);   
+        %     D_range = opts.D_range;
+        % end 
         %% ========= Update D ==============================       
         if opts.verbal
             fprintf('updating D...');

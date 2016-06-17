@@ -33,7 +33,7 @@ function acc = LRSDL_pred_GC(Y, D, D0, CoefM, m0, opts, label_test)
 end 
 %%
 function [X, X0] = local_sparse_coding(Y, D, D0, m0, lambda1, lambda2)
-    N = size(Y,2);
+    N      = size(Y,2);
     k      = size(D,2);
     k0     = size(D0,2);
     X1init = zeros(k + k0, N);
@@ -51,9 +51,9 @@ function [X, X0] = local_sparse_coding(Y, D, D0, m0, lambda1, lambda2)
     end 
     %% grad
     function g = grad(X1)
-        X = X1(1: k, :);
+        X  = X1(1: k, :);
         X0 = X1(k+1:end,:);
-        g = (D1tD1*X1 - D1tY + lambda2* [zeros(k, N); X0 - M0]);
+        g  = (D1tD1*X1 - D1tY + lambda2* [zeros(k, N); X0 - M0]);
     end     
     %% ========= Main FISTA ==============================
     L             = max(eig(D1tD1)) + 2;

@@ -26,13 +26,20 @@ function pred = SRC_pred_shared(Y, D, D_range, opts)
     Y = normc(Y);
     D = normc(D);
     opts = initOpts(opts);
+    if ~isfield(opts, 'norm')
+        opts.norm = 1;
+    end 
 	%%
 	C = numel(D_range) - 2;
 	pred = zeros(1, size(Y,2));
 	%%
-	fprintf('sparse coding...');
-	X = lasso_fista(Y, D, [], opts.lambda, opts);
-	fprintf('done\n');
+	% fprintf('sparse coding...');
+    if opts.norm == 1 
+	   X = lasso_fista(Y, D, [], opts.lambda, opts);
+    else % norm 0 
+        X = omp(D'*Y, D'*D, opts.L);
+    end
+	% fprintf('done\n');
 	%%
 	E = zeros(C, size(Y,2));
 	Ybar = Y - get_block_col(D, C+1, D_range)*get_block_row(X, C+1, D_range);
