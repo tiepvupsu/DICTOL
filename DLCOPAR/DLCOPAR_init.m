@@ -10,12 +10,12 @@ function [D, X] = DLCOPAR_init(Y, Y_range, opts)
     D_range_ext = [D_range D_range(end)+opts.k0];    
     D           = zeros(size(Y,1), D_range_ext(end));
     X           = zeros(D_range_ext(end), Y_range(end));    
-    if opts.verbal 
+    if opts.verbose 
         fprintf('Initializing...\n');
         fprintf('class: \n');
     end 
     for c = 1: C 
-        if opts.verbal
+        if opts.verbose
             fprintf('%3d ', c);
             if mod(c, 10) == 0
                 fprintf('\n');

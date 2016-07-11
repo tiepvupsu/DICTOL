@@ -29,7 +29,7 @@ function [acc, rt] = LRSDL_wrapper(Y_train, label_train, Y_test , label_test, ..
     opts.initmode    = 'normal';   
     opts.max_iter    = 100;
     opts             = initOpts(opts);
-    opts.verbal      = true;
+    opts.verbose      = true;
     opts.tol         = 1e-8;
     %% Train 
     [D, D0, X, X0, CoefM, coefM0, opts, rt] = ...
@@ -42,7 +42,7 @@ function [acc, rt] = LRSDL_wrapper(Y_train, label_train, Y_test , label_test, ..
         X1c = get_block_col(X1, c, Y_range);
         CoefMM0(:,c) = mean(X1c,2);
     end    
-    opts.verbal = 0;
+    opts.verbose = 0;
     acc = [];
     if numel(D0) ~= 0
         fprintf('GC:\n');

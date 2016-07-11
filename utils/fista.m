@@ -52,7 +52,7 @@ function [X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)
         t_old = t_new;
         y_old = y_new;
         %% show progress
-        if opts.verbal
+        if opts.verbose
             if nargin ~= 0
                 cost_new = feval(calc_F, x_new);
 %                 if cost_new <= cost_old 

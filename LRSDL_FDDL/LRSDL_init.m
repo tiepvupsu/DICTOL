@@ -7,7 +7,7 @@ function [D, D0, X, X0] = LRSDL_init(Y, Y_range, D_range, opts)
     X0       = zeros(opts.k0, size(Y, 2));   
     fprintf('\n');
     for c = 1: nClasses
-        if opts.verbal
+        if opts.verbose
             fprintf('class %d... ', c);
         end 
         % c
@@ -27,7 +27,7 @@ function [D, D0, X, X0] = LRSDL_init(Y, Y_range, D_range, opts)
         X(col_range, row_range) = Xcc;
         %% ========= D ==============================        
         D(:, col_range) = Dc;
-        if opts.verbal
+        if opts.verbose
             fprintf('\n');
             if mod(c, 10) == 0
                 fprintf('\n');
@@ -37,7 +37,7 @@ function [D, D0, X, X0] = LRSDL_init(Y, Y_range, D_range, opts)
             
     %% ========= Init D0, X0 ==============================    
     if opts.k0 ~= 0
-        if opts.verbal
+        if opts.verbose
             fprintf('shared dictionary... ');
         end
         Ybar = Y;

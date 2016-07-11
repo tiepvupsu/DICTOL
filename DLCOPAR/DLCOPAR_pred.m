@@ -22,7 +22,7 @@ function pred = GC(Y, D, D_range_ext, opts)
 %     fprintf('GC mode\n');
     C = numel(D_range_ext) - 2;    
     optsX = opts;
-    optsX.verbal = 0;
+    optsX.verbose = 0;
     optsX.max_iter = 300;
     if isfield(opts, 'gamma') == 0
         fprintf('specify gamma');
@@ -49,7 +49,7 @@ end
 function pred = LC(Y, D, D_range_ext, opts)
 %     fprintf('LC mode\n');
     C = numel(D_range_ext) - 2;    
-    opts.verbal = false;
+    opts.verbose = false;
     opts.max_iter = 300;
     if isfield(opts, 'gamma') == 0
         fprintf('specify gamma');

@@ -75,7 +75,7 @@ function [X, min_cost] = sparse_coding(Y, D, Xinit, m, gamma1, gamma2)
     L = max(eig(A));
     %% opts 
     opts.max_iter = 300;
-    opts.verbal = 0;
+    opts.verbose = 0;
     [X, ~] = fista(@grad, Xinit, L, gamma1, opts, @calc_F);
     %% min_cost for each sample (column)
     min_cost = zeros(1, size(Y, 2));

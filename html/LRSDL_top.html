@@ -99,7 +99,7 @@ Picking Train and Test set ...DONE
     opts.initmode    = <span class="string">'normal'</span>;
     opts.max_iter    = 100;
     opts             = initOpts(opts);
-    opts.verbal      = true;
+    opts.verbose      = true;
     opts.tol         = 1e-8;
 </pre><pre class="codeoutput">starting... myARgender
 </pre><h2>Train<a name="7"></a></h2><pre class="codeinput">    [D, D0, X, X0, CoefM, coefM0, opts, rt] = <span class="keyword">...</span>
@@ -239,7 +239,7 @@ rt =  21.1
         X1c = get_block_col(X1, c, Y_range);
         CoefMM0(:,c) = mean(X1c,2);
     <span class="keyword">end</span>
-    opts.verbal = 0;
+    opts.verbose = 0;
     <span class="keyword">if</span> numel(D0) ~= 0
         fprintf(<span class="string">'GC1:\n'</span>);
         acc = LRSDL_pred_2(Y_test, D, D0, CoefM, coefM0, opts, label_test);
@@ -422,7 +422,7 @@ function best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3
     opts.initmode    = 'normal';   
     opts.max_iter    = 100;
     opts             = initOpts(opts);
-    opts.verbal      = true;
+    opts.verbose      = true;
     opts.tol         = 1e-8;
     %% Train 
     [D, D0, X, X0, CoefM, coefM0, opts, rt] = ...
@@ -459,7 +459,7 @@ function best_acc = LRSDL_top(dataset, N_train, k, k0, lambda1, lambda2, lambda3
         X1c = get_block_col(X1, c, Y_range);
         CoefMM0(:,c) = mean(X1c,2);
     end    
-    opts.verbal = 0;
+    opts.verbose = 0;
     if numel(D0) ~= 0
         fprintf('GC1:\n');
         acc = LRSDL_pred_2(Y_test, D, D0, CoefM, coefM0, opts, label_test);

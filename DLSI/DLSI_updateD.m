@@ -26,20 +26,23 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
     if nargin == 0
         clc;
         d = 300; 
-        N = 7;
-        k = 7;
-        k2 = 7;
-        Y = normc(rand(d, N));
-        D = normc(rand(d, k));
-        X = 0.01 * rand(k, N);
-        E = Y*X';
-        F = X*X';
-        A = normc(rand(k2, d));     
+        N = 10;
+        k = 5;
+        k2 = 495;
+%         Y = normc(rand(d, N));
+%         D = normc(rand(d, k));
+%         X = rand(k, N);
+%         E = Y*X';
+%         F = X*X';
+%         A = normc(rand(k2, d));     
+        load('tmp.mat');
         lambda = 0.01;        
         
         opts.show = 0;
         opts.max_iter = 300;   
-        opts.verbal = 0;
+        opts.verbose = 1;
+        
+%         save('tmp.mat', 'Y', 'D', 'E', 'F', 'A');
     end 
     if nargin == 6
         opts.lambda = lambda;
@@ -52,27 +55,20 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
     end 
     %%
     iter = 0;
-    rho = 1;
+    rho = 1.0;
     Z_old = D;
     U = zeros(size(D));
-%     k2 = size(A,2);
-    % I_k2 = eye(k2);
     I_k = eye(size(D,2));
     % B = inv(2*lambda*A'*A + rho*I_k2);
     X = 2*lambda/rho*A';
     Y = A;
-%     ticr
     B1 = X*inv(eye(size(Y, 1)) + Y*X);
-%     t1 = toc ;
-%     t2 = 0;
     tol = 1e-5;
     optsD.max_iter = 100;
     optsD.tol = 1e-8;
-    
     while iter < opts.max_iter 
         iter = iter + 1;
-        %% ========= update D ==============================
-        tic 
+        %% ========= update D ==============================         
         W = Z_old - U;
         E2 = E + rho/2 * W;
         F2 = F + rho/2*I_k; 
@@ -88,10 +84,10 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
 
         e1 = normF2(D - Z_new);
         e2 = rho*normF2(Z_new - Z_old);
-        if (e1 < tol && e2 < tol)
+        if (e1 < optsD.tol && e2 < optsD.tol)
             break;
         end
-        if opts.verbal
+        if opts.verbose
             cost = calcost(D);
             fprintf('iter = %3d | costD = %5.4f | normF2(D - Z) = %5.4f | rho(Z_new - Z_old) = %5.4f\n', iter, cost, e1, e2);
         end 

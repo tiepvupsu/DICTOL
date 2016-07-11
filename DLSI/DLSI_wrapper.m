@@ -27,12 +27,12 @@ function [acc, rt] = DLSI_wrapper(Y_train, label_train, Y_test , label_test, ...
     opts.show_cost = 0;
     train_range    = label_to_range(label_train);
     opts.show      = 0;
-    opts.verbal    = true;
+    opts.verbose    = true;
     opts.max_iter  = 100;        
     %% ========= Train ==============================
     [D, ~, rt]         = DLSI(Y_train, train_range, opts);
     %% ========= test ==============================
-    opts.verbal    = false;
+    opts.verbose    = false;
     pred           = DLSI_pred(Y_test, D, opts);
     acc            = double(sum(pred == label_test))/numel(label_test);
 end 

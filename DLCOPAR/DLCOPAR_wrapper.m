@@ -16,7 +16,7 @@ function [acc, rt] = DLCOPAR_wrapper(Y_train, label_train, Y_test , label_test, 
         lambda = 0.001;
         eta = 0.01;        
     end 
-     opts.k = k;
+    opts.k = k;
     opts.k0 = k0;
     C                = max(label_test);
     D_range_ext = [k*(0:C), k*C + k0];
@@ -24,8 +24,8 @@ function [acc, rt] = DLCOPAR_wrapper(Y_train, label_train, Y_test , label_test, 
     opts.eta         = eta;    
     train_range      = label_to_range(label_train);
     opts.show        = false;
-    opts.max_iter    = 100;        
-    opts.verbal      = true;
+    opts.max_iter    = 10;        
+    opts.verbose      = true;
     opts = initOpts(opts);
     %% ========= Train ==============================
     [D, X, rt] = DLCOPAR(Y_train, train_range, opts);

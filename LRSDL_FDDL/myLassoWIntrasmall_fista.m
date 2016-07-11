@@ -16,7 +16,7 @@ function X = myLassoWIntrasmall_fista(Y, D, lambda1, lambda2, Xinit, opts)
 
         Xinit = zeros(size(D,2), size(Y, 2));   
         opts.max_iter = 100;
-        opts.verbal = true;
+        opts.verbose = true;
     end 
     %%
     opts = initOpts(opts);

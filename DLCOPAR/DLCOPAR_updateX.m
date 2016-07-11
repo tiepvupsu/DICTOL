@@ -22,7 +22,7 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
         Y_range = N*(0:C);
         opts.D_range = k* (0:C);
         opts.D_range_ext = [opts.D_range opts.D_range(end)+k0];
-        opts.verbal = false;
+        opts.verbose = false;
         opts.max_iter = 30;
     end 
     %%
@@ -37,7 +37,7 @@ function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
         Xc = get_block_col(X, c, Y_range);
         X(:, Y_range(c)+1: Y_range(c+1)) = ...
             DLCOPAR_updateXc(DtD, DtY, Y_range, Xc, c, L, optsX);
-        if opts.verbal
+        if opts.verbose
             costXc = DLCOPAR_cost(Y, Y_range, D, X, opts);
             fprintf('class = %3d | costXc: %5f\n', c, costXc);
         end

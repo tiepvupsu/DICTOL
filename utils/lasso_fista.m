@@ -28,7 +28,7 @@ function [X, iter] = lasso_fista(Y, D, Xinit, lambda, opts)
         Xinit  = zeros(size(D,2), size(Y, 2));
         %
         opts.max_iter     = 500;
-        opts.verbal = true;
+        opts.verbose = true;
         opts.check_grad    = false;  
         opts.tol = 1e-8;        
     end   

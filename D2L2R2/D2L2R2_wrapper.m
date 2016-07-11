@@ -24,13 +24,13 @@ function [acc, rt] = D2L2R2_wrapper(Y_train, label_train, Y_test, label_test,...
     opts.max_iter = 100;        
     opts.show     = false;
     opts.showD    = false;
-    opts.verbal   = true;
+    opts.verbose   = true;
     opts          = initOpts(opts);
     %% ========= Train ==============================
     [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y_train, label_train, opts);
     %% ========= test ==============================
     acc = [];
-    opts.verbal = false;
+    opts.verbose = false;
     opts.max_iter = 300;
     for vgamma = [0.001, 0.005, 0.01, 0.1]
         opts.gamma = vgamma;

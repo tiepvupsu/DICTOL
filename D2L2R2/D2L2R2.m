@@ -32,7 +32,7 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
     D_range = opts.k * (0:C);
     %% Initialization
     optsinit = opts;
-    optsinit.max_iter = 30;  optsinit.verbal = 0;
+    optsinit.max_iter = 30;  optsinit.verbose = 0;
     fprintf('Initializing....');
     [D, X] = D2L2R2_init(Y, Y_range, D_range, optsinit );  
     fprintf('done\n');    
@@ -40,12 +40,12 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
     optsX = opts;
     optsX.max_iter = 300;
     optsX.show_progress = 0;
-    optsX.verbal = false;
+    optsX.verbose = false;
     
     optsD = opts;
     optsD.max_iter = 200;
     optsD.show_cost = false;
-    optsD.verbal = false;
+    optsD.verbose = false;
     %% Start main loop    
     iter = 0;
     cost_old = D2L2R2_cost(Y, Y_range, D, D_range, X, opts);
@@ -60,7 +60,7 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
         if t > 20*3600
             break;
         end 
-        if opts.verbal        
+        if opts.verbose        
             costX = D2L2R2_cost(Y, Y_range, D, D_range, X, opts); 
             fprintf('iter %3d/%d | costX = %5.5f\n', ...
                 iter, opts.max_iter, costX);
@@ -70,7 +70,7 @@ function [D, D_range, X, CoefM, opts, rt] = D2L2R2(Y, train_label, opts)
         if opts.showD             
             display_network(D);
         end         
-        if opts.verbal
+        if opts.verbose
             costD = D2L2R2_cost(Y, Y_range, D, D_range, X, opts);         
             %% Estimated remaining time 
             fprintf('               costD = %5.5f', costD);

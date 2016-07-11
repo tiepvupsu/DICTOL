@@ -11,7 +11,7 @@ function opts = initOpts(opts)
     %% ================== end File info ==========================
     %% show, max_iter, checkgrad
     if ~isfield(opts, 'verbal')
-        opts.verbal = 0;
+        opts.verbose = 0;
     end 
     %%
     if ~isfield(opts, 'check_grad')

@@ -18,8 +18,8 @@ function best_acc = DLSI_top(dataset, N_train, k, lambda, eta)
     %% test mode 
     if nargin == 0 
         dataset = 'myYaleB';
-        N_train = 3;
-        k = 2;
+        N_train = 15;
+        k = 10;
         lambda = 0.001;
         eta = 0.01;
     end 
@@ -41,7 +41,7 @@ function best_acc = DLSI_top(dataset, N_train, k, lambda, eta)
                             k, lambda, eta);
     disp(acc);
     disp(fn);    
-    save(fn, 'acc', 'rt');
+%     save(fn, 'acc', 'rt');
     best_acc = acc;
 end 
 

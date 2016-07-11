@@ -34,29 +34,29 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
     D_range = opts.D_range;
     %% Initialization
     optsinit = opts;
-    optsinit.max_iter = 30;  optsinit.verbal = 0;
-    if opts.verbal
+    optsinit.max_iter = 30;  optsinit.verbose = 0;
+    if opts.verbose
         fprintf('Initializing....');
     end 
     [D, D0, X, X0] = LRSDL_init(Y, Y_range, D_range, optsinit);  
-    if opts.verbal
+    if opts.verbose
         fprintf('done\n');    
     end 
     %% Options for subproblems
     optsX = opts;
-    optsX.verbal = 0;
+    optsX.verbose = 0;
     optsX.max_iter = 300;
     optsX.show_progress = 0;
     
     optsD = opts;
     optsD.max_iter = 200;
-    optsD.verbal = false;
+    optsD.verbose = false;
 
     tol_XX0 = 1e-5;
     %% Start main loop    
     iter = 0;
     maxiter = opts.max_iter;
-    if opts.verbal
+    if opts.verbose
         cost_old = LRSDL_cost(Y, Y_range, D, D0, D_range, X, X0, opts);
         fprintf('Initial cost: %4.4f\n', cost_old);
     end 
@@ -65,7 +65,7 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
         % tic
         iter = iter + 1;
         %% ========= Update X, X0 ==============================
-        if opts.verbal
+        if opts.verbose
             fprintf('iter %3d/%3d |', iter, maxiter);
             fprintf('updating X, X0...');
         end 
@@ -89,19 +89,19 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
         %     D_range = opts.D_range;
         % end 
         %% ========= Update D ==============================       
-        if opts.verbal
+        if opts.verbose
             fprintf('updating D...');
         end 
         optsD.k0 = opts.k0;
         D = LRSDL_updateD_fast(Y, Y_range, D, D_range, D0, X, X0, optsD);
         %% ========= Update D0 ==============================
         if opts.k0 > 0
-            if opts.verbal
+            if opts.verbose
                 fprintf('updating D0...');
             end 
 %             D0 = LRSDL_updateD0(Y, D, D0, Y_range, D_range, opts, X, X0, optsD);
             D0 = LRSDL_updateD0(Y, Y_range, D, D_range, D0, X, X0, optsD);
-            if opts.verbal
+            if opts.verbose
                 if opts.show_cost 
                     cost_new = LRSDL_cost(Y, Y_range, D, D0, D_range, X, X0, opts);
 %                     t = toc;
@@ -131,7 +131,7 @@ function [D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
         end         
         %% Estimated remaining time 
         t0 = toc;
-        if opts.verbal
+        if opts.verbose
             t = t0*(opts.max_iter - iter)/iter;
             time_estimate(t);
         end

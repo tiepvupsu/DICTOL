@@ -17,12 +17,15 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
         opts.lambda   = 0.0001;
         opts.eta      = 0.01;
         opts.gamma    = 0.01;
-        opts.max_iter = 50;
-        opts.verbal   = true;
+        opts.max_iter = 10;
+        opts.verbose   = true;
         opts          = initOpts(opts);
         
-        Y = normc(rand(d, C*N));
-        Y_range = N*(0:C);        
+%         Y = normc(rand(d, C*N));
+%         Y_range = N*(0:C);        
+%         save('tmp3.mat', 'Y', 'Y_range');
+        load('tmp3.mat', 'Y', 'Y_range');
+        
     end
     %%
     opts = initOpts(opts);
@@ -34,38 +37,38 @@ function [D, X, rt] = DLCOPAR(Y, Y_range, opts)
     %% ================== block: init ==========================    
     optsinit          = opts;
     optsinit.max_iter = 30;
-    optsinit.verbal   = false;
+    optsinit.verbose   = false;
     [D, X]            = DLCOPAR_init(Y, Y_range, optsinit);
     %% options for updating X and D 
     optsX        = opts;
-    optsX.verbal = 0;
+    optsX.verbose = 0;
     optsD        = opts;
-    optsD.verbal = 0;
+    optsD.verbose = 0;
     %% MAIN alg
     iter         = 0;
     tic
     while iter < opts.max_iter 
         iter = iter + 1;
         %% ========= update X ==============================
-        if opts.verbal
-            fprintf('iter = %3d | updating X...', iter);
+        if opts.verbose
+            fprintf('iter = %3d/%3d | updating X...', iter, opts.max_iter);
         end 
         X = DLCOPAR_updateX2(Y, Y_range, D, X, optsX);
         t = toc;     
         if t > 20*3600
             break;
         end 
-        if opts.verbal           
+        if opts.verbose           
             costX = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts);
             fprintf('| costX = %5.3f\n', costX);        
         end 
         %% ========= update D ==============================
-        if opts.verbal
-            fprintf('             updating D...');
+        if opts.verbose
+            fprintf('                 updating D...');
         end 
         D = DLCOPAR_updateD(Y, Y_range, D, X, optsD); % and DCp1 
         t0 = toc; 
-        if opts.verbal
+        if opts.verbose
             costD = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts);        
             fprintf('| costD = %5.3f ', costD);    
             t = t0*(opts.max_iter - iter)/iter;

@@ -1,4 +1,4 @@
-function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts) 
+function Xc = DLCOPAR_updateXc2(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts) 
 % function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts) 
 % * Update Xc in DLCOPAR (page 189-190 DLCOPAR)
 % see DLCOPAR paper: 
@@ -14,15 +14,27 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         fprintf('Test most\n');
         C = 3;    N = 10;    d = 30;
         k = 10;
-        k0 = 0;    
-        c = 2;
-        Y       = normc(rand(d, C*N));
-        D       = normc(rand(d, C*k + k0));
-        DtD     = D'*D;
-        DtY     = D'*Y;
-        Y_range = N*(0:C);
+        k0 = 10;    
+        c = 2; 
+        
+%         Y = normc(rand(d, C*N));
+%         D       = normc(rand(d, C*k + k0));
+%         DtD     = D'*D;
+%         DtY     = D'*Y;
+%         Y_range = N*(0:C);
+%         Yc      = get_block_col(Y, c, Y_range);
+%         Xc      = rand(size(D,2), size(Yc,2));
+%         L       = 2*max(eig(DtD))+10;
+%         D_range = k* (0:C);
+%         D_range_ext = [D_range D_range(end)+k0];
+%         save('tmp.mat', 'Y', 'D', 'Xc', 'Y_range', 'D_range_ext', 'L');
+        load('tmp.mat', 'Y', 'D', 'Xc', 'Y_range', 'D_range_ext', 'L');
+        
+        DtD = D'*D;
+        DtY = D'*Y;
         Yc      = get_block_col(Y, c, Y_range);
-        Xc      = zeros(size(D,2), size(Yc,2));
+        D_range = D_range_ext(1: end-1);
+        
         opts.D_range     = k* (0:C);
         opts.D_range_ext = [opts.D_range opts.D_range(end)+k0];
         DCp1 = get_block_col(D, C+1, opts.D_range_ext);
@@ -37,7 +49,7 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         opts.lambda      = 0.01;
         opts.eta         = 0.1;
         opts.max_iter    = 300;
-        opts.verbal      = true;
+        opts.verbose      = true;
         opts.check_grad  = true;        
     end 
     %%
@@ -79,9 +91,10 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
     DtYc2(range_Cp1,:) = 2*DtYc(range_Cp1,:);
     %%
     function g = grad(Xc)
-        g0 = DtD*Xc;
-        Xcc              = get_block_row(Xc, c, D_range_ext);
-        XCp1c            = get_block_row(Xc, C+1, D_range_ext);
+%         Xc = Xc;
+        g0    = DtD*Xc;
+        Xcc   = get_block_row(Xc, c, D_range_ext);
+        XCp1c = get_block_row(Xc, C+1, D_range_ext);
         if opts.k0 > 0
             Xc(range_c,:)    = DctDc*Xcc + DctDCp1*XCp1c;        
             Xc(range_Cp1, :) = DCp1tDCp1*XCp1c + DCp1tDc*Xcc;
@@ -90,7 +103,7 @@ function Xc = DLCOPAR_updateXc(DtD, DCp1tDCp1, DtY,  Y_range, Xc, c, L, opts)
         end
         g = g0 + Xc - DtYc2;
     end
-    %% check grad 
+    %% check grad     
     if opts.check_grad 
         check_grad(@calc_f, @grad, rand(size(Xc)));
     end 

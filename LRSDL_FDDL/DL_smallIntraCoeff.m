@@ -9,7 +9,7 @@ function [D, X] = DL_smallIntraCoeff(Y, k, lambda1, lambda2, opts)
     	Y = normc(rand(d, N));
     	lambda1 = 0.001;
     	lambda2 = 0.5;
-        opts.verbal = 0;
+        opts.verbose = 0;
         opts.max_iter = 30;
     end 	
     opts = initOpts(opts);
@@ -23,7 +23,7 @@ function [D, X] = DL_smallIntraCoeff(Y, k, lambda1, lambda2, opts)
     %%
 	it = 0;
     cost_old = calc(D, X);    
-    if opts.verbal
+    if opts.verbose
         fprintf('%f', cost_old);
         fprintf('.');
     end 
@@ -49,7 +49,7 @@ function [D, X] = DL_smallIntraCoeff(Y, k, lambda1, lambda2, opts)
         % end
         % cost_old = cost_new;
     end 
-    if opts.verbal
+    if opts.verbose
         fprintf('%f', cost_new);
     end 
     if nargin == 0

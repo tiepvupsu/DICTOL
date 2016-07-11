@@ -20,7 +20,7 @@ function acc = SRC_wrapper(Y_train, range_train, Y_test , range_test, lambda)
     end 
     %%
     opts.lambda   = lambda;
-    opts.verbal   = false;
+    opts.verbose   = false;
     opts.max_iter = 300;
     %%
     pred        = SRC_pred(Y_test, Y_train, range_train, opts);

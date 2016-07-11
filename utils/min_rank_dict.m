@@ -43,7 +43,7 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 		E = Y*X';
 		F = X*X';
 		lambdaD = 0.001;
-		opts.verbal = 0;
+		opts.verbose = 0;
 		opts.max_iter = 1000;
     end 
     %%
@@ -79,18 +79,11 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 		%% ========= update D ==============================
 		% D = argmin_D -2trace(ED') + trace(FD'D) + rho/2 ||J - D + U||_F^2 
 		% s.t. ||d_i||_2^2 <= 1
-%         tic;
 		E1 = E + rho/2*(J_old + U_old);
 		F1 = F + rho/2*I;
 		D_new = ODL_updateD(D_old, E1, F1, optsD);
-%         t1 = t1 + toc;
-%         t1 = t1 + t;
 		%% ========= update J ==============================
-		% J^{k+1} = argminJ lambdaD||J||_* + rho/2||J - D + U||
-%         tic;
 		J_new = real(shrinkage_rank(D_new - U_old, lambdaD/rho));
-%         t2 = t2 + toc;
-%         t2 = t2 + t;
 		%% ========= update U ==============================
 		U_new = U_old + J_new - D_new;        
 		%% ========= check stop ==============================
@@ -101,7 +94,7 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 		if (r_eps < opts.tol && s_eps < opts.tol)
 			break;
         end
-        if opts.verbal
+        if opts.verbose
             cost = calc_cost(D_new);
             fprintf('iter = %2d | cost = %5.4f | r_eps %4.4f | s_eps = %4.4f\n',...
                 k, cost, r_eps, s_eps);
@@ -117,8 +110,6 @@ function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 	end 
 	%% ========= return ==============================
 	D = D_new;
-% % %     disp(t1); 
-%     disp(t2); 
 	if nargin == 0
         D = [];
     end

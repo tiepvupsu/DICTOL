@@ -16,23 +16,34 @@ function Xc = DLCOPAR_updateXc(DtD, DtY,  Y_range, Xc, c, L, opts)
         k = 10;
         k0 = 3;    
         c = 2;
-        Y       = normc(rand(d, C*N));
-        D       = normc(rand(d, C*k + k0));
-        DtD     = D'*D;
-        DtY     = D'*Y;
-        Y_range = N*(0:C);
+%         Y       = normc(rand(d, C*N));
+%         D       = normc(rand(d, C*k + k0));
+%         DtD     = D'*D;
+%         DtY     = D'*Y;
+%         Y_range = N*(0:C);
+%         Yc      = get_block_col(Y, c, Y_range);
+%         Xc      = zeros(size(D,2), size(Yc,2));
+%         L       = 2*max(eig(DtD))+10;
+%         D_range = k* (0:C);
+%         D_range_ext = [D_range D_range(end)+k0];
+%         save('tmp.mat', 'Y', 'D', 'Y_range', 'D_range_ext', 'L');
+        load('tmp.mat', 'Y', 'D', 'Y_range', 'D_range_ext', 'L');
+        
+        DtD = D'*D;
+        DtY = D'*Y;
         Yc      = get_block_col(Y, c, Y_range);
         Xc      = zeros(size(D,2), size(Yc,2));
-        L       = 2*max(eig(DtD))+10;
-
+        D_range = D_range_ext(1: end-1);
+        
         opts.D_range     = k* (0:C);
-        opts.D_range_ext = [opts.D_range opts.D_range(end)+k0];
+        opts.D_range_ext = D_range_ext;
         opts.k0          = k0;
         opts.lambda      = 0.01;
         opts.eta         = 0.1;
         opts.max_iter    = 300;
-        opts.verbal      = true;
-        opts.check_grad  = true;        
+        opts.verbose      = true;
+        opts.check_grad  = true;  
+        
     end 
     %%
     C           = numel(opts.D_range_ext) - 2;

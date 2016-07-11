@@ -28,14 +28,14 @@ function [acc, rt] = FDDL_wrapper(Y_train, label_train, Y_test , label_test, ...
     opts.initmode    = 'normal';   
     opts.max_iter    = 100;
     opts             = initOpts(opts);
-    opts.verbal      = true;
+    opts.verbose      = true;
     opts.tol         = 1e-8;
     %% Train 
     [D, ~, ~, ~, CoefM, ~, opts, rt] = ...
                     LRSDL(Y_train, label_train, opts);
     Y_range = label_to_range(label_train);
     C = max(label_train);
-    opts.verbal = 0;
+    opts.verbose = 0;
     opts.weight = 0.1;
     acc = [];
     for vgamma = [0.0001, 0.001, 0.01, 0.1]

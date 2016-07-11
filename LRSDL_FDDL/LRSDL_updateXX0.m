@@ -23,7 +23,7 @@ function [X, X0] = LRSDL_updateXX0(Y, Y_range, D, D_range, D0, X, X0, opts)
         opts.lambda3  = 0.1;
         opts.max_iter = 250;
         opts.show     = true;    
-        opts.verbal   = true;
+        opts.verbose   = true;
         opts          = initOpts(opts); % other attributes
     end
     %% 
@@ -78,7 +78,7 @@ function [X, X0] = LRSDL_updateXX0(Y, Y_range, D, D_range, D0, X, X0, opts)
         end       
         %% ========= Main FISTA ==============================
         optsXX0          = opts;
-        optsXX0.verbal = false;
+        optsXX0.verbose = false;
         optsXX0.max_iter = 300;
         L = max(eig(Dhat)) + max(eig(A)) + 4*lambda2 + 1;  
         X1 = [X; X0];

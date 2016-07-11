@@ -1,5 +1,5 @@
 function cost = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts)
-% function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
+% function cost = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts)
 % Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`.
 % `f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + 
 %               sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + 
@@ -19,11 +19,11 @@ function cost = DLCOPAR_cost(Y, Y_range, D, D_range_ext, X, opts)
     for c = 1: C
         Dc = get_block_col(D, c, D_range_ext);
         Dc_range = D_range_ext(c)+1: D_range_ext(c+1);
-
         Yc = get_block_col(Y, c, Y_range);
         Xc = get_block_col(X, c, Y_range);
         Xcc = Xc(Dc_range,:);
         XCp1c = Xc(DCp1_range,:);
+        
         cost1 = cost1 + normF2(Yc - Dc*Xcc - DCp1*XCp1c);
 
         Xc(union(Dc_range, DCp1_range),:) = [];

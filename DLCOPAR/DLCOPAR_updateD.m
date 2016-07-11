@@ -19,19 +19,23 @@ function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) % and DCp1
         opts.D_range     = k* (0:C);
         opts.D_range_ext = [opts.D_range opts.D_range(end)+opts.k0];
         opts.max_iter    = 10;
-        opts.verbal      = true;
+        opts.verbose      = true;
+        
+%         Y       = normc(rand(d, C*N));        
+%         Y_range = N * (0:C);
+%         D       = normc(rand(d, opts.D_range_ext(end)));
+%         X       = 0.01*rand(size(D,2), size(Y,2));
+%         save('tmp2.mat', 'Y', 'Y_range', 'D', 'X');
 
-        Y       = normc(rand(d, C*N));        
-        Y_range = N * (0:C);
-        D       = normc(rand(d, opts.D_range_ext(end)));
-        X       = 0.01*rand(size(D,2), size(Y,2));
+        load('tmp2.mat', 'Y', 'Y_range', 'D', 'X');
     end         
+    
     %%
     C              = numel(Y_range) - 1;
     D_range_ext    = opts.D_range_ext;    
     DCp1           = get_block_col(D, C+1, D_range_ext);
     optsD          = opts;
-    optsD.verbal   = false;
+    optsD.verbose   = false;
     optsD.max_iter = 100;    
     Yhat           = zeros(size(Y));
     %% ========= update Dc ==============================
@@ -48,12 +52,12 @@ function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) % and DCp1
         XCp1c    = get_block_row(Xc, C+1, D_range_ext);
         Ychat    = Yc - D*Xc + Dc*Xcc;
         Ycbar    = Yc - DCp1*XCp1c;
-        E      = (Ychat + Ycbar)*Xcc';
-        F      = 2*Xcc*Xcc';
+        E        = (Ychat + Ycbar)*Xcc';
+        F        = 2*Xcc*Xcc';
         A        = D;
         A(:,Dc_range)     = []; 
         D(:, Dc_range)    = DLSI_updateD(Dc, E, F, A', opts.eta, optsD);
-        Yhat(:, Yc_range) = Yc - D(:, Dc_range)*Xcc;    
+        Yhat(:, Yc_range) = Yc - D(:, Dc_range)*Xcc;            
     end 
     %% ========= DCp1 ==============================
     XCp1       = X(D_range_ext(C+1) + 1 : D_range_ext(C+2), :);
