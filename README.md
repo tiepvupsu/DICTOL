@@ -1,7 +1,8 @@
 
 # DICTOL - A Discriminative dictionary Learning Toolbox for Classification.
-_This repository is a supplementary of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.html)_
-Related publications:
+_This Toolbox is a part of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.html)_
+
+**Related publications:**
 
 1. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." *International Conference on Image Processing (ICIP)* 2016. [[paper]](http://arxiv.org/abs/1602.00310).
 
