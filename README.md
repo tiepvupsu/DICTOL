@@ -32,6 +32,7 @@ _This repository is under construction_
   - [FDDL predect new samples](#fddl-predect-new-samples)
 - [Discriminative Feature-Oriented dictionary learning \(DFDL\)](#discriminative-feature-oriented-dictionary-learning-dfdl)
 - [D2L2R2](#d2l2r2)
+- [Fast iterative shrinkage-thresholding algorithm](#fast-iterative-shrinkage-thresholding-algorithm)
 - [References](#references)
 
 <!-- /MarkdownTOC -->
@@ -100,7 +101,7 @@ _This repository is under construction_
 
 Check its [project page](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
 # Dictionary learning with structured incoherence and shared features (DLSI)
-* An implementation of the well-known DLSI method [[2]](#fn_dls).
+* An implementation of the well-known DLSI method [[5]](#fn_dls).
 
 ## Cost function
 
@@ -129,7 +130,7 @@ Run `DLSI_top` in Matlab command window.
 
 # Dictionary learning for separating the particularity and the commonality (COPAR)
 
-* An implementation of COPAR [[2]](#fn_cor).
+* An implementation of COPAR [[7]](#fn_cor).
 
 ## Cost function 
 <img src = "http://latex2png.com/output//latex_0ff86752b6cc0c3944966f2a96d01c1d.png" height = "40"/>
@@ -170,6 +171,8 @@ Run `COPAR_top` in the Matlab command window.
 
 # LRSDL
 
+* An implementation of COPAR [[8]](#fn_cor).
+
 ## Motivation 
 
 <img src = "http://signal.ee.psu.edu/lrsdl/LRSDL_motivation.png" height = "400"/>
@@ -207,7 +210,7 @@ Run `LRSDL_top` in the Matlab command window.
 
 
 # Fisher discrimination dictionary learning (FDDL)
-* An implementation of FDDL [[2]](#fn_fdd).
+* An implementation of FDDL [[4]](#fn_fdd).
 
 ## Cost function 
 
@@ -225,6 +228,10 @@ Set `opts.k0 = 0` and using `LRSDL.m` function.
 
 # D2L2R2 
 * Update later 
+
+# Fast iterative shrinkage-thresholding algorithm
+* An implementation of FISTA [[10]](#fn_cor).
+* Check [this repository](https://github.com/tiepvupsu/fista)
 
 # References
 
@@ -247,6 +254,6 @@ Set `opts.k0 = 0` and using `LRSDL.m` function.
 
 <a name="fn_shr">[9]</a>. A singular value thresholding algorithm for matrix completion." _SIAM Journal on Optimization_ 20.4 (2010): 1956-1982. [[paper]](http://arxiv.org/pdf/0810.3286v1.pdf)
 
-<a name="fn_fista">[10]</a>. Beck, Amir, and Marc Teboulle. "A fast iterative shrinkage-thresholding algorithm for linear inverse problems." _SIAM journal on imaging sciences_ 2.1 (2009): 183-202. [[paper]](http://people.rennes.inria.fr/Cedric.Herzet/Cedric.Herzet/Sparse_Seminar/Entrees/2012/11/12_A_Fast_Iterative_Shrinkage-Thresholding_Algorithmfor_Linear_Inverse_Problems_(A._Beck,_M._Teboulle)_files/Breck_2009.pdf)
+<a name="fn_fista">[10]</a>. (**FISTA**) Beck, Amir, and Marc Teboulle. "A fast iterative shrinkage-thresholding algorithm for linear inverse problems." _SIAM journal on imaging sciences_ 2.1 (2009): 183-202. [[paper]](http://people.rennes.inria.fr/Cedric.Herzet/Cedric.Herzet/Sparse_Seminar/Entrees/2012/11/12_A_Fast_Iterative_Shrinkage-Thresholding_Algorithmfor_Linear_Inverse_Problems_(A._Beck,_M._Teboulle)_files/Breck_2009.pdf)
 
-<a name="fn_spams"> [11]</a>. [The Sparse Modeling Software](http://spams-devel.gforge.inria.fr/)
+<a name="fn_spams"> [11]</a>. (**SPAMS**) [The Sparse Modeling Software](http://spams-devel.gforge.inria.fr/)
