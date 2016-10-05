@@ -23,7 +23,7 @@ _This repository is under construction_
 - [Dictionary learning with structured incoherence and shared features \(DLSI\)](#dictionary-learning-with-structured-incoherence-and-shared-features-dlsi)
   - [Cost function](#cost-function-1)
   - [Training DLSI](#training-dlsi)
-  - [DLSI predict new sample](#dlsi-predict-new-sample)
+  - [DLSI predict new samples](#dlsi-predict-new-samples)
   - [Demo](#demo)
 - [Dictionary learning for separating the particularity and the commonality \(COPAR\)](#dictionary-learning-for-separating-the-particularity-and-the-commonality-copar)
   - [Cost function](#cost-function-2)
@@ -130,7 +130,7 @@ Check its [project page](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
   - `X`: the trained sparse coefficient,
   - `rt`: total running time of the training process.   
 
-## DLSI predict new sample 
+## DLSI predict new samples 
 * function `pred = DLSI_pred(Y, D, opts)`
 * predict the label of new input `Y` given the trained dictionary `D` and 
 parameters stored in `opts` 
@@ -193,7 +193,7 @@ __Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries 
 
 ![](LRSDL_FDDL/figs/idea_LRSDL_web.png "LRSDL idea and cost function")
 ## Traing LRSDL 
-* function `[D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
+* function `[D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)``
 * INPUT:
   - `Y, Y_range`: training samples and their labels 
   - `opts`: a struct 
