@@ -2,6 +2,43 @@
 # Discriminative dictionary Learning Toolbox for Classification.
 _This repository is under construction_
 
+<!-- MarkdownTOC -->
+
+- [Notation](#notation)
+- [Sparse Representation-based classification](#sparse-representation-based-classification)
+- [Online Dictionary Learning](#online-dictionary-learning)
+- [LCKSVD](#lcksvd)
+- [FDDL](#fddl)
+  - [`FDDL_fidelity`](#fddl_fidelity)
+  - [`FDDL_discriminative`](#fddl_discriminative)
+  - [`FDDL_cost`](#fddl_cost)
+  - [`FDDL_updateX`](#fddl_updatex)
+  - [`FDDL_updateD`](#fddl_updated)
+  - [`FDDL_pred`](#fddl_pred)
+- [DLSI](#dlsi)
+  - [`DLSI_term`](#dlsi_term)
+  - [`DLSI_cost`](#dlsi_cost)
+  - [`DLSI`](#dlsi-1)
+  - [`DLSI_updateD`](#dlsi_updated)
+  - [`DLSI_pred`](#dlsi_pred)
+  - [`DLSI_top`](#dlsi_top)
+- [DLCOPAR](#dlcopar)
+  - [`DLCOPAR`](#dlcopar-1)
+  - [`DLCOPAR_cost`](#dlcopar_cost)
+  - [`DLCOPAR_updateX`](#dlcopar_updatex)
+  - [`DLCOPAR_updateD`](#dlcopar_updated)
+  - [`DLCOPAR_pred`](#dlcopar_pred)
+  - [`DLCOPAR_top`](#dlcopar_top)
+- [LRSDL](#lrsdl)
+    - [`LRSDL_top`](#lrsdl_top)
+- [FuzzyDL](#fuzzydl)
+- [References](#references)
+
+<!-- /MarkdownTOC -->
+
+
+
+
 * [__SRC__](#src): Sparse Representation-based Classification [[1]](#fn_src). 
 
 * [__ODL__](#odl): Online dictionary Learning [[2]](#fn_odl).
@@ -41,173 +78,29 @@ _This repository is under construction_
 * `K`: total number of dictionary bases. 
 * `D_range`: similar to `Y_range` but used for dictionary without the shared dictionary. 
 
-# Supporting functions
-
-All of the following functions are located in subfolder `utils`.
-
-#### `get_block_col`
-* Extract a block of columns from a matrix.
-* Syntax: `Mc = get_block_col(M, c, col_range)`
-    - `M`: the big matrix `M = [M_1, M_2, ...., M_C]`.
-    - `c`: block index.
-    - `col_range`: range of samples, see `Y_range` and `D_range` above.
-* Example: `M` has 25 columns and `col_range = [0, 10, 25]`, then `get_block_col(M, 1, col_range)` will output the first block of `M`, i.e. `M(:, 1:10)`.
-
-#### `get_block_row`
-* Extract a block of rows from a matrix.
-* Syntax: `Mc = get_block_row(M, c, row_range)`
-    - `M`: the big matrix `M = [M_1; M_2; ....; M_C]`.
-    - `c`: block index.
-    - `row_range`: range of samples, see `Y_range` and `D_range` above.
-* Example: `M` has 40 rows and `row_range = [0, 10, 25, 40]`, then `get_block_row(M, 2, row_range)` will output the second block of `M`, i.e. `M(11:25, :)`.
-
-#### `get_block`
-* Extract a submatrix of a matrix 
-* Syntax: `Mij = get_block(M, i, j, row_range, col_range)`
-    - `M` the big matrix: `M = [ M11, M12, ..., M1m; M21, M22, ..., M2m; ... ; Mn1, Mn2,..., Mnm]`
-    - `i`: row block index 
-    - `j`: column block index 
-    - `row_range`: row range
-    - `col_range`: columns range 
-* Note: `get_block(M, i, j, row_range, col_range) = get_block_col(get_block_row(M, i, row_range), j, col_range).`
-
-
-#### `label_to_range`
-* Convert from Labels to Ranges
-* Example: if `label = [1 1 1 2 2 2 2 3 3]`, then `range = [0, 3, 7, 9]`.
-* Syntax: `range = label_to_range(label)`
-
-#### `range_to_label`
-* Convert from Ranges to Labels
-* Example: if `range = [0, 3, 5]`` then `label = [1 1 1 2 2]``
-* Syntax: `label = range_to_label(range)`
-
-#### `norm1`
-* Return norm 1 of a matrix, which is sum of absolute value of all element of that matrix.
-* Syntax: `res = norm1(X)`
-
-#### `normF2`
-* Return square of the Frobenius norm, which is sum of square of all elements in a matrix
-* Syntax: `res = normF2(X)`
-
-#### `normc`
-* Normalize columns of a matrix: norm 2 of each columns equals to 1. This function is a built-in function in some recent MATLAB version.
-* Syntax: `M1 = normc(M1)`
-
-#### `vec`
-* Vectorization of a matrix. This function is a built-in function in some recent MATLAB version.
-* Syntax: `a = vec(A)`
-
-#### `nuclearnorm`
-* Return nuclear norm of a matrix.
-* Syntax `res = nuclearnorm(X)`
-* `
-
-#### `erase_diagonal`
-* function A = erase_diagonal(A)
-* Erase diagonal of a matrix A
-* required: `size(A, 1) == size(A, 2)`
-
-#### `double_diagonal`
-* function A = double_diagonal(A)
-* Double diagonal elements of a matrix A 
-* required: `size(A, 1) == size(A, 2)`
-
-#### `erase_diagonal_blocks`
-* function A = erase_diagonal_blocks(A, row_range, col_range)
-* Erase diagonal blocks of a block matrix A whose row range and col range are `row_range` and `col_range`
-* required: `numel(row_range) == numel(col_range)
-
-#### `double_diagonal_blocks` 
-* function A = double_diagonal_blocks(A, row_range, col_range)
-* Double diagonal blocks of a block matrix A whose row range and col range are `row_range` and `col_range`
-* requirements: `numel(row_range0 == numel(col_range))`
 
 
 
-#### `shrinkage`
-* Soft thresholding function.
-* Syntax: ` X = shrinkage(U, lambda)`
-* Solve the following optimization problem:
-  `X = arg min_X 0.5*||X - U||_F^2 + lambda||X||_1`
-  where `U` and `X` are matrices with same sizes. `lambda` can be either positive a scalar or a positive matrix (all elements are positive) with same size as `X`. In the latter case, it is a weighted problem.
-
-#### `shrinkage_rank`
-* Singular value thresholding algorithm for matrix completion [[10]](#fn_shr).
-* Syntax: `Y = shrinkage_rank(D, lambda)` 
-* Solve the following optimization problem:
-  `X = arg min_X 0.5*||X - U||_F^2 + lambda*||X||_*`
-  where `||X||_*` is the nuclear norm.
-
-#### `fista`
-* A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems[[11]](#fn_fista).
-* Solve the problem: `X = arg min_X F(X) = f(X) + lambda||X||_1` where:
-  - `X`: variable, can be a matrix.
-  - `f(X)` is a smooth convex function with continuously differentiable with Lipschitz continuous gradient `L(f)` (Lipschitz constant of the gradient of `f`).
-* Syntax: `[X, iter] = fista(grad, Xinit, L, lambda, opts, calc_F)` where:
-  - INPUT:
-    + `grad`: a _function_ calculating gradient of `f(X)` given `X`.
-    + `Xinit`: initial guess.
-    + `L`: the Lipschitz constant of the gradient of `f(X)`.
-    + `lambda`: a regularization parameter, can be either a positive scalar or a weighted matrix.
-    + `opts`: a _structure_ variable describing the algorithm.
-      * `opts.max_iter`: maximum iterations of the algorithm. Default `300`.
-      * `opts.tol`: a tolerance, the algorithm will stop if difference between two successive `X` is smaller than this value. Default `1e-8`.
-      * `opts.show_progress`: showing `F(X)` after each iteration or not. Default `false`. 
-    + `calc_F`: optional, a _function_ calculating value of `F` at `X` via `feval(calc_F, X)`. 
-  - OUTPUT:
-    + `X`: solution.
-    + `iter`: number of iterations.
-
-#### `lasso_fista`
-* Syntax: `[X, iter] = lasso_fista(Y, D, Xinit, lambda, opts)`
-* Solving a Lasso problem using FISTA [[11]](#fn_fista): `X = arg min_X 0.5*||Y - DX||_F^2 + lambda||X||_1`. Note that `lambda` can be either a positive scalar or a matrix with positive elements.
-  - INPUT:
-    + `Y, D, lambda`: as in the problem.
-    + `Xinit`: Initial guess 
-    + `opts`: options. See also [`fista`](#fista)
-  - OUTPUT:
-    + `X`: solution.
-    + `iter`: number of fistat iterations.
-* **Note**:
-  - _To see a toy example, un this function without inputs_
-  - _Can be used for solving a Weighted Lasso problem_.
-
-
-
-
-
-
-# SRC
+# Sparse Representation-based classification
 * Sparse Representation-based classification implementation [[1]](#fn_src).
-* Folder `SRC`.
-
-#### `SRC_pred`
 * Classification based on SRC.
 * Syntax: `[pred, X] = SRC_pred(Y, D, D_range, opts)`
   - INPUT:
     + `Y`: test samples.
     + `D`: the total dictionary. `D = [D_1, D_2, ..., D_C]` with `D_c` being the _c-th_ class-specific dictionary.
-    + `D_range`: range of class-specific dictionaries in `D`. See also [Notation](#notation), [`label_to_range`](#label_to_range), [`range_to_label`](#range_to_label), [`get_block_col`](#get_block_col).
+    + `D_range`: range of class-specific dictionaries in `D`. See also [Notation](#notation).
     + `opts`: options.
-      * `opts.lambda`: `lambda` for the Lasso problem.
-      * `opts.max_iter`: maximum iterations of fista algorithm. See also [fista](#fista), [lasso_fista](#lasso_fista).
-      * others.
+      * `opts.lambda`: `lambda` for the Lasso problem. Default: `0.01`.
+      * `opts.max_iter`: maximum iterations of fista algorithm. Default:  `100`. [Check this simple implementation of FISTA](https://github.com/tiepvupsu/FISTA) 
   - OUTPUT:
     + `pred`: predicted labels of test samples.
     + `X`: solution of the lasso problem.
 
-# ODL
+# Online Dictionary Learning
 * An implementation of the well-known Online Dictionary Learning method [[2]](#fn_old).
 * Solving the dictionary learning problem:
+<img src = "http://latex2png.com/output//latex_c1709f7ea3f7f523694cf0d6b9a61aa9.png" height = "40"/>    
 
-   `[D, X] = arg min_{D, X} 0.5||Y - DX||_F^2 + lambda||X||_1` subject to `||d_i||_2 <= 1`.
-* Folder `./ODL`.
-
-## Supporting funtions:
-
-### `ODL`
-* The algorithm to solve the main problem stated above.
 * Syntax: `[D, X] = ODL(Y, k, lambda, opts, sc_method)`
   - INPUT: 
     + `Y`: collection of samples.
@@ -215,31 +108,10 @@ All of the following functions are located in subfolder `utils`.
     + `lambda`: norm 1 regularization parameter.
     + `opts`: option.
     + `sc_method`: sparse coding method used in the sparse coefficient update. Possible values:
-      * `'fista'`: using FISTA algorithm. See also [`fista`](#fista).
-      * `'spams'`: using SPAMS toolbox [[12]](#fn_spams). 
+      - `'fista'`: using FISTA algorithm. See also [`fista`](#fista).
+      - `'spams'`: using SPAMS toolbox [[12]](#fn_spams). 
   - OUTPUT:
     + `D, X`: as in the problem.
-
- 
-### `ODL_cost`
-* Calculating cost 
-* Syntax `cost = ODL_cost(Y, D, X, lambda)`
-
-### `ODL_updateD`
-* The dictionary update algorithm in ODL. 
-* Solving the optimization problem:
-
-  `D = arg min_D -2trace(E'*D) + trace(D*F*D')` subject to: `||d_i||_2 <= 1`,  where `F` is a positive semidefinite matrix. 
-* Syntax `[D, iter] = ODL_updateD(D, E, F, opts)`
-  - INPUT: 
-    + `D, E, F` as in the above problem.
-    + `opts`. options:
-      * `opts.max_iter`: maximum number of iterations.
-      * `opts.tol`: when the difference between `D` in two successive iterations less than this value, the algorithm will stop.
-  - OUTPUT:
-    + `D`: solution.
-    + `iter`: number of run iterations.
-
 
 # LCKSVD
 

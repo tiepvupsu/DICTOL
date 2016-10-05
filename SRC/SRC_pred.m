@@ -36,6 +36,9 @@ function [pred, X] = SRC_pred(Y, D, D_range, opts)
 	    opts.show_progress = false;
         opts.lambda = 0.01;
 	end 
+	if ~isfieled(opts, 'lambda')
+		opts.lambda = 0.01;
+	end
 	%%
     Y = normc(Y);
     D = normc(D);
