@@ -174,18 +174,13 @@ Run `COPAR_top` in the Matlab command window.
 * An implementation of COPAR [[8]](#fn_cor).
 
 ## Motivation 
-
-<img src = "http://signal.ee.psu.edu/lrsdl/LRSDL_motivation.png" height = "200"/>
-<!-- <img src = "http://signal.ee.psu.edu/lrsdl/LRSDL_motivation.png" height = "200"/> -->
-
-![](http://signal.ee.psu.edu/lrsdl/LRSDL_motivation.png)
+![](LRSDL_FDDL/figs/LRSDL_motivation.png "LRSDL motivation")
 
 
 ## Cost function 
 
 __Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries (`D`) and the shared dictionary (`D_0`). The sparse coefficients (`X`, `X^0`) are also separated.__
 
-<img src = "http://signal.ee.psu.edu/lrsdl/idea_LRSDL_web.png" height = "250"/>
 ![](LRSDL_FDDL/figs/idea_LRSDL_web.png "LRSDL idea and cost function")
 ## Traing LRSDL 
 * function `[D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
