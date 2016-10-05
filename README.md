@@ -5,24 +5,31 @@ _This repository is under construction_
 <!-- MarkdownTOC -->
 
 - [Notation](#notation)
-- [Sparse Representation-based classification](#sparse-representation-based-classification)
-- [Online Dictionary Learning](#online-dictionary-learning)
-- [LCKSVD](#lcksvd)
-- [FDDL](#fddl)
-- [DLSI](#dlsi)
+- [Sparse Representation-based classification \(SRC\)](#sparse-representation-based-classification-src)
+- [Online Dictionary Learning \(ODL\)](#online-dictionary-learning-odl)
   - [Cost function](#cost-function)
+  - [Training ODL](#training-odl)
+- [LCKSVD](#lcksvd)
+- [Dictionary learning with structured incoherence and shared features \(DLSI\)](#dictionary-learning-with-structured-incoherence-and-shared-features-dlsi)
+  - [Cost function](#cost-function-1)
   - [Training DLSI](#training-dlsi)
   - [DLSI predict new sample](#dlsi-predict-new-sample)
   - [Demo](#demo)
-- [DLCOPAR](#dlcopar)
-  - [`DLCOPAR`](#dlcopar-1)
-  - [`DLCOPAR_cost`](#dlcoparcost)
-  - [`DLCOPAR_updateX`](#dlcoparupdatex)
-  - [`DLCOPAR_updateD`](#dlcoparupdated)
-  - [`DLCOPAR_pred`](#dlcoparpred)
-  - [`DLCOPAR_top`](#dlcopartop)
+- [Dictionary learning for separating the particularity and the commonality \(COPAR\)](#dictionary-learning-for-separating-the-particularity-and-the-commonality-copar)
+  - [Cost function](#cost-function-2)
+  - [Training COPAR](#training-copar)
+  - [COPAR predect new samples](#copar-predect-new-samples)
+  - [Demo](#demo-1)
 - [LRSDL](#lrsdl)
-    - [`LRSDL_top`](#lrsdltop)
+  - [Motivation](#motivation)
+  - [Cost function](#cost-function-3)
+  - [Traing LRSDL](#traing-lrsdl)
+  - [LRSDL predict new samples](#lrsdl-predict-new-samples)
+  - [Demo](#demo-2)
+- [Fisher discrimination dictionary learning \(FDDL\)](#fisher-discrimination-dictionary-learning-fddl)
+  - [Cost function](#cost-function-4)
+  - [Training FDDL](#training-fddl)
+  - [FDDL predect new samples](#fddl-predect-new-samples)
 - [References](#references)
 
 <!-- /MarkdownTOC -->
@@ -52,7 +59,7 @@ _This repository is under construction_
 
 
 
-# Sparse Representation-based classification
+# Sparse Representation-based classification (SRC)
 * Sparse Representation-based classification implementation [[1]](#fn_src).
 * Classification based on SRC.
 * Syntax: `[pred, X] = SRC_pred(Y, D, D_range, opts)`
@@ -67,11 +74,14 @@ _This repository is under construction_
     + `pred`: predicted labels of test samples.
     + `X`: solution of the lasso problem.
 
-# Online Dictionary Learning
-* An implementation of the well-known Online Dictionary Learning method [[2]](#fn_old).
-* Solving the dictionary learning problem:
+# Online Dictionary Learning (ODL)
+* An implementation of the well-known Online Dictionary Learning method [[2]](#fn_odl).
+
+## Cost function 
+
 <img src = "http://latex2png.com/output//latex_c1709f7ea3f7f523694cf0d6b9a61aa9.png" height = "40"/>    
 
+## Training ODL 
 * Syntax: `[D, X] = ODL(Y, k, lambda, opts, sc_method)`
   - INPUT: 
     + `Y`: collection of samples.
@@ -86,11 +96,8 @@ _This repository is under construction_
 
 # LCKSVD
 
-
-# FDDL
-
-
-# DLSI
+# Dictionary learning with structured incoherence and shared features (DLSI)
+* An implementation of the well-known DLSI method [[2]](#fn_dls).
 
 ## Cost function
 
@@ -105,12 +112,9 @@ _This repository is under construction_
     + `opts.lambda, opts.eta`: `lambda` and `eta` in the cost function 
     + `opts.max_iter`: maximum iterations. 
 * OUTPUT:
+  - `D`: the trained dictionary, 
+  - `X`: the trained sparse coefficient,
   - `rt`: total running time of the training process.   
-* `[D, X, rt] = argmin_{D, X}(sum 0.5*||Y_c - D_c X_c||_F^2) + lambda*norm1(X) + 0.5*eta * sum_{i \neq c} ||D_i^T D_c||_F^2`
-* updating `X`:
-  `Xi = arg\min 0.5*||Y_c - D_c X_c||_F^2 + lambda ||X_c||`
-* updating `D`:
-  `Di = argmin ||Y_c - D_c X_c||_F^2 + \eta ||D_{\c}^T D_c||_F^2`
 
 ## DLSI predict new sample 
 * function `pred = DLSI_pred(Y, D, opts)`
@@ -120,56 +124,104 @@ parameters stored in `opts`
 ## Demo 
 Run `DLSI_top` in Matlab command window.
 
-# DLCOPAR
-## `DLCOPAR`
-* function `[D, X, rt] = DLCOPAR(Y, Y_range, opts)`
-* The main DLCOPAR alg
+# Dictionary learning for separating the particularity and the commonality (COPAR)
 
-## `DLCOPAR_cost`
-* function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
-* Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`.
-* `f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 0.5*eta*sum_{i \neq c}||Di^T*Dc||_F^2`
+* An implementation of COPAR [[2]](#fn_cor).
 
-## `DLCOPAR_updateX`
-* function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
-* updating X in DLCOPAR. 
+## Cost function 
+<img src = "http://latex2png.com/output//latex_0ff86752b6cc0c3944966f2a96d01c1d.png" height = "40"/>
 
-## `DLCOPAR_updateD` 
-* function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) 
-* update D in DLCOPAR, including both PARTICULAR dictionaries and the COMMON dictionary.
-* The algorithm used here is the efficient algorithm presented in LRSDL paper 
+## Training COPAR 
 
-## `DLCOPAR_pred`
-* function pred = DLCOPAR_pred(Y, D, D_range_ext, opts)
+* function `[D, X, rt] = COPAR(Y, Y_range, opts)`
+
+* INPUT:
+  - `Y, Y_range`: training samples and their labels 
+  - `opts`: a struct 
+    + `opts.lambda, opts.eta`: `lambda` and `eta` in the cost function 
+    + `opts.max_iter`: maximum iterations. 
+
+* OUTPUT:
+  - `D`: the trained dictionary, 
+  - `X`: the trained sparse coefficient,
+  - `rt`: total running time of the training process.   
+
+## COPAR predect new samples 
+
+* function pred = COPAR_pred(Y, D, D_range_ext, opts)
 * predict label of the input Y
 * INPUT:
-   + `opts.classify_mode` = either 'GC' (global coding) or 'LC' (local coding)
+  -  `Y`: test samples 
+  -  `D`: the trained dictionary 
+  -  `D_range_ext`: range of class-specific and shared dictionaries in `D`. The shared dictionary is located at the end of `D`.
+  -  `opts`: a struct of options:
+    +  `opts.classify_mode`: a string of classification mode. either `'GC'` (global coding) or `'LC'` (local coding)
+    +  `opts.lambda, opts.eta, opts.max_iter`: as in `COPAR.m`.
 
-## `DLCOPAR_top`
-  * function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
-  * The top function of DLCOPAR 
-  * INPUT:
-    + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
-      Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
-    + `N_train`: number of training samples in each class 
-    + `k`: number of bases in EACH PARTICULAR dictionary 
-    + `k0`: number of bases in the COMMON dictionary
-    + `lambda, eta`: regularization parameters.
-  * To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
+* OUTPUT:
+  - `pred`: predicted labels of `Y`.
 
+## Demo
+Run `COPAR_top` in the Matlab command window.
 
 
 # LRSDL
-### `LRSDL_top`
-* Syntax `LRSDL_top(dataset, N_train, k, lambda1, lambda2, lambda3)`
+
+## Motivation 
+
+<img src = "http://signal.ee.psu.edu/lrsdl/LRSDL_motivation.png" height = "400"/>
+
+## Cost function 
+
+__Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries (`D`) and the shared dictionary (`D_0`). The sparse coefficients (`X`, `X^0`) are also separated.__
+
+<img src = "http://signal.ee.psu.edu/lrsdl/idea_LRSDL_web.png" height = "450"/>
+
+## Traing LRSDL 
+* function `[D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)
+* INPUT:
+  - `Y, Y_range`: training samples and their labels 
+  - `opts`: a struct 
+    + `opts.lambda1, opts.lambda`: `lambda1` and `lambda2` in the cost function, 
+    + `opts.lambda3`: `eta` in the cost function (fix later),
+    + `opts.max_iter`: maximum iterations,
+    + `opts.D_range`: range of the trained dictionary,
+    + `opts.k0`: size of the shared dictionary 
+
+* OUTPUT:
+  - `D, D0, X, X0`: trained matrices as in the cost function,
+  - `CoefM`: the mean matrix. `CoefM(:, c)` is the mean vector of `X_c` (mean of columns).
+  - `CoefM0`: the mean vector of `X0`,
+  - `rt`: total running time (in seconds).
+
+## LRSDL predict new samples
+
+See `LRSDL_pred_GC.m` function
+
+## Demo 
+Run `LRSDL_top` in the Matlab command window.
 
 
+
+# Fisher discrimination dictionary learning (FDDL)
+* An implementation of FDDL [[2]](#fn_fdd).
+
+## Cost function 
+
+Simiar to LRSDL cost function without red terms.
+
+## Training FDDL 
+Set `opts.k0 = 0` and using `LRSDL.m` function.
+
+## FDDL predect new samples
+
+* function `pred = FDDL_pred(Y, D, CoefM, opts)``
 
 # References
 
 <a name="fn_src">[1]</a>. Wright, John, et al. "Robust face recognition via sparse representation." _Pattern Analysis and Machine Intelligence, IEEE Transactions on_ 31.2 (2009): 210-227. [paper](http://www.columbia.edu/~jw2966/papers/WYGSM09-PAMI.pdf )
 
-<a name="fn_old">[2]</a>. Mairal, Julien, et al. "Online learning for matrix factorization and sparse coding." _The Journal of Machine Learning Research 11_ (2010): 19-60. [[paper]](http://www.di.ens.fr/~fbach/mairal10a.pdf)
+<a name="fn_odl">[2]</a>. Mairal, Julien, et al. "Online learning for matrix factorization and sparse coding." _The Journal of Machine Learning Research 11_ (2010): 19-60. [[paper]](http://www.di.ens.fr/~fbach/mairal10a.pdf)
 
 <a name="fn_lck">[3]</a>. Jiang, Zhuolin, Zhe Lin, and Larry S. Davis. "Label consistent K-SVD: Learning a discriminative dictionary for recognition." _Pattern Analysis and Machine Intelligence, IEEE Transactions on_ 35.11 (2013): 2651-2664. [[Project page]](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
 

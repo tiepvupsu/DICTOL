@@ -14,7 +14,7 @@ _This repository is under construction_
 
 * [__DFDL__](#dfdl): Discriminative Feature-Oriented dictionary Learning [[6]](#fn_dfd)
 
-* [__DLCOPAR__](#dlcopar) [[7]](#fn_cor) 
+* [__COPAR__](#COPAR) [[7]](#fn_cor) 
 
 
 
@@ -329,34 +329,34 @@ parameters stored in `opts`
     + `lambda, eta`: regularization parameters.
   * To run an small example, type `DLSI_top` without input in MATLAB command window. 
 
-# DLCOPAR
-## `DLCOPAR`
-* function `[D, X, rt] = DLCOPAR(Y, Y_range, opts)`
-* The main DLCOPAR alg
+# COPAR
+## `COPAR`
+* function `[D, X, rt] = COPAR(Y, Y_range, opts)`
+* The main COPAR alg
 
-## `DLCOPAR_cost`
+## `COPAR_cost`
 * function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
-* Calculating cost function of DLCOPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`.
+* Calculating cost function of COPAR with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`.
 * `f(D, X) = 0.5*sum_{c=1}^C 05*||Y - DX||_F^2 + sum_{c=1}^C ( ||Y_c - D_Cp1 X^Cp1_c - D_c X_c^c||F^2 + sum_{i != c}||X^i_c||_F^2) + lambda*||X||_1 + 0.5*eta*sum_{i \neq c}||Di^T*Dc||_F^2`
 
-## `DLCOPAR_updateX`
-* function X = DLCOPAR_updateX(Y, Y_range, D, X, opts)
-* updating X in DLCOPAR. 
+## `COPAR_updateX`
+* function X = COPAR_updateX(Y, Y_range, D, X, opts)
+* updating X in COPAR. 
 
-## `DLCOPAR_updateD` 
-* function D = DLCOPAR_updateD(Y, Y_range, D, X, opts) 
-* update D in DLCOPAR, including both PARTICULAR dictionaries and the COMMON dictionary.
+## `COPAR_updateD` 
+* function D = COPAR_updateD(Y, Y_range, D, X, opts) 
+* update D in COPAR, including both PARTICULAR dictionaries and the COMMON dictionary.
 * The algorithm used here is the efficient algorithm presented in LRSDL paper 
 
-## `DLCOPAR_pred`
-* function pred = DLCOPAR_pred(Y, D, D_range_ext, opts)
+## `COPAR_pred`
+* function pred = COPAR_pred(Y, D, D_range_ext, opts)
 * predict label of the input Y
 * INPUT:
    + `opts.classify_mode` = either 'GC' (global coding) or 'LC' (local coding)
 
-## `DLCOPAR_top`
-  * function DLCOPAR_top(dataset, N_train, k, k0, lambda, eta)
-  * The top function of DLCOPAR 
+## `COPAR_top`
+  * function COPAR_top(dataset, N_train, k, k0, lambda, eta)
+  * The top function of COPAR 
   * INPUT:
     + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
       Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
@@ -364,7 +364,7 @@ parameters stored in `opts`
     + `k`: number of bases in EACH PARTICULAR dictionary 
     + `k0`: number of bases in the COMMON dictionary
     + `lambda, eta`: regularization parameters.
-  * To run an small example, type `DLCOPAR_top` without input in MATLAB command window.
+  * To run an small example, type `COPAR_top` without input in MATLAB command window.
 
 
 
