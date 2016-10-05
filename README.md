@@ -227,7 +227,6 @@ parameters stored in `opts`
 * Syntax `LRSDL_top(dataset, N_train, k, lambda1, lambda2, lambda3)`
 
 
-# FuzzyDL 
 
 # References
 
@@ -246,12 +245,10 @@ parameters stored in `opts`
 
 <a name="fn_cor">[7]</a>. Kong, Shu, and Donghui Wang. "A dictionary learning approach for classification: separating the particularity and the commonality." _Computer Vision ECCV_ 2012. Springer Berlin Heidelberg, 2012. 186-199. [[paper]] (http://www.cs.zju.edu.cn/people/wangdh/papers/draft_ECCV12_particularity.pdf)
 
-<a name="fn_ldl">[8]</a>. Yang, Meng, et al. "Latent dictionary learning for sparse representation based classification." _Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition_. 2014.[[paper]](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjRsIrixPjLAhWE9h4KHc-JDiUQFggiMAA&url=http%3A%2F%2Fwww.cv-foundation.org%2Fopenaccess%2Fcontent_cvpr_2014%2Fpapers%2FYang_Latent_dictionary_Learning_2014_CVPR_paper.pdf&usg=AFQjCNGSzR64f4QkoHn6D-668-wpB2xIcQ&sig2=oKGPUp1o-L9O1Q1XHwhZcg)
+<a name="fn_lrs">[8]</a>. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." Submitted to International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
 
-<a name="fn_lrs">[9]</a>. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." Submitted to International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
+<a name="fn_shr">[9]</a>. A singular value thresholding algorithm for matrix completion." _SIAM Journal on Optimization_ 20.4 (2010): 1956-1982. [[paper]](http://arxiv.org/pdf/0810.3286v1.pdf)
 
-<a name="fn_shr">[10]</a>. A singular value thresholding algorithm for matrix completion." _SIAM Journal on Optimization_ 20.4 (2010): 1956-1982. [[paper]](http://arxiv.org/pdf/0810.3286v1.pdf)
+<a name="fn_fista">[10]</a>. Beck, Amir, and Marc Teboulle. "A fast iterative shrinkage-thresholding algorithm for linear inverse problems." _SIAM journal on imaging sciences_ 2.1 (2009): 183-202. [[paper]](http://people.rennes.inria.fr/Cedric.Herzet/Cedric.Herzet/Sparse_Seminar/Entrees/2012/11/12_A_Fast_Iterative_Shrinkage-Thresholding_Algorithmfor_Linear_Inverse_Problems_(A._Beck,_M._Teboulle)_files/Breck_2009.pdf)
 
-<a name="fn_fista">[11]</a>. Beck, Amir, and Marc Teboulle. "A fast iterative shrinkage-thresholding algorithm for linear inverse problems." _SIAM journal on imaging sciences_ 2.1 (2009): 183-202. [[paper]](http://people.rennes.inria.fr/Cedric.Herzet/Cedric.Herzet/Sparse_Seminar/Entrees/2012/11/12_A_Fast_Iterative_Shrinkage-Thresholding_Algorithmfor_Linear_Inverse_Problems_(A._Beck,_M._Teboulle)_files/Breck_2009.pdf)
-
-<a name="fn_spams"> [12]</a>. [The Sparse Modeling Software](http://spams-devel.gforge.inria.fr/)
+<a name="fn_spams"> [11]</a>. [The Sparse Modeling Software](http://spams-devel.gforge.inria.fr/)
