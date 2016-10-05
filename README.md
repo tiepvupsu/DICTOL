@@ -117,25 +117,7 @@ _This repository is under construction_
 
 
 # FDDL
-## `FDDL_fidelity`
-* Syntax: cost = FDDL_fidelity(Y, Y_range, D, D_range, X)
-* Calculating the fidelity term in FDDL[[4]](#fn_fdd):
-* $sum_{c=1}^C \Big(||Y_c - D_cX^c_c||_F^2 + sum_{i \neq c} ||D_c X^c_i||_F^2\Big)$
 
-## `FDDL_discriminative`
-* Syntax: cost = FDDL_discriminative(X, Y_range)
-* calculating the discriminative term in FDDL[[4]](#fn_fdd):
-* $||X||_F^2 + sum_{c=1}^C (||Xc - Mc||_F^2 - ||Mc - M||_F^2) $
-
-## `FDDL_cost`
-* `FDDL_cost(Y, Y_range, D, D_range, X, lambda1, lambda2)`
-
-
-## `FDDL_updateX`
-
-## `FDDL_updateD`
-
-## `FDDL_pred`
 
 # DLSI
 ## `DLSI_term`
