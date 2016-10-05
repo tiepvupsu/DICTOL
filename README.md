@@ -39,26 +39,6 @@ _This repository is under construction_
 
 
 
-* [__SRC__](#src): Sparse Representation-based Classification [[1]](#fn_src). 
-
-* [__ODL__](#odl): Online dictionary Learning [[2]](#fn_odl).
-
-* [__LCKSVD__](#lcksvd): Label consistent K-SVD[^fn_lcksvd] [[3]](#fn_ldl).
-
-* [__FDDL__](#FDDL): Fisher discrimination dictionary learning [[4]](#fn_fdd).
-
-* [__DLSI__](#DLSI): dictionary Learning with Structured Incoherence [[5]](#fn_dls)
-
-* [__DFDL__](#dfdl): Discriminative Feature-Oriented dictionary Learning [[6]](#fn_dfd)
-
-* [__DLCOPAR__](#dlcopar) [[7]](#fn_cor) 
-
-
-
-* [__LRSDL__](#LRSDL): Low-rank Shared dictionary Learning [[9]](#fn_lrs). 
-
-
-
 # Notation
 * `Y`: signals.
 * `D`: dictionary.
