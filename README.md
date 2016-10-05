@@ -1,7 +1,16 @@
 
-# Discriminative dictionary Learning Toolbox for Classification.
+# DICTOL - A Discriminative dictionary Learning Toolbox for Classification.
+_This repository is a supplementary of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.html)_
+Related publications:
+
+1. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310).
+
+2. Tiep H. Vu, Vishal Monga. "Fast Low-rank Shared Dictionary Learning for Image Classification." submitted to IEEE Transactions on Image Processing. 
+
+**Author: [Tiep Vu](http://www.personal.psu.edu/thv102/)**
 _This repository is under construction_
 
+**On this page:**
 <!-- MarkdownTOC -->
 
 - [Notation](#notation)
@@ -249,7 +258,7 @@ Set `opts.k0 = 0` and using `LRSDL.m` function.
 
 <a name="fn_cor">[7]</a>. (**COPAR**) Kong, Shu, and Donghui Wang. "A dictionary learning approach for classification: separating the particularity and the commonality." _Computer Vision ECCV_ 2012. Springer Berlin Heidelberg, 2012. 186-199. [[paper]] (http://www.cs.zju.edu.cn/people/wangdh/papers/draft_ECCV12_particularity.pdf)
 
-<a name="fn_lrs">[8]</a>. (**LRSDL**) Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." Submitted to International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
+<a name="fn_lrs">[8]</a>. (**LRSDL**) Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
 
 <a name="fn_shr">[9]</a>. A singular value thresholding algorithm for matrix completion." _SIAM Journal on Optimization_ 20.4 (2010): 1956-1982. [[paper]](http://arxiv.org/pdf/0810.3286v1.pdf)
 
