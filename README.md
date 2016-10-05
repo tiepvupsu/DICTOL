@@ -9,29 +9,20 @@ _This repository is under construction_
 - [Online Dictionary Learning](#online-dictionary-learning)
 - [LCKSVD](#lcksvd)
 - [FDDL](#fddl)
-  - [`FDDL_fidelity`](#fddl_fidelity)
-  - [`FDDL_discriminative`](#fddl_discriminative)
-  - [`FDDL_cost`](#fddl_cost)
-  - [`FDDL_updateX`](#fddl_updatex)
-  - [`FDDL_updateD`](#fddl_updated)
-  - [`FDDL_pred`](#fddl_pred)
 - [DLSI](#dlsi)
-  - [`DLSI_term`](#dlsi_term)
-  - [`DLSI_cost`](#dlsi_cost)
-  - [`DLSI`](#dlsi-1)
-  - [`DLSI_updateD`](#dlsi_updated)
-  - [`DLSI_pred`](#dlsi_pred)
-  - [`DLSI_top`](#dlsi_top)
+  - [Cost function](#cost-function)
+  - [Training DLSI](#training-dlsi)
+  - [DLSI predict new sample](#dlsi-predict-new-sample)
+  - [Demo](#demo)
 - [DLCOPAR](#dlcopar)
   - [`DLCOPAR`](#dlcopar-1)
-  - [`DLCOPAR_cost`](#dlcopar_cost)
-  - [`DLCOPAR_updateX`](#dlcopar_updatex)
-  - [`DLCOPAR_updateD`](#dlcopar_updated)
-  - [`DLCOPAR_pred`](#dlcopar_pred)
-  - [`DLCOPAR_top`](#dlcopar_top)
+  - [`DLCOPAR_cost`](#dlcoparcost)
+  - [`DLCOPAR_updateX`](#dlcoparupdatex)
+  - [`DLCOPAR_updateD`](#dlcoparupdated)
+  - [`DLCOPAR_pred`](#dlcoparpred)
+  - [`DLCOPAR_top`](#dlcopartop)
 - [LRSDL](#lrsdl)
-    - [`LRSDL_top`](#lrsdl_top)
-- [FuzzyDL](#fuzzydl)
+    - [`LRSDL_top`](#lrsdltop)
 - [References](#references)
 
 <!-- /MarkdownTOC -->
@@ -100,18 +91,12 @@ _This repository is under construction_
 
 
 # DLSI
-## `DLSI_term`
-* Syntax: cost = DLSI_term(D, D_range)
-* Calculating the structured incoherence term in DLSI [[5]](#fn_dls).
-* $sum_{c=1}^C sum_{i \neq c} ||D_i^TD_c||_F^2$
 
-## `DLSI_cost`
-* function cost = DLSI_cost(Y, Y_range, D, D_range, X, opts)        
-* Calculating cost function of DLSI with parameters lambda and eta are stored in  `opts.lambda` and `opts.rho`
-* f(D, X) = 0.5*sum_{c=1}^C 05*||Yc - Dc*Xc||_F^2 + lambda*||X||_1 + 
-          05*eta*sum_{i \neq c} ||Di^T*Dc||_F^2
+## Cost function
 
-## `DLSI`
+<img src = "http://latex2png.com/output//latex_7fdbb1d22a9436aa96c371b0edee496f.png" height = "50"/>
+
+## Training DLSI 
 * function `[D, X, rt] = DLSI(Y, Y_range, opts)`
 * The main DLSI algorithm 
 * INPUT: 
@@ -127,41 +112,13 @@ _This repository is under construction_
 * updating `D`:
   `Di = argmin ||Y_c - D_c X_c||_F^2 + \eta ||D_{\c}^T D_c||_F^2`
 
-## `DLSI_updateD`
-* function D = DLSI_updateD(Y, X, D, A, lambda, opts)
-* Solving problem: 
-    `D = argmin_D -2trace(ED') + trace(FD'*D) + lambda *||A*D||F^2,`
-    subject to: ||d_i||_2^2 \leq 1
-* ADMM approach
-* rewrite: `[D, Z] = arg\min -2trace(ED') + trace(FD'*D) + lambda ||A*Z||_F^2`, 
-     subject to `D = Z; ||d_i||_2^2 \leq 1`
- aproach 1: ADMM.
-  + `D = argmin -2trace(ED') + trace(FD'*D) + \rho/2 ||D - Z + U||_F^2`, 
-     s.t. |`|d_i||_2^2 \leq 1`
-    + `Z = argmin lambda*||A*Z|| + \rho/2||D - Z + U||_F^2`
-  + `U = U + D - Z`
- 
-* solve D: `D = argmin-2trace(ED') + trace(FD'*D) + \rho/2 ||D - W||_F^2`
-                       with `W = Z - U`;
-  `D = argmin -2trace((E - \rho/2*W)*D') + trace((F + \rho/2 * eye())*D'D)`
-* solve Z: derivetaive: `0 = 2A'AZ + \rho (Z - V) with V = D + U` 
- `Z = B*\rho V with B = (2lambdaA'*A + \rho I)^{-1}`
-
-## `DLSI_pred`
-* function pred = DLSI_pred(Y, D, opts)
+## DLSI predict new sample 
+* function `pred = DLSI_pred(Y, D, opts)`
 * predict the label of new input `Y` given the trained dictionary `D` and 
 parameters stored in `opts` 
 
-## `DLSI_top`
-  * function DLSI_top(dataset, N_train, k, lambda, eta)
-  * The top function of DLSI 
-  * INPUT:
-    + `dataset`: name of the dataset stored in `.mat` file in `data` folder. 
-      Note that `dataset` is the file name of the `.mat`, excluding `.mat`.
-    + `N_train`: number of training samples in each class 
-    + `k`: number of bases in EACH dictionary 
-    + `lambda, eta`: regularization parameters.
-  * To run an small example, type `DLSI_top` without input in MATLAB command window. 
+## Demo 
+Run `DLSI_top` in Matlab command window.
 
 # DLCOPAR
 ## `DLCOPAR`
