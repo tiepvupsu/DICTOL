@@ -30,6 +30,8 @@ _This repository is under construction_
   - [Cost function](#cost-function-4)
   - [Training FDDL](#training-fddl)
   - [FDDL predect new samples](#fddl-predect-new-samples)
+- [Discriminative Feature-Oriented dictionary learning \(DFDL\)](#discriminative-feature-oriented-dictionary-learning-dfdl)
+- [D2L2R2](#d2l2r2)
 - [References](#references)
 
 <!-- /MarkdownTOC -->
@@ -96,6 +98,7 @@ _This repository is under construction_
 
 # LCKSVD
 
+Check its [project page](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
 # Dictionary learning with structured incoherence and shared features (DLSI)
 * An implementation of the well-known DLSI method [[2]](#fn_dls).
 
@@ -217,24 +220,30 @@ Set `opts.k0 = 0` and using `LRSDL.m` function.
 
 * function `pred = FDDL_pred(Y, D, CoefM, opts)``
 
+# Discriminative Feature-Oriented dictionary learning (DFDL)
+* Its [project page](https://github.com/tiepvupsu/dfdl).
+
+# D2L2R2 
+* Update later 
+
 # References
 
-<a name="fn_src">[1]</a>. Wright, John, et al. "Robust face recognition via sparse representation." _Pattern Analysis and Machine Intelligence, IEEE Transactions on_ 31.2 (2009): 210-227. [paper](http://www.columbia.edu/~jw2966/papers/WYGSM09-PAMI.pdf )
+<a name="fn_src">[1]</a>. (**SRC**)Wright, John, et al. "Robust face recognition via sparse representation." _Pattern Analysis and Machine Intelligence, IEEE Transactions on_ 31.2 (2009): 210-227. [paper](http://www.columbia.edu/~jw2966/papers/WYGSM09-PAMI.pdf )
 
-<a name="fn_odl">[2]</a>. Mairal, Julien, et al. "Online learning for matrix factorization and sparse coding." _The Journal of Machine Learning Research 11_ (2010): 19-60. [[paper]](http://www.di.ens.fr/~fbach/mairal10a.pdf)
+<a name="fn_odl">[2]</a>. (**ODL**) Mairal, Julien, et al. "Online learning for matrix factorization and sparse coding." _The Journal of Machine Learning Research 11_ (2010): 19-60. [[paper]](http://www.di.ens.fr/~fbach/mairal10a.pdf)
 
-<a name="fn_lck">[3]</a>. Jiang, Zhuolin, Zhe Lin, and Larry S. Davis. "Label consistent K-SVD: Learning a discriminative dictionary for recognition." _Pattern Analysis and Machine Intelligence, IEEE Transactions on_ 35.11 (2013): 2651-2664. [[Project page]](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
+<a name="fn_lck">[3]</a>. (**LC-KSVD**) Jiang, Zhuolin, Zhe Lin, and Larry S. Davis. "Label consistent K-SVD: Learning a discriminative dictionary for recognition." _Pattern Analysis and Machine Intelligence, IEEE Transactions on_ 35.11 (2013): 2651-2664. [[Project page]](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
 
-<a name="fn_fdd">[4]</a>. Yang, Meng, et al. "Fisher discrimination dictionary learning for sparse representation." _Computer Vision (ICCV), 2011 IEEE International Conference on. IEEE_, 2011. [[paper]](http://www4.comp.polyu.edu.hk/~cslzhang/paper/conf/iccv11/FDDL_ICCV_final.pdf), [[code]](http://www4.comp.polyu.edu.hk/~cslzhang/code/FDDL.zip)
+<a name="fn_fdd">[4]</a>. (**FDDL**) Yang, Meng, et al. "Fisher discrimination dictionary learning for sparse representation." _Computer Vision (ICCV), 2011 IEEE International Conference on. IEEE_, 2011. [[paper]](http://www4.comp.polyu.edu.hk/~cslzhang/paper/conf/iccv11/FDDL_ICCV_final.pdf), [[code]](http://www4.comp.polyu.edu.hk/~cslzhang/code/FDDL.zip)
 
-<a name="fn_dls">[5]</a>. Ramirez, Ignacio, Pablo Sprechmann, and Guillermo Sapiro. "Classification and clustering via dictionary learning with structured incoherence and shared features." _Computer Vision and Pattern Recognition (CVPR), 2010 IEEE Conference on. IEEE_, 2010. [[paper]](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5539964&tag=1)
+<a name="fn_dls">[5]</a>. (**DLSI**)Ramirez, Ignacio, Pablo Sprechmann, and Guillermo Sapiro. "Classification and clustering via dictionary learning with structured incoherence and shared features." _Computer Vision and Pattern Recognition (CVPR), 2010 IEEE Conference on. IEEE_, 2010. [[paper]](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5539964&tag=1)
 
-<a name="fn_dfd">[6]</a>. Discriminative Feature-Oriented dictionary Learning.
+<a name="fn_dfd">[6]</a>. (**DFDL**) Discriminative Feature-Oriented dictionary Learning.
  Tiep H. Vu, H. S. Mousavi, V. Monga, A. U. Rao and G. Rao, "Histopathological Image Classification using Discriminative Feature-Oriented dictionary Learning", _IEEE Transactions on Medical Imaging_ , volume 35, issue 3, pages 738-751, March 2016. [[paper]](http://arxiv.org/pdf/1506.05032v5.pdf) [[Project page]](http://signal.ee.psu.edu/dfdl.html)
 
-<a name="fn_cor">[7]</a>. Kong, Shu, and Donghui Wang. "A dictionary learning approach for classification: separating the particularity and the commonality." _Computer Vision ECCV_ 2012. Springer Berlin Heidelberg, 2012. 186-199. [[paper]] (http://www.cs.zju.edu.cn/people/wangdh/papers/draft_ECCV12_particularity.pdf)
+<a name="fn_cor">[7]</a>. (**COPAR**) Kong, Shu, and Donghui Wang. "A dictionary learning approach for classification: separating the particularity and the commonality." _Computer Vision ECCV_ 2012. Springer Berlin Heidelberg, 2012. 186-199. [[paper]] (http://www.cs.zju.edu.cn/people/wangdh/papers/draft_ECCV12_particularity.pdf)
 
-<a name="fn_lrs">[8]</a>. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." Submitted to International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
+<a name="fn_lrs">[8]</a>. (**LRSDL**) Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." Submitted to International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
 
 <a name="fn_shr">[9]</a>. A singular value thresholding algorithm for matrix completion." _SIAM Journal on Optimization_ 20.4 (2010): 1956-1982. [[paper]](http://arxiv.org/pdf/0810.3286v1.pdf)
 
