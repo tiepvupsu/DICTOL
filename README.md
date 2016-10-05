@@ -3,11 +3,12 @@
 _This repository is a supplementary of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.html)_
 Related publications:
 
-1. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310).
+1. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." *International Conference on Image Processing (ICIP)* 2016. [[paper]](http://arxiv.org/abs/1602.00310).
 
-2. Tiep H. Vu, Vishal Monga. "Fast Low-rank Shared Dictionary Learning for Image Classification." submitted to IEEE Transactions on Image Processing. 
+2. Tiep H. Vu, Vishal Monga. "Fast Low-rank Shared Dictionary Learning for Image Classification." *submitted to IEEE Transactions on Image Processing*. 
 
 **Author: [Tiep Vu](http://www.personal.psu.edu/thv102/)**
+
 _This repository is under construction_
 
 **On this page:**
@@ -41,7 +42,7 @@ _This repository is under construction_
   - [FDDL predect new samples](#fddl-predect-new-samples)
 - [Discriminative Feature-Oriented dictionary learning \(DFDL\)](#discriminative-feature-oriented-dictionary-learning-dfdl)
 - [D2L2R2](#d2l2r2)
-- [Fast iterative shrinkage-thresholding algorithm](#fast-iterative-shrinkage-thresholding-algorithm)
+- [Fast iterative shrinkage-thresholding algorithm \(FISTA\)](#fast-iterative-shrinkage-thresholding-algorithm-fista)
 - [References](#references)
 
 <!-- /MarkdownTOC -->
@@ -237,7 +238,7 @@ Set `opts.k0 = 0` and using `LRSDL.m` function.
 # D2L2R2 
 * Update later 
 
-# Fast iterative shrinkage-thresholding algorithm
+# Fast iterative shrinkage-thresholding algorithm (FISTA)
 * An implementation of FISTA [[10]](#fn_cor).
 * Check [this repository](https://github.com/tiepvupsu/fista)
 
