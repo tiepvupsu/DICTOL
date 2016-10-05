@@ -52,7 +52,7 @@ _This repository is under construction_
 
 
 # Notation
-* `Y`: signals.
+* `Y`: signals. Each column is one observation.
 * `D`: dictionary.
 * `X`: sparse coefficient.
 * `d`: signal dimension. `d = size(Y, 1)`.
