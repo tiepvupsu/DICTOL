@@ -34,7 +34,7 @@ _This repository is under construction_
 - [LRSDL](#lrsdl)
   - [Motivation](#motivation)
   - [Cost function](#cost-function-3)
-  - [Traing LRSDL](#traing-lrsdl)
+  - [Training LRSDL](#training-lrsdl)
   - [LRSDL predict new samples](#lrsdl-predict-new-samples)
   - [Demo](#demo-2)
 - [Fisher discrimination dictionary learning \(FDDL\)](#fisher-discrimination-dictionary-learning-fddl)
@@ -193,7 +193,7 @@ Run `COPAR_top` in the Matlab command window.
 __Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries (`D`) and the shared dictionary (`D_0`). The sparse coefficients (`X`, `X^0`) are also separated.__
 
 ![](LRSDL_FDDL/figs/idea_LRSDL_web.png "LRSDL idea and cost function")
-## Traing LRSDL 
+## Training LRSDL 
 * function `[D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)``
 * INPUT:
   - `Y, Y_range`: training samples and their labels 
