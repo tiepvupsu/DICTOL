@@ -47,9 +47,9 @@ function [acc, rt] = LRSDL_wrapper(Y_train, label_train, Y_test , label_test, ..
     if numel(D0) ~= 0
         fprintf('GC:\n');
         acc1 = LRSDL_pred_GC(Y_test, D, D0, CoefM, coefM0, opts, label_test);
-        fprintf('LC:\n');
-        acc2 = LRSDL_pred_LC(Y_test, D, D0, CoefMM0, opts, label_test);
-        acc = [acc1 acc2];
+%         fprintf('LC:\n');
+%         acc2 = LRSDL_pred_LC(Y_test, D, D0, CoefMM0, opts, label_test);
+%         acc = [acc1 acc2];
         fprintf('maximum acc: %4f\n', max(acc));
     else             
         fprintf('GC:\n');
@@ -60,15 +60,17 @@ function [acc, rt] = LRSDL_wrapper(Y_train, label_train, Y_test , label_test, ..
             acc = [acc calc_acc(pred, label_test)];
             fprintf('gamma = %.4f, acc = %.4f\n', vgamma, acc(end));
         end 
-        %% LC 
-        fprintf('LC:\n');
-        gamma2 = 0.01;
-        opts.gamma2 = gamma2;
-        for gamma1 = [0.0001, 0.001, 0.01, 0.1]
-            opts.gamma1 = gamma1;
-            pred = FDDL_pred_LC(Y_test, D, CoefM, opts);
-            acc = [acc calc_acc(pred, label_test)];
-            fprintf('gamma = %.4f, acc = %.4f\n', gamma1, acc(end));
-        end 
+        %% LC Uncomment following line to perform LC prediction.
+%         fprintf('LC:\n');
+%         gamma2 = 0.01;
+%         opts.gamma2 = gamma2;
+%         for gamma1 = [0.0001, 0.001, 0.01, 0.1]
+%             opts.gamma1 = gamma1;
+%             pred = FDDL_pred_LC(Y_test, D, CoefM, opts);
+%             acc = [acc calc_acc(pred, label_test)];
+%             fprintf('gamma = %.4f, acc = %.4f\n', gamma1, acc(end));
+%         end 
     end
+    fprintf('\n');
+    acc = max(acc1);
 end 

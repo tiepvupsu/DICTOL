@@ -7,7 +7,7 @@ function acc = LRSDL_pred_GC(Y, D, D0, CoefM, m0, opts, label_test)
     N = size(Y,2);
     acc = [];
     % --------------- Sparse coding -------------------------
-    for lambda1 = [0.0001, 0.001]
+    for lambda1 = [0.001]
         [X, X0] = local_sparse_coding(Y, D, D0, m0, lambda1, 0.01);
         % --------------- classification -------------------------
         Yhat = Y - D0*X0;
@@ -22,7 +22,7 @@ function acc = LRSDL_pred_GC(Y, D, D0, CoefM, m0, opts, label_test)
             E1(c,:) = sum(R1.^2);
             E2(c,:) = sum(R2.^2);
         end
-        for w = [.25, .5, .75]
+        for w = [ .5]
             E = w*E1 + (1-w)*E2;
             [~, pred] = min(E);
             aaaa = double(sum(pred == label_test))/N;

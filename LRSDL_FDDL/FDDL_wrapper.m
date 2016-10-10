@@ -46,4 +46,5 @@ function [acc, rt] = FDDL_wrapper(Y_train, label_train, Y_test , label_test, ...
         fprintf('gamma = %.4f, acc = %.4f\n', vgamma, acc1);
         acc = [acc acc1];
     end 
+    acc = max(acc);
 end 

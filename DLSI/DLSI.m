@@ -33,7 +33,7 @@ function [D, X, rt] = DLSI(Y, Y_range, opts)
         opts.k = 5;
         opts.lambda = 0.001;
         opts.eta = 0.1;
-        opts.verbose = true;
+        opts.verbose = false;
         opts = initOpts(opts);        
     end 
     %%

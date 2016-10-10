@@ -27,7 +27,7 @@ function [acc, rt] = DLSI_wrapper(Y_train, label_train, Y_test , label_test, ...
     opts.show_cost = 0;
     train_range    = label_to_range(label_train);
     opts.show      = 0;
-    opts.verbose    = true;
+    opts.verbose    = false;
     opts.max_iter  = 100;        
     %% ========= Train ==============================
     [D, ~, rt]         = DLSI(Y_train, train_range, opts);

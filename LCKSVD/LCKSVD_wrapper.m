@@ -40,7 +40,7 @@ function [acc, rt] = LCKSVD_wrapper(Y_train, label_train, Y_test, label_test,...
     fprintf('done!');
     %% ========= LCKSVD1 ==============================  
     % run LC K-SVD Training (reconstruction err + class penalty)
-    fprintf('\nDictionary learning by LC-KSVD1...');
+    fprintf('\nDictionary and classifier learning by LC-KSVD1...');
     tic;
     [D1,X1,T1,W1] = labelconsistentksvd1(Y_train, Dinit, Q_train, Tinit, ...
         H_train,iterations,sparsitythres,sqrt_alpha);
@@ -56,6 +56,6 @@ function [acc, rt] = LCKSVD_wrapper(Y_train, label_train, Y_test, label_test,...
     [D2,X2,T2,W2] = labelconsistentksvd2(Y_train, Dinit, Q_train, ...
         Tinit, H_train, Winit, iterations, sparsitythres, sqrt_alpha, sqrt_beta);
     rt(2) = toc;
-    fprintf('done!');
+    fprintf('done!\n');
     [prediction2, acc(2)] = classification(D2, W2, Y_test, H_test, sparsitythres);
 end 

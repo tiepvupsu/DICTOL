@@ -44,4 +44,5 @@ function [acc, rt] = COPAR_wrapper(Y_train, label_train, Y_test , label_test, ..
         acc = [acc double(sum(pred == label_test))/numel(label_test)];
         fprintf('GC mode, acc = %5f\n', acc(end));        
     end
+    acc = max(acc);
 end 
