@@ -12,7 +12,6 @@ _This Toolbox is a part of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.ht
 
 **Author: [Tiep Vu](http://www.personal.psu.edu/thv102/)**
 
-_This repository is under construction_
 
 If you experience any bugs, please let me know via the [**Issues**](https://github.com/tiepvupsu/DICTOL/issues) tab. I'd really appreciate and fix the error ASAP. Thank you.
 
