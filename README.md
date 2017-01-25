@@ -173,9 +173,11 @@ Run `DLSI_top` in Matlab command window.
 <a name="cost-function-2"></a>
 
 ## Cost function 
-<img src = "latex/COPAR_cost.png" height = "40"/>
+<img src = "latex/COPAR_cost.png" height = "50"/>
+
 where:
-<img src = "latex/COPAR_cost1.png" height = "40"/>
+
+<img src = "latex/COPAR_cost1.png" height = "50"/>
 <a name="training-copar"></a>
 
 ## Training COPAR 
