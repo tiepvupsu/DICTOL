@@ -45,7 +45,7 @@ If you experience any bugs, please let me know via the [**Issues**](https://gith
   - [Training FDDL](#training-fddl)
   - [FDDL predect new samples](#fddl-predect-new-samples)
 - [Discriminative Feature-Oriented dictionary learning \(DFDL\)](#discriminative-feature-oriented-dictionary-learning-dfdl)
-- [D2L2R2](#d2l2r2)
+- [D2L2R2](#dlr)
 - [Fast iterative shrinkage-thresholding algorithm \(FISTA\)](#fast-iterative-shrinkage-thresholding-algorithm-fista)
 - [References](#references)
 
@@ -53,6 +53,8 @@ If you experience any bugs, please let me know via the [**Issues**](https://gith
 
 
 
+
+<a name="notation"></a>
 
 # Notation
 * `Y`: signals. Each column is one observation.
@@ -76,6 +78,8 @@ If you experience any bugs, please let me know via the [**Issues**](https://gith
 
 
 
+<a name="sparse-representation-based-classification-src"></a>
+
 # Sparse Representation-based classification (SRC)
 * Sparse Representation-based classification implementation [[1]](#fn_src).
 * Classification based on SRC.
@@ -91,12 +95,18 @@ If you experience any bugs, please let me know via the [**Issues**](https://gith
     + `pred`: predicted labels of test samples.
     + `X`: solution of the lasso problem.
 
+<a name="online-dictionary-learning-odl"></a>
+
 # Online Dictionary Learning (ODL)
 * An implementation of the well-known Online Dictionary Learning method [[2]](#fn_odl).
 
+<a name="cost-function"></a>
+
 ## Cost function 
 
-<img src = "http://latex2png.com/output//latex_c1709f7ea3f7f523694cf0d6b9a61aa9.png" height = "40"/>    
+<img src = "latex/ODL_cost.png" height = "40"/>    
+
+<a name="training-odl"></a>
 
 ## Training ODL 
 * Syntax: `[D, X] = ODL(Y, k, lambda, opts, sc_method)`
@@ -111,15 +121,23 @@ If you experience any bugs, please let me know via the [**Issues**](https://gith
   - OUTPUT:
     + `D, X`: as in the problem.
 
+<a name="lcksvd"></a>
+
 # LCKSVD
 
 Check its [project page](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
+<a name="dictionary-learning-with-structured-incoherence-and-shared-features-dlsi"></a>
+
 # Dictionary learning with structured incoherence and shared features (DLSI)
 * An implementation of the well-known DLSI method [[5]](#fn_dls).
 
+<a name="cost-function-1"></a>
+
 ## Cost function
 
-<img src = "http://latex2png.com/output//latex_7fdbb1d22a9436aa96c371b0edee496f.png" height = "50"/>
+<img src = "latex/DLSI_cost.png" height = "50"/>
+
+<a name="training-dlsi"></a>
 
 ## Training DLSI 
 * function `[D, X, rt] = DLSI(Y, Y_range, opts)`
@@ -134,20 +152,30 @@ Check its [project page](http://www.umiacs.umd.edu/~zhuolin/projectlcksvd.html)
   - `X`: the trained sparse coefficient,
   - `rt`: total running time of the training process.   
 
+<a name="dlsi-predict-new-samples"></a>
+
 ## DLSI predict new samples 
 * function `pred = DLSI_pred(Y, D, opts)`
 * predict the label of new input `Y` given the trained dictionary `D` and 
 parameters stored in `opts` 
 
+<a name="demo"></a>
+
 ## Demo 
 Run `DLSI_top` in Matlab command window.
+
+<a name="dictionary-learning-for-separating-the-particularity-and-the-commonality-copar"></a>
 
 # Dictionary learning for separating the particularity and the commonality (COPAR)
 
 * An implementation of COPAR [[7]](#fn_cor).
 
+<a name="cost-function-2"></a>
+
 ## Cost function 
 <img src = "http://latex2png.com/output//latex_0ff86752b6cc0c3944966f2a96d01c1d.png" height = "40"/>
+
+<a name="training-copar"></a>
 
 ## Training COPAR 
 
@@ -164,6 +192,8 @@ Run `DLSI_top` in Matlab command window.
   - `X`: the trained sparse coefficient,
   - `rt`: total running time of the training process.   
 
+<a name="copar-predect-new-samples"></a>
+
 ## COPAR predect new samples 
 
 * function pred = COPAR_pred(Y, D, D_range_ext, opts)
@@ -179,23 +209,33 @@ Run `DLSI_top` in Matlab command window.
 * OUTPUT:
   - `pred`: predicted labels of `Y`.
 
+<a name="demo-1"></a>
+
 ## Demo
 Run `COPAR_top` in the Matlab command window.
 
+
+<a name="lrsdl"></a>
 
 # LRSDL
 
 * An implementation of COPAR [[8]](#fn_cor).
 
+<a name="motivation"></a>
+
 ## Motivation 
 ![](LRSDL_FDDL/figs/LRSDL_motivation.png "LRSDL motivation")
 
+
+<a name="cost-function-3"></a>
 
 ## Cost function 
 
 __Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries (`D`) and the shared dictionary (`D_0`). The sparse coefficients (`X`, `X^0`) are also separated.__
 
 ![](LRSDL_FDDL/figs/idea_LRSDL_web.png "LRSDL idea and cost function")
+<a name="training-lrsdl"></a>
+
 ## Training LRSDL 
 * function `[D, D0, X, X0, CoefM, coefM0, opts, rt] = LRSDL(Y, train_label, opts)``
 * INPUT:
@@ -213,38 +253,58 @@ __Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries 
   - `CoefM0`: the mean vector of `X0`,
   - `rt`: total running time (in seconds).
 
+<a name="lrsdl-predict-new-samples"></a>
+
 ## LRSDL predict new samples
 
 See `LRSDL_pred_GC.m` function
+
+<a name="demo-2"></a>
 
 ## Demo 
 Run `LRSDL_top` in the Matlab command window.
 
 
 
+<a name="fisher-discrimination-dictionary-learning-fddl"></a>
+
 # Fisher discrimination dictionary learning (FDDL)
 * An implementation of FDDL [[4]](#fn_fdd).
+
+<a name="cost-function-4"></a>
 
 ## Cost function 
 
 Simiar to LRSDL cost function without red terms.
 
+<a name="training-fddl"></a>
+
 ## Training FDDL 
 Set `opts.k0 = 0` and using `LRSDL.m` function.
+
+<a name="fddl-predect-new-samples"></a>
 
 ## FDDL predect new samples
 
 * function `pred = FDDL_pred(Y, D, CoefM, opts)``
 
+<a name="discriminative-feature-oriented-dictionary-learning-dfdl"></a>
+
 # Discriminative Feature-Oriented dictionary learning (DFDL)
 * Its [project page](https://github.com/tiepvupsu/dfdl).
+
+<a name="dlr"></a>
 
 # D2L2R2 
 * Update later 
 
+<a name="fast-iterative-shrinkage-thresholding-algorithm-fista"></a>
+
 # Fast iterative shrinkage-thresholding algorithm (FISTA)
 * An implementation of FISTA [[10]](#fn_cor).
 * Check [this repository](https://github.com/tiepvupsu/fista)
+
+<a name="references"></a>
 
 # References
 

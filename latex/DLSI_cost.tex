@@ -1,0 +1,15 @@
+\documentclass{standalone}
+\usepackage{tikz,pgfplots,calc}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{arrows}
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+
+\input{definitions}
+
+\begin{document}
+$ \displaystyle
+    (\bD, \bX) = \arg\min_{\bD, \bX} \sum_{c=1}^C \|\bY_c - \bD_c\bX^c\|_F^2 + \lambda\|\bX^c\|_1 + \frac{\eta}{2} \sum_{j = 1, j \neq c}^C \|\bD_j^T\bD_c\|_F^2)
+$
+
+\end{document}
