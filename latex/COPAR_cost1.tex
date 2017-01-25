@@ -10,6 +10,6 @@
 \begin{document}
 
 $ \displaystyle
-J(\barD, \barX) = \frac{1}{2} f_1(\bY, \barD, \barX) + \lambda \|\barX\|_1 + \eta\sum_{c=1}^C \sum_{i=1, i\neq c}\|\bD_i^T\bD_c\|_F^2
+f_1(\bY, \barD, \barX) = \sum_{c=1}^C \left(\|\bY_c - \barD\barX_c\|_F^2 + \|\bY_c - \bD_0\bX_c^0 - \bD_c \bX_c^c\|_F^2 + \sum_{j=1, j\neq c}^C \|\bX_c^j\|_F^2\right)
 $\\
 \end{document}
