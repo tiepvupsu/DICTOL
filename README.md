@@ -6,9 +6,11 @@ _This Toolbox is a part of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.ht
 
 **Related publications:**
 
-1. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." *International Conference on Image Processing (ICIP)* 2016. [[paper]](http://arxiv.org/abs/1602.00310).
+1. Tiep H. Vu, Vishal Monga. "Fast Low-rank Shared Dictionary Learning for Image Classification." *to appear in IEEE Transactions on Image Processing*. [[paper](https://arxiv.org/abs/1610.08606)].
 
-2. Tiep H. Vu, Vishal Monga. "Fast Low-rank Shared Dictionary Learning for Image Classification." *submitted to IEEE Transactions on Image Processing*. 
+2. Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." *International Conference on Image Processing (ICIP)* 2016. [[paper]](http://arxiv.org/abs/1602.00310).
+
+
 
 **Author: [Tiep Vu](http://www.personal.psu.edu/thv102/)**
 
