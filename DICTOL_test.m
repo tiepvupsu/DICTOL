@@ -9,6 +9,7 @@ addpath('DLSI');
 addpath('LRSDL_FDDL');
 addpath('build_spams');
 addpath('utils');
+addpath('SRC');
 
 dataset = 'myYaleB';
 N_train = 10;        
@@ -27,15 +28,15 @@ lambda = 0.001;
 % acc_src = SRC_top;
 acc_src = SRC_wrapper(Y_train, range_train, Y_test, range_test, lambda);
 disp(acc_src);
-fprintf('================= LCKSVD =================\n');
-
-valpha = 0.002;
-vbeta = 0.004;
-k = 10;        
-sparsitythres = 10;
-[acc_lcksvd, rt] = LCKSVD_wrapper(Y_train, label_train, Y_test, label_test,...
-                    k, sparsitythres, valpha, vbeta);
-disp(acc_lcksvd);
+% fprintf('================= LCKSVD =================\n');
+% 
+% valpha = 0.002;
+% vbeta = 0.004;
+% k = 10;        
+% sparsitythres = 10;
+% [acc_lcksvd, rt] = LCKSVD_wrapper(Y_train, label_train, Y_test, label_test,...
+%                     k, sparsitythres, valpha, vbeta);
+% disp(acc_lcksvd);
 fprintf('\n================= DLSI ===================\n');
 k = 10;
 lambda = 0.001;
