@@ -1,5 +1,5 @@
 
-# DICTOL - A Discriminative dictionary Learning Toolbox for Classification (MATBLAB version).
+# [DICTOL](https://github.com/tiepvupsu/DICTOL) - A Discriminative dictionary Learning Toolbox for Classification (MATBLAB version).
 _This Toolbox is a part of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.html)._
 
 [**See Python version**](https://github.com/tiepvupsu/DICTOL_python).
