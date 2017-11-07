@@ -20,7 +20,7 @@ function M = inv_IpXY(X, Y)
     else 
         M = eye(d1) - X*inv(eye(d2) + Y*X)*Y;
     end
-    %% 
+    %% test if no input
     if nargin == 0
         toc 
         tic 
