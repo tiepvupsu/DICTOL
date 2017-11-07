@@ -94,7 +94,7 @@ If you experience any bugs, please let me know via the [**Issues**](https://gith
     + `D_range`: range of class-specific dictionaries in `D`. See also [Notation](#notation).
     + `opts`: options.
       * `opts.lambda`: `lambda` for the Lasso problem. Default: `0.01`.
-      * `opts.max_iter`: maximum iterations of fista algorithm. Default:  `100`. [Check this simple implementation of FISTA](https://github.com/tiepvupsu/FISTA) 
+      * `opts.max_iter`: maximum iterations of fista algorithm. Default:  `100`. [Check this implementation of FISTA](https://github.com/tiepvupsu/FISTA) 
   - OUTPUT:
     + `pred`: predicted labels of test samples.
     + `X`: solution of the lasso problem.
