@@ -1,6 +1,6 @@
 function M = inv_IpXY(X, Y)
 % Calculate the inverse of matrix A = I + XY.
-% if X is a fat matrix (number of columns >> number of rows), then use inv(I + X*Y)
+% if X is a fat matrix (number of columns > number of rows), then use inv(I + X*Y)
 % else: use equation: (I + XY)^(-1) = I - Y*(I + Y*X)^(-1)*X 
 % -----------------------------------------------
 % Author: Tiep Vu, thv102@psu.edu, 4/12/2016
