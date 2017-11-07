@@ -1,6 +1,6 @@
 function D = min_rank_dict(Dinit, E, F, lambdaD, opts)
 % function D = min_rank_dict(D, E, F, lambdaD, opts)
-% This function try to solve the following problem:
+% This function solves the following problem:
 % [D, X] = argmin_D -2trace(ED') + trace(FD'D) + lambdaD ||D||_*
 % s.t. ||d_i||_2^2 <= 1, for all i 
 % using ADMM:
