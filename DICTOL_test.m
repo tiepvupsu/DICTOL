@@ -79,8 +79,8 @@ fprintf('+--------------------------+\n')
 fprintf('|  Method    |   Accuray   |\n')
 fprintf('+------------+-------------+\n')
 fprintf('|  SRC       |   %2.2f%%    |\n', 100*acc_src);
-fprintf('|  LCKSVD1   |   %2.2f%%    |\n', 100*acc_lcksvd(1));
-fprintf('|  LCKSVD2   |   %2.2f%%    |\n', 100*acc_lcksvd(2));
+% fprintf('|  LCKSVD1   |   %2.2f%%    |\n', 100*acc_lcksvd(1));
+% fprintf('|  LCKSVD2   |   %2.2f%%    |\n', 100*acc_lcksvd(2));
 fprintf('|  DLSI      |   %2.2f%%    |\n', 100*acc_dlsi);
 fprintf('|  FDDL      |   %2.2f%%    |\n', 100*acc_fddl);
 fprintf('|  COPAR     |   %2.2f%%    |\n', 100*acc_COPAR);
