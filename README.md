@@ -328,7 +328,7 @@ Set `opts.k0 = 0` and using `LRSDL.m` function.
 <a name="fn_dfd">[6]</a>. (**DFDL**) Discriminative Feature-Oriented dictionary Learning.
  Tiep H. Vu, H. S. Mousavi, V. Monga, A. U. Rao and G. Rao, "Histopathological Image Classification using Discriminative Feature-Oriented dictionary Learning", _IEEE Transactions on Medical Imaging_ , volume 35, issue 3, pages 738-751, March 2016. [[paper]](http://arxiv.org/pdf/1506.05032v5.pdf) [[Project page]](http://signal.ee.psu.edu/dfdl.html)
 
-<a name="fn_cor">[7]</a>. (**COPAR**) Kong, Shu, and Donghui Wang. "A dictionary learning approach for classification: separating the particularity and the commonality." _Computer Vision ECCV_ 2012. Springer Berlin Heidelberg, 2012. 186-199. [[paper]] (http://www.cs.zju.edu.cn/people/wangdh/papers/draft_ECCV12_particularity.pdf)
+<a name="fn_cor">[7]</a>. (**COPAR**) Kong, Shu, and Donghui Wang. "A dictionary learning approach for classification: separating the particularity and the commonality." _Computer Vision ECCV_ 2012. Springer Berlin Heidelberg, 2012. 186-199. [[paper]](http://www.cs.zju.edu.cn/people/wangdh/papers/draft_ECCV12_particularity.pdf)
 
 <a name="fn_lrs">[8]</a>. (**LRSDL**) Tiep H. Vu, Vishal Monga. "Learning a low-rank shared dictionary for object classification." International Conference on Image Processing (ICIP) 2016. [[paper]](http://arxiv.org/abs/1602.00310)
 
