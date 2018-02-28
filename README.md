@@ -238,7 +238,7 @@ Run `COPAR_top` in the Matlab command window.
 
 ## Cost function 
 
-__Note that unlike COPAR, in LSRDL, we separate the class-specific dictionaries (`D`) and the shared dictionary (`D_0`). The sparse coefficients (`X`, `X^0`) are also separated.__
+__Note that unlike COPAR, in LRSDL, we separate the class-specific dictionaries (`D`) and the shared dictionary (`D_0`). The sparse coefficients (`X`, `X^0`) are also separated.__
 
 ![](LRSDL_FDDL/figs/idea_LRSDL_web.png "LRSDL idea and cost function")
 <a name="training-lrsdl"></a>
