@@ -29,20 +29,13 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
         N = 10;
         k = 5;
         k2 = 495;
-%         Y = normc(rand(d, N));
-%         D = normc(rand(d, k));
-%         X = rand(k, N);
-%         E = Y*X';
-%         F = X*X';
-%         A = normc(rand(k2, d));     
         load('tmp.mat');
         lambda = 0.01;        
         
         opts.show = 0;
         opts.max_iter = 300;   
         opts.verbose = 1;
-        
-%         save('tmp.mat', 'Y', 'D', 'E', 'F', 'A');
+       
     end 
     if nargin == 6
         opts.lambda = lambda;
@@ -59,7 +52,9 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
     Z_old = D;
     U = zeros(size(D));
     I_k = eye(size(D,2));
-    % B = inv(2*lambda*A'*A + rho*I_k2);
+    % B = inv(2*lambda*A'*A + rho*I_k2); However, this might be very expensive if size(A, 2) is big, which is common    
+    % Instead, we can use the Sherman–Morrison formula at
+    % https://en.wikipedia.org/wiki/Sherman%E2%80%93Morrison_formula#Generalization_(Woodbury_Matrix_Identity)
     X = 2*lambda/rho*A';
     Y = A;
     B1 = X*inv(eye(size(Y, 1)) + Y*X);
@@ -73,15 +68,10 @@ function D = DLSI_updateD(D, E, F, A, lambda, opts)
         E2 = E + rho/2 * W;
         F2 = F + rho/2*I_k; 
         D = ODL_updateD(D, E2, F2, optsD);
-%         t2 = t2 + toc;
         %% ========= update Z ==============================
-%         tic;
         V = D + U;
-        % Z_new = rho*B*V;
-        Z_new = rho*(V - B1*(Y*V));
-%         t1 = t1 + toc;
-        % norm(Z_new - Z_new2)
-
+        % Z_new = rho*B*V; slow 
+        Z_new = rho*(V - B1*(Y*V)); % fast 
         e1 = normF2(D - Z_new);
         e2 = rho*normF2(Z_new - Z_old);
         if (e1 < optsD.tol && e2 < optsD.tol)
