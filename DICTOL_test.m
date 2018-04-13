@@ -10,6 +10,7 @@ addpath('LRSDL_FDDL');
 addpath('build_spams');
 addpath('utils');
 addpath('SRC');
+addpath('ODL'); 
 
 dataset = 'myYaleB';
 N_train = 10;        
