@@ -10,9 +10,10 @@ addpath('LRSDL_FDDL');
 addpath('build_spams');
 addpath('utils');
 addpath('SRC');
-addpath('ODL'); 
+addpath('ODL');
 
 dataset = 'myYaleB';
+% dataset = 'myAR';
 N_train = 10;        
 fprintf('Start time\n');
 t = getTimeStr();
@@ -38,13 +39,13 @@ disp(acc_src);
 % [acc_lcksvd, rt] = LCKSVD_wrapper(Y_train, label_train, Y_test, label_test,...
 %                     k, sparsitythres, valpha, vbeta);
 % disp(acc_lcksvd);
-fprintf('\n================= DLSI ===================\n');
-k = 10;
-lambda = 0.001;
-eta = 0.01;
-[acc_dlsi, rt] = DLSI_wrapper(Y_train, label_train, Y_test , label_test, ...
-                            k, lambda, eta);
-disp(acc_dlsi);
+% fprintf('\n================= DLSI ===================\n');
+% k = 10;
+% lambda = 0.001;
+% eta = 0.01;
+% [acc_dlsi, rt] = DLSI_wrapper(Y_train, label_train, Y_test , label_test, ...
+%                             k, lambda, eta);
+% disp(acc_dlsi);
 fprintf('================= FDDL ===================\n');
 k = 10;
 lambda1 = 0.001;
@@ -53,16 +54,16 @@ lambda2 = 0.05;
                             k, lambda1, lambda2);
                         
 disp(acc_fddl);
-% acc_fddl = FDDL_top;
-fprintf('================= COPAR ================\n');
-% acc_COPAR = COPAR_top;
-k=10;
-k0 = 5;
-lambda = 0.001;
-eta = 0.01;
-[acc_COPAR, rt] = COPAR_wrapper(Y_train, label_train, Y_test , label_test, ...
-                            k, k0, lambda, eta);
-disp(acc_COPAR);
+acc_fddl = FDDL_top;
+% fprintf('================= COPAR ================\n');
+% % acc_COPAR = COPAR_top;
+% k=10;
+% k0 = 5;
+% lambda = 0.001;
+% eta = 0.01;
+% [acc_COPAR, rt] = COPAR_wrapper(Y_train, label_train, Y_test , label_test, ...
+%                             k, k0, lambda, eta);
+% disp(acc_COPAR);
 % fprintf('================= D2L2R2 =================\n');
 % acc_d2l2r2 = D2L2R2_top;
 fprintf('================= LRSDL ==================\n');
@@ -82,9 +83,9 @@ fprintf('+------------+-------------+\n')
 fprintf('|  SRC       |   %2.2f%%    |\n', 100*acc_src);
 % fprintf('|  LCKSVD1   |   %2.2f%%    |\n', 100*acc_lcksvd(1));
 % fprintf('|  LCKSVD2   |   %2.2f%%    |\n', 100*acc_lcksvd(2));
-fprintf('|  DLSI      |   %2.2f%%    |\n', 100*acc_dlsi);
+% fprintf('|  DLSI      |   %2.2f%%    |\n', 100*acc_dlsi);
 fprintf('|  FDDL      |   %2.2f%%    |\n', 100*acc_fddl);
-fprintf('|  COPAR     |   %2.2f%%    |\n', 100*acc_COPAR);
+% fprintf('|  COPAR     |   %2.2f%%    |\n', 100*acc_COPAR);
 % fprintf('|  D2L2R2    |   %2.2f%%    |\n', 100*acc_d2l2r2);
 fprintf('|  LRSDL     |   %2.2f%%    |\n', 100*acc_lrsdl);
 fprintf('+--------------------------+\n')
