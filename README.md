@@ -1,3 +1,4 @@
+**This repo is no longer maintained!**
 
 # [DICTOL](https://github.com/tiepvupsu/DICTOL) - A Discriminative dictionary Learning Toolbox for Classification (MATLAB version).
 _This Toolbox is a part of our [LRSDL project](http://signal.ee.psu.edu/lrsdl.html)._
